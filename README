@@ -1,6 +1,7 @@
 Semester Repo for MET CS673, Summer 2017 
 
 
-Please refer cheat sheet for command reference: https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf
+Please refer cheat sheet for command reference: 
+    https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf
 
 Please be sure to "git pull rebase" with 'git pull -r' before you push changes to the repo. 
