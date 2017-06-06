@@ -35,7 +35,7 @@
 
 	
 
-    <-- This file is a template from https://getmdl.io/templates/index.html that we are reusing for our project - Sayantan --> 
+    <!-- This file is a template from https://getmdl.io/templates/index.html that we are reusing for our project - Sayantan --> 
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
@@ -78,9 +78,55 @@
       z-index: 900;
     }
     </style>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+
+      data.addRows([
+        ['Scope', 'Define scope of the project',
+         new Date(2017, 4, 1), new Date(2017, 4, 2), null,  Math.floor(Math.random()*100),  null],
+        ['Requirements', 'Gather requirements of the project',
+         new Date (2017, 4, 2 ), new Date(2017, 4, 4), null , Math.floor(Math.random()*100), null ],
+        ['Analysis', 'Analyze the requirements',
+         new Date(2017,4,4), new Date(2017, 4, 7), null , Math.floor(Math.random()*100), null ],
+        ['Design', 'Requirements to design',
+         new Date(2017,4,6), new Date(2017, 4, 9), null , Math.floor(Math.random()*100), null],
+        ['Implement', 'Implement the project',
+         new Date(2017,4,9), new Date(2017, 4, 11), null , Math.floor(Math.random()*100), null ]
+      ]);
+      var options = {
+        height: 275 , 
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('gantt_chart_div'));
+      var chart2 = new google.visualization.Gantt(document.getElementById('gantt_chart_div2'));
+
+      chart.draw(data, options);
+      chart2.draw(data, options);
+    }
+  </script>
+
+
   </head>
   <body>
-    <-- The following lines were added to check Firebase SDK working correctly - Sayantan --> 
+    <!-- The following lines were added to check Firebase SDK working correctly - Sayantan --> 
      <script>
       document.addEventListener('DOMContentLoaded', function() {
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
@@ -147,11 +193,8 @@
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
           <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-          <-- Linking to /manage for Project Management Tool - Sayantan -> 
           <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
-          <-- Linking to /chat for Chat/Communication Tool - Sayantan -> 
           <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
-          <-- Linking to /issues for Issue Management Tool - Sayantan ->
           <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
           <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
           <div class="mdl-layout-spacer"></div>
@@ -179,12 +222,8 @@
             </svg>
           </div>
           <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-            <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
-              <use xlink:href="#chart" />
-            </svg>
-            <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
-              <use xlink:href="#chart" />
-            </svg>
+            <div id=gantt_chart_div></div>
+            <div id=gantt_chart_div2></div>
           </div>
           <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
             <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
