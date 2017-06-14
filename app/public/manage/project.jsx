@@ -79,7 +79,46 @@ class ReactApp extends React.Component {
         </div>
         <main className="mdl-layout__content mdl-color--grey-100">
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-            <p>Some text</p>
+            <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Add Project
+            </button>
+            <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete Project
+            </button>
+            <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+              <thead>
+                <tr>
+                <th className="mdl-data-table__cell--non-numeric">Project</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+              </tr>
+             </thead>
+              <tbody>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">Project 1</td>
+                <td>tbd</td>
+                <td>tbd</td>
+                <td>Not Started</td>
+              </tr>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">Project 2</td>
+                <td>tbd</td>
+                <td>tbd</td>
+                <td>Not Started</td>
+              </tr>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">Project 3</td>
+                <td>tbd</td>
+                <td>tbd</td>
+                <td>Not Started</td>
+              </tr>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">Project 4</td>
+                <td>tbd</td>
+                <td>tbd</td>
+                <td>Not Started</td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </main>
       </div>

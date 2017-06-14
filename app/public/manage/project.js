@@ -247,9 +247,146 @@ var ReactApp = function (_React$Component) {
             "div",
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
             React.createElement(
-              "p",
-              null,
-              "Some text"
+              "button",
+              { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
+              "Add Project"
+            ),
+            React.createElement(
+              "button",
+              { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
+              "Delete Project"
+            ),
+            React.createElement(
+              "table",
+              { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+              React.createElement(
+                "thead",
+                null,
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "th",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Project"
+                  ),
+                  React.createElement(
+                    "th",
+                    null,
+                    "Start Date"
+                  ),
+                  React.createElement(
+                    "th",
+                    null,
+                    "End Date"
+                  ),
+                  React.createElement(
+                    "th",
+                    null,
+                    "Status"
+                  )
+                )
+              ),
+              React.createElement(
+                "tbody",
+                null,
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Project 1"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Not Started"
+                  )
+                ),
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Project 2"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Not Started"
+                  )
+                ),
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Project 3"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Not Started"
+                  )
+                ),
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Project 4"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Not Started"
+                  )
+                )
+              )
             )
           )
         )
