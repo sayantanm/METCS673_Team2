@@ -2,8 +2,10 @@ class ReactApp extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      user_email: 'hello@example.com'
+      user_email: 'hello@example.com',
+      progress: 44
     };
+    self.p1_material_object = null;
   }
   componentDidMount(){
     var self = this;
@@ -23,13 +25,29 @@ class ReactApp extends React.Component {
     }else{
       console.log('no user :(');
     }
+
+  // After material design initializes, we save the reference
+  self.p1.addEventListener('mdl-componentupgraded', function() {
+        self.p1_material_object = this.MaterialProgress;
+        self.p1_material_object.setProgress(self.state.progress);
+    });
+
   }
+  componentDidUpdate(prevProps, prevState){
+      var self = this;
+      if(self.p1_material_object){
+        self.p1_material_object.setProgress(self.state.progress);
+      }
+    }
+
   render(){
+    var self = this;
+
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <header className="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
           <div className="mdl-layout__header-row">
-            <span className="mdl-layout-title">Home</span>
+            <span className="mdl-layout-title">Project Management Tool</span>
             <div className="mdl-layout-spacer"></div>
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
               <label className="mdl-button mdl-js-button mdl-button--icon" htmlFor="search">
@@ -90,6 +108,7 @@ class ReactApp extends React.Component {
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Status</th>
+                <th>Progress</th>
               </tr>
              </thead>
               <tbody>
@@ -98,23 +117,54 @@ class ReactApp extends React.Component {
                 <td>tbd</td>
                 <td>tbd</td>
                 <td>Not Started</td>
+                <td>10%</td>
               </tr>
               <tr>
                 <td className="mdl-data-table__cell--non-numeric">Project 2</td>
-                <td>tbd</td>
+                <td>1/1/2017</td>
                 <td>tbd</td>
                 <td>Not Started</td>
+                <td>tbd</td>
               </tr>
               <tr>
                 <td className="mdl-data-table__cell--non-numeric">Project 3</td>
-                <td>tbd</td>
+                <td>2/1/2017</td>
                 <td>tbd</td>
                 <td>Not Started</td>
+                <td>tbd</td>
               </tr>
               <tr>
                 <td className="mdl-data-table__cell--non-numeric">Project 4</td>
                 <td>tbd</td>
                 <td>tbd</td>
+                <td>Not Started</td>
+                <td>tbd</td>
+              </tr>
+              </tbody>
+            </table>
+            <h4>
+              Project 1
+            </h4>
+            <p>Progress:</p>
+            <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
+            <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+              <thead>
+                <tr>
+                <th className="mdl-data-table__cell--non-numeric">Task</th>
+                <th>Status</th>
+              </tr>
+             </thead>
+              <tbody>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">Create UI</td>
+                <td>Completed</td>
+              </tr>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">Write Code</td>
+                <td>Completed</td>
+              </tr>
+              <tr>
+                <td className="mdl-data-table__cell--non-numeric">User Testing</td>
                 <td>Not Started</td>
               </tr>
               </tbody>

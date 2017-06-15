@@ -17,8 +17,10 @@ var ReactApp = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ReactApp.__proto__ || Object.getPrototypeOf(ReactApp)).call(this, props));
 
     _this.state = {
-      user_email: 'hello@example.com'
+      user_email: 'hello@example.com',
+      progress: 44
     };
+    self.p1_material_object = null;
     return _this;
   }
 
@@ -42,10 +44,28 @@ var ReactApp = function (_React$Component) {
       } else {
         console.log('no user :(');
       }
+
+      // After material design initializes, we save the reference
+      self.p1.addEventListener('mdl-componentupgraded', function () {
+        self.p1_material_object = this.MaterialProgress;
+        self.p1_material_object.setProgress(self.state.progress);
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      var self = this;
+      if (self.p1_material_object) {
+        self.p1_material_object.setProgress(self.state.progress);
+      }
     }
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
+      var self = this;
+
       return React.createElement(
         "div",
         { className: "demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header" },
@@ -58,7 +78,7 @@ var ReactApp = function (_React$Component) {
             React.createElement(
               "span",
               { className: "mdl-layout-title" },
-              "Home"
+              "Project Management Tool"
             ),
             React.createElement("div", { className: "mdl-layout-spacer" }),
             React.createElement(
@@ -284,6 +304,11 @@ var ReactApp = function (_React$Component) {
                     "th",
                     null,
                     "Status"
+                  ),
+                  React.createElement(
+                    "th",
+                    null,
+                    "Progress"
                   )
                 )
               ),
@@ -312,6 +337,11 @@ var ReactApp = function (_React$Component) {
                     "td",
                     null,
                     "Not Started"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "10%"
                   )
                 ),
                 React.createElement(
@@ -325,7 +355,7 @@ var ReactApp = function (_React$Component) {
                   React.createElement(
                     "td",
                     null,
-                    "tbd"
+                    "1/1/2017"
                   ),
                   React.createElement(
                     "td",
@@ -336,6 +366,11 @@ var ReactApp = function (_React$Component) {
                     "td",
                     null,
                     "Not Started"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
                   )
                 ),
                 React.createElement(
@@ -349,7 +384,7 @@ var ReactApp = function (_React$Component) {
                   React.createElement(
                     "td",
                     null,
-                    "tbd"
+                    "2/1/2017"
                   ),
                   React.createElement(
                     "td",
@@ -360,6 +395,11 @@ var ReactApp = function (_React$Component) {
                     "td",
                     null,
                     "Not Started"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
                   )
                 ),
                 React.createElement(
@@ -379,6 +419,92 @@ var ReactApp = function (_React$Component) {
                     "td",
                     null,
                     "tbd"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Not Started"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "tbd"
+                  )
+                )
+              )
+            ),
+            React.createElement(
+              "h4",
+              null,
+              "Project 1"
+            ),
+            React.createElement(
+              "p",
+              null,
+              "Progress:"
+            ),
+            React.createElement("div", { ref: function ref(_ref) {
+                return _this2.p1 = _ref;
+              }, className: "mdl-progress mdl-js-progress" }),
+            React.createElement(
+              "table",
+              { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+              React.createElement(
+                "thead",
+                null,
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "th",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Task"
+                  ),
+                  React.createElement(
+                    "th",
+                    null,
+                    "Status"
+                  )
+                )
+              ),
+              React.createElement(
+                "tbody",
+                null,
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Create UI"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Completed"
+                  )
+                ),
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "Write Code"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "Completed"
+                  )
+                ),
+                React.createElement(
+                  "tr",
+                  null,
+                  React.createElement(
+                    "td",
+                    { className: "mdl-data-table__cell--non-numeric" },
+                    "User Testing"
                   ),
                   React.createElement(
                     "td",
