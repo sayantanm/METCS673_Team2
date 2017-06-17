@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Add Members To Your Project</title>
+    <script defer src="/__/firebase/4.1.2/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/4.1.2/firebase-auth.js"></script>
+    <script defer src="/__/firebase/4.1.2/firebase-database.js"></script>
+    <script defer src="/__/firebase/4.1.2/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/4.1.2/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/Admin.css">
+
+    <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    </style>
+
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
+     <script defer src="/js/jquery-te-1.4.0.min.js"></script>
+	 <link rel="stylesheet" href="/css/jquery-te-1.4.0.css">
+	<script defer src="/js/Admin.js"</script>
+
+	<script defer src="http://underscorejs.org/underscore-min.js"></script>
+	<script defer src="/js/clndr.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+
+
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <header class="demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Admin Page</span>
+          <div class="mdl-layout-spacer"></div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="search">
+              <label class="mdl-textfield__label" for="search">Enter your query...</label>
+            </div>
+          </div>
+          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+            <i class="material-icons">more_vert</i>
+          </button>
+          <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+            <li class="mdl-menu__item">About</li>
+            <li class="mdl-menu__item">Contact</li>
+            <li class="mdl-menu__item">Legal information</li>
+          </ul>
+        </div>
+
+
+  <!--  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+
+
+          <button id="menu" class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">more_vert</i>
+          </button>
+
+          <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+            for="menu">
+            <li class="mdl-menu__item">Some Action</li>
+            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Another Action</li>
+            <li disabled class="mdl-menu__item">Disabled Action</li>
+            <li class="mdl-menu__item">Yet Another Action</li>
+          </ul>
+
+          <!-- Title -->
+          <!--<span class="mdl-layout-title">Team 2 Project Management</span>
+          <div class="mdl-layout-spacer"></div>
+
+          <!-- Navigation. We hide it in small screens. -->
+          <!--<nav class="mdl-navigation mdl-layout--large-screen-only">
+            <img src ="/imgages/user.jpg" id = "userPic">
+            <a class="mdl-navigation__link" id = "user" href="index.html">User</a> <!--Do we want this to go a home page or to some settings page? Need Var here-->
+          <!--</nav>
+        </div>-->
+      </header>
+    </div>
+
+    <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+      <header class="demo-drawer-header">
+        <img src="/images/user.jpg" class="demo-avatar">
+        <div class="demo-avatar-dropdown">
+          <span>hello@example.com</span>
+          <div class="mdl-layout-spacer"></div>
+          <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">arrow_drop_down</i>
+            <span class="visuallyhidden">Accounts</span>
+          </button>
+          <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+            <li class="mdl-menu__item">hello@example.com</li>
+            <li class="mdl-menu__item">info@example.com</li>
+            <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+          </ul>
+        </div>
+      </header>
+      <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+        <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
+        <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
+        <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
+        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
+        <div class="mdl-layout-spacer"></div>
+        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+      </nav>
+    </div>
+
+
+
+    <div class = "mdl-grid">
+      <div class="demo-card-square mdl-card">
+        <div class="mdl-cell mdl-cell--12-col">
+
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Add A Team Member to Project</h2>
+          </div>
+
+          <div>
+            <h5><center>Email Address:
+              <div class = "mdl-card__actions mdl-textfield mdl-js-textfield">
+                <form action="#">
+                  <input class="mdl-textfield__input" type="text" id="email">
+                  <!--<label class="mdl-textfield__label" for="email">Email</label>-->
+                </form>
+              </div></center>
+            </h5>
+          </div>
+          <br>
+          <div>
+            <h5><center>Role:
+              <div class = "mdl-card__actions mdl-textfield mdl-js-textfield">
+                <form action="#">
+                  <input class="mdl-textfield__input" type="text" id="role">
+                  <!--<label class="mdl-textfield__label" for="role">Role</label>-->
+                </form>
+              </div></center>
+            </h5>
+
+          </div>
+          <br>
+          <br>
+          <div class="mdl-card__actions">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id = "addButton">
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mdl-layout-spacer"></div>
+
+      <div>
+        <table class="mdl-data-table mdl-js-data-table">
+          <div class="mdl-cell mdl-cell--12-col">
+            <thead><th><h4 style= "color: black;">Current Project Team Members</h4></th><th></th></thead>
+            <thead>
+              <th class="mdl-data-table__cell--non-numeric odd">Name</th>
+              <th class="mdl-data-table__cell--non-numeric odd">Role</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric even">Sayantan Mukherjee</td>
+                <td class="mdl-data-table__cell--non-numeric even">PM</td> <!--Maybe this could be a drop down menu
+                    to choose from?-->
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric odd">Chris Henson</td>
+                <td class="mdl-data-table__cell--non-numeric odd">QA</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric even">Ben Ho</td>
+                <td class="mdl-data-table__cell--non-numeric even">BA</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric odd">Alicia Gallagher</td>
+                <td class="mdl-data-table__cell--non-numeric odd">DEV</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric even">Rishee Basdeo</td>
+                <td class="mdl-data-table__cell--non-numeric even">DEV</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric odd">Ron Czik</td>
+                <td class="mdl-data-table__cell--non-numeric odd">Pending</td>
+              </tr>
+            </tbody>
+          </div>
+        </table>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAE5gZ4dpDvC9p9dSVh-3iltIXcjjDtfGI",
+      authDomain: "cs673team2.firebaseapp.com",
+      databaseURL: "https://cs673team2.firebaseio.com",
+      projectId: "cs673team2",
+      storageBucket: "cs673team2.appspot.com",
+      messagingSenderId: "947879978889"
+    };
+  firebase.initializeApp(config);
+  </script>
+
+  <script src = "Admin.js"></script>
+  </body>
+</html>
