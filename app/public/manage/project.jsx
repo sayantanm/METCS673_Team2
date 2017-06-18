@@ -240,7 +240,7 @@ class AddProjectForm extends React.Component {
     }
 
     return (
-      <form action="#">
+      <form action="#" onSubmit={formSaveHandler}>
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="name" name="name" />
           <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
@@ -258,7 +258,6 @@ class AddProjectForm extends React.Component {
         <br/>
         <button 
           className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-          onClick={formSaveHandler}
           >
           Save
         </button>

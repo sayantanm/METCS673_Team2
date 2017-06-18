@@ -538,7 +538,7 @@ var AddProjectForm = function (_React$Component4) {
 
       return React.createElement(
         "form",
-        { action: "#" },
+        { action: "#", onSubmit: formSaveHandler },
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
@@ -573,8 +573,7 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "button",
           {
-            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
-            onClick: formSaveHandler
+            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
           },
           "Save"
         )
