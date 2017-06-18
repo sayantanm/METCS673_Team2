@@ -1,17 +1,17 @@
-.demo-card-square.mdl-card {
+.addMember {
   border-style: solid;
   border-color: black;
   width: 500px;
   height: 325px;
 
 }
-.mdl-grid {
+.grid {
   padding-left: 100px;
   padding-top: 100px;
   padding-right: 100px;
 
 }
-.mdl-textfield{
+.input{
   width: auto;
   padding: 0px;
   float: right;
@@ -20,29 +20,31 @@
   border-width: 1px;
   margin-right: 20px;
 }
-.mdl-button{
+.addButton{
   float: right;
   margin-right: 10px;
 }
 
-.mdl-data-table {
+.table {
   border-style: solid;
   border-color: black;
   border-width: 3px;
 }
-.mdl-data-table__cell--non-numeric {
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
-  color: black;
 
-}
 
 .odd {
   background-color: cyan;
   text-align: center;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  color: black;
 }
 
 .even {
   text-align: center;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  color: black;
 }
