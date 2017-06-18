@@ -3,7 +3,9 @@ class ReactApp extends React.Component {
     super(props);
     this.state = {
       user_email: 'hello@example.com',
-      progress: 44
+      projects: [],
+      progress: 44,
+      add_project: false
     };
     self.p1_material_object = null;
   }
@@ -26,13 +28,45 @@ class ReactApp extends React.Component {
       console.log('no user :(');
     }
 
-  // After material design initializes, we save the reference
-  self.p1.addEventListener('mdl-componentupgraded', function() {
+    // After material design initializes, we save the reference
+    self.p1.addEventListener('mdl-componentupgraded', function() {
         self.p1_material_object = this.MaterialProgress;
         self.p1_material_object.setProgress(self.state.progress);
     });
 
+    var projects = [
+      {
+        "name": "Project 1",
+        "start_date": "tbd",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "10%",
+      }, {
+        "name": "Project 2",
+        "start_date": "1/1/2017",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "tbd",
+      }, {
+        "name": "Project 3",
+        "start_date": "2/1/2017",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "tbd",
+      }, {
+        "name": "Project 4",
+        "start_date": "tbd",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "tbd"
+     },   
+    ];
+
+    self.setState({'projects': projects});
+
   }
+
+
   componentDidUpdate(prevProps, prevState){
       var self = this;
       if(self.p1_material_object){
@@ -40,60 +74,62 @@ class ReactApp extends React.Component {
       }
     }
 
+
   render(){
     var self = this;
+
+    var projects_table = (
+      <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+        <thead>
+          <tr>
+            <th className="mdl-data-table__cell--non-numeric">Project</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Progress</th>
+          </tr>
+         </thead>
+        <tbody>
+        {
+          this.state.projects.map(function(item, index){
+            return (
+              <tr key={index}>
+                <td className="mdl-data-table__cell--non-numeric">{item.name}</td>
+                <td>{item.start_date}</td>
+                <td>{item.end_date}</td>
+                <td>{item.status}</td>
+                <td>{item.progress}</td>
+              </tr>
+            );
+          })
+        }
+        </tbody>
+      </table>
+    );
+
+    var addProjectHandler = function(e){
+
+      self.setState({ add_projects: true });
+    }
 
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <TopBar/>
-        <SideBar/>
+        <SideBar user_email= { this.state.user_email } />
         <main className="mdl-layout__content mdl-color--grey-100">
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-            <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Add Project
+            <button 
+              className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+              onClick={addProjectHandler}
+            >
+              Add Project
             </button>
             <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete Project
             </button>
-            <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-              <thead>
-                <tr>
-                <th className="mdl-data-table__cell--non-numeric">Project</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                <th>Progress</th>
-              </tr>
-             </thead>
-              <tbody>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">Project 1</td>
-                <td>tbd</td>
-                <td>tbd</td>
-                <td>Not Started</td>
-                <td>10%</td>
-              </tr>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">Project 2</td>
-                <td>1/1/2017</td>
-                <td>tbd</td>
-                <td>Not Started</td>
-                <td>tbd</td>
-              </tr>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">Project 3</td>
-                <td>2/1/2017</td>
-                <td>tbd</td>
-                <td>Not Started</td>
-                <td>tbd</td>
-              </tr>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">Project 4</td>
-                <td>tbd</td>
-                <td>tbd</td>
-                <td>Not Started</td>
-                <td>tbd</td>
-              </tr>
-              </tbody>
-            </table>
+            <br/>
+            { this.state.add_projects ? (<AddProjectForm/>): projects_table }
+
+            {/* Start Task Table */}
             <h4>
               Project 1
             </h4>
@@ -167,7 +203,7 @@ class SideBar extends React.Component {
         <header className="demo-drawer-header">
           <img src="/images/user.jpg" className="demo-avatar"/>
           <div className="demo-avatar-dropdown">
-            <span>{this.state.user_email}</span>
+            <span>{this.props.user_email}</span>
             <div className="mdl-layout-spacer"></div>
             <button id="accbtn" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
               <i className="material-icons" role="presentation">arrow_drop_down</i>
@@ -193,3 +229,46 @@ class SideBar extends React.Component {
     );
   }
 }
+
+class AddProjectForm extends React.Component {
+  render() {
+
+    var formSaveHandler = function(e){
+      console.log("pass");
+      e.stopPropagation();
+      return false;
+    }
+
+    return (
+      <form action="#">
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="name" name="name" />
+          <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
+        </div>
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" />
+          <label className="mdl-textfield__label" htmlFor="start_date">Start Date ...</label>
+        </div>
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" />
+          <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
+        </div>
+
+           { /* Save Button */ }
+        <br/>
+        <button 
+          className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+          onClick={formSaveHandler}
+          >
+          Save
+        </button>
+      </form>
+
+   
+    );
+
+  }
+}
+
+
+

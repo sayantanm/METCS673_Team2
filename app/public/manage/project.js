@@ -18,7 +18,9 @@ var ReactApp = function (_React$Component) {
 
     _this.state = {
       user_email: 'hello@example.com',
-      progress: 44
+      projects: [],
+      progress: 44,
+      add_project: false
     };
     self.p1_material_object = null;
     return _this;
@@ -50,6 +52,34 @@ var ReactApp = function (_React$Component) {
         self.p1_material_object = this.MaterialProgress;
         self.p1_material_object.setProgress(self.state.progress);
       });
+
+      var projects = [{
+        "name": "Project 1",
+        "start_date": "tbd",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "10%"
+      }, {
+        "name": "Project 2",
+        "start_date": "1/1/2017",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "tbd"
+      }, {
+        "name": "Project 3",
+        "start_date": "2/1/2017",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "tbd"
+      }, {
+        "name": "Project 4",
+        "start_date": "tbd",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "tbd"
+      }];
+
+      self.setState({ 'projects': projects });
     }
   }, {
     key: "componentDidUpdate",
@@ -66,11 +96,89 @@ var ReactApp = function (_React$Component) {
 
       var self = this;
 
+      var projects_table = React.createElement(
+        "table",
+        { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+        React.createElement(
+          "thead",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "th",
+              { className: "mdl-data-table__cell--non-numeric" },
+              "Project"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Start Date"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "End Date"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Status"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Progress"
+            )
+          )
+        ),
+        React.createElement(
+          "tbody",
+          null,
+          this.state.projects.map(function (item, index) {
+            return React.createElement(
+              "tr",
+              { key: index },
+              React.createElement(
+                "td",
+                { className: "mdl-data-table__cell--non-numeric" },
+                item.name
+              ),
+              React.createElement(
+                "td",
+                null,
+                item.start_date
+              ),
+              React.createElement(
+                "td",
+                null,
+                item.end_date
+              ),
+              React.createElement(
+                "td",
+                null,
+                item.status
+              ),
+              React.createElement(
+                "td",
+                null,
+                item.progress
+              )
+            );
+          })
+        )
+      );
+
+      var addProjectHandler = function addProjectHandler(e) {
+
+        self.setState({ add_projects: true });
+      };
+
       return React.createElement(
         "div",
         { className: "demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header" },
         React.createElement(TopBar, null),
-        React.createElement(SideBar, null),
+        React.createElement(SideBar, { user_email: this.state.user_email }),
         React.createElement(
           "main",
           { className: "mdl-layout__content mdl-color--grey-100" },
@@ -79,7 +187,10 @@ var ReactApp = function (_React$Component) {
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
             React.createElement(
               "button",
-              { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
+              {
+                className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                onClick: addProjectHandler
+              },
               "Add Project"
             ),
             React.createElement(
@@ -87,163 +198,8 @@ var ReactApp = function (_React$Component) {
               { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
               "Delete Project"
             ),
-            React.createElement(
-              "table",
-              { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
-              React.createElement(
-                "thead",
-                null,
-                React.createElement(
-                  "tr",
-                  null,
-                  React.createElement(
-                    "th",
-                    { className: "mdl-data-table__cell--non-numeric" },
-                    "Project"
-                  ),
-                  React.createElement(
-                    "th",
-                    null,
-                    "Start Date"
-                  ),
-                  React.createElement(
-                    "th",
-                    null,
-                    "End Date"
-                  ),
-                  React.createElement(
-                    "th",
-                    null,
-                    "Status"
-                  ),
-                  React.createElement(
-                    "th",
-                    null,
-                    "Progress"
-                  )
-                )
-              ),
-              React.createElement(
-                "tbody",
-                null,
-                React.createElement(
-                  "tr",
-                  null,
-                  React.createElement(
-                    "td",
-                    { className: "mdl-data-table__cell--non-numeric" },
-                    "Project 1"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "Not Started"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "10%"
-                  )
-                ),
-                React.createElement(
-                  "tr",
-                  null,
-                  React.createElement(
-                    "td",
-                    { className: "mdl-data-table__cell--non-numeric" },
-                    "Project 2"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "1/1/2017"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "Not Started"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  )
-                ),
-                React.createElement(
-                  "tr",
-                  null,
-                  React.createElement(
-                    "td",
-                    { className: "mdl-data-table__cell--non-numeric" },
-                    "Project 3"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "2/1/2017"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "Not Started"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  )
-                ),
-                React.createElement(
-                  "tr",
-                  null,
-                  React.createElement(
-                    "td",
-                    { className: "mdl-data-table__cell--non-numeric" },
-                    "Project 4"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "Not Started"
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    "tbd"
-                  )
-                )
-              )
-            ),
+            React.createElement("br", null),
+            this.state.add_projects ? React.createElement(AddProjectForm, null) : projects_table,
             React.createElement(
               "h4",
               null,
@@ -442,7 +398,7 @@ var SideBar = function (_React$Component3) {
             React.createElement(
               "span",
               null,
-              this.state.user_email
+              this.props.user_email
             ),
             React.createElement("div", { className: "mdl-layout-spacer" }),
             React.createElement(
@@ -559,6 +515,74 @@ var SideBar = function (_React$Component3) {
   }]);
 
   return SideBar;
+}(React.Component);
+
+var AddProjectForm = function (_React$Component4) {
+  _inherits(AddProjectForm, _React$Component4);
+
+  function AddProjectForm() {
+    _classCallCheck(this, AddProjectForm);
+
+    return _possibleConstructorReturn(this, (AddProjectForm.__proto__ || Object.getPrototypeOf(AddProjectForm)).apply(this, arguments));
+  }
+
+  _createClass(AddProjectForm, [{
+    key: "render",
+    value: function render() {
+
+      var formSaveHandler = function formSaveHandler(e) {
+        console.log("pass");
+        e.stopPropagation();
+        return false;
+      };
+
+      return React.createElement(
+        "form",
+        { action: "#" },
+        React.createElement(
+          "div",
+          { className: "mdl-textfield mdl-js-textfield" },
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name" }),
+          React.createElement(
+            "label",
+            { className: "mdl-textfield__label", htmlFor: "name" },
+            "Project Name ..."
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "mdl-textfield mdl-js-textfield" },
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date" }),
+          React.createElement(
+            "label",
+            { className: "mdl-textfield__label", htmlFor: "start_date" },
+            "Start Date ..."
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "mdl-textfield mdl-js-textfield" },
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date" }),
+          React.createElement(
+            "label",
+            { className: "mdl-textfield__label", htmlFor: "end_date" },
+            "End Date ..."
+          )
+        ),
+        React.createElement("br", null),
+        React.createElement(
+          "button",
+          {
+            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+            onClick: formSaveHandler
+          },
+          "Save"
+        )
+      );
+    }
+  }]);
+
+  return AddProjectForm;
 }(React.Component);
 
 //# sourceMappingURL=project.js.map
