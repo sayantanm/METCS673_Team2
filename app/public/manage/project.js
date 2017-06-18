@@ -69,197 +69,8 @@ var ReactApp = function (_React$Component) {
       return React.createElement(
         "div",
         { className: "demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header" },
-        React.createElement(
-          "header",
-          { className: "demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600" },
-          React.createElement(
-            "div",
-            { className: "mdl-layout__header-row" },
-            React.createElement(
-              "span",
-              { className: "mdl-layout-title" },
-              "Project Management Tool"
-            ),
-            React.createElement("div", { className: "mdl-layout-spacer" }),
-            React.createElement(
-              "div",
-              { className: "mdl-textfield mdl-js-textfield mdl-textfield--expandable" },
-              React.createElement(
-                "label",
-                { className: "mdl-button mdl-js-button mdl-button--icon", htmlFor: "search" },
-                React.createElement(
-                  "i",
-                  { className: "material-icons" },
-                  "search"
-                )
-              ),
-              React.createElement(
-                "div",
-                { className: "mdl-textfield__expandable-holder" },
-                React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "search" }),
-                React.createElement(
-                  "label",
-                  { className: "mdl-textfield__label", htmlFor: "search" },
-                  "Enter your query..."
-                )
-              )
-            ),
-            React.createElement(
-              "button",
-              { className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon", id: "hdrbtn" },
-              React.createElement(
-                "i",
-                { className: "material-icons" },
-                "more_vert"
-              )
-            ),
-            React.createElement(
-              "ul",
-              { className: "mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right", htmlFor: "hdrbtn" },
-              React.createElement(
-                "li",
-                { className: "mdl-menu__item" },
-                "About"
-              ),
-              React.createElement(
-                "li",
-                { className: "mdl-menu__item" },
-                "Contact"
-              ),
-              React.createElement(
-                "li",
-                { className: "mdl-menu__item" },
-                "Legal information"
-              )
-            )
-          )
-        ),
-        React.createElement(
-          "div",
-          { className: "demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" },
-          React.createElement(
-            "header",
-            { className: "demo-drawer-header" },
-            React.createElement("img", { src: "/images/user.jpg", className: "demo-avatar" }),
-            React.createElement(
-              "div",
-              { className: "demo-avatar-dropdown" },
-              React.createElement(
-                "span",
-                null,
-                this.state.user_email
-              ),
-              React.createElement("div", { className: "mdl-layout-spacer" }),
-              React.createElement(
-                "button",
-                { id: "accbtn", className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" },
-                React.createElement(
-                  "i",
-                  { className: "material-icons", role: "presentation" },
-                  "arrow_drop_down"
-                ),
-                React.createElement(
-                  "span",
-                  { className: "visuallyhidden" },
-                  "Accounts"
-                )
-              ),
-              React.createElement(
-                "ul",
-                { className: "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect", htmlFor: "accbtn" },
-                React.createElement(
-                  "li",
-                  { className: "mdl-menu__item" },
-                  "hello@example.com"
-                ),
-                React.createElement(
-                  "li",
-                  { className: "mdl-menu__item" },
-                  "info@example.com"
-                ),
-                React.createElement(
-                  "li",
-                  { className: "mdl-menu__item" },
-                  React.createElement(
-                    "i",
-                    { className: "material-icons" },
-                    "add"
-                  ),
-                  "Add another account..."
-                )
-              )
-            )
-          ),
-          React.createElement(
-            "nav",
-            { className: "demo-navigation mdl-navigation mdl-color--blue-grey-800" },
-            React.createElement(
-              "a",
-              { className: "mdl-navigation__link", href: "" },
-              React.createElement(
-                "i",
-                { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-                "home"
-              ),
-              "Home"
-            ),
-            React.createElement(
-              "a",
-              { className: "mdl-navigation__link", href: "/manage" },
-              React.createElement(
-                "i",
-                { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-                "inbox"
-              ),
-              "Projects"
-            ),
-            React.createElement(
-              "a",
-              { className: "mdl-navigation__link", href: "/chat" },
-              React.createElement(
-                "i",
-                { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-                "chat"
-              ),
-              "Chat"
-            ),
-            React.createElement(
-              "a",
-              { className: "mdl-navigation__link", href: "/issues" },
-              React.createElement(
-                "i",
-                { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-                "inbox"
-              ),
-              "Issues"
-            ),
-            React.createElement(
-              "a",
-              { className: "mdl-navigation__link", href: "" },
-              React.createElement(
-                "i",
-                { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-                "people"
-              ),
-              "Admin"
-            ),
-            React.createElement("div", { className: "mdl-layout-spacer" }),
-            React.createElement(
-              "a",
-              { className: "mdl-navigation__link", href: "" },
-              React.createElement(
-                "i",
-                { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-                "help_outline"
-              ),
-              React.createElement(
-                "span",
-                { className: "visuallyhidden" },
-                "Help"
-              )
-            )
-          )
-        ),
+        React.createElement(TopBar, null),
+        React.createElement(SideBar, null),
         React.createElement(
           "main",
           { className: "mdl-layout__content mdl-color--grey-100" },
@@ -521,6 +332,233 @@ var ReactApp = function (_React$Component) {
   }]);
 
   return ReactApp;
+}(React.Component);
+
+var TopBar = function (_React$Component2) {
+  _inherits(TopBar, _React$Component2);
+
+  function TopBar() {
+    _classCallCheck(this, TopBar);
+
+    return _possibleConstructorReturn(this, (TopBar.__proto__ || Object.getPrototypeOf(TopBar)).apply(this, arguments));
+  }
+
+  _createClass(TopBar, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "header",
+        { className: "demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600" },
+        React.createElement(
+          "div",
+          { className: "mdl-layout__header-row" },
+          React.createElement(
+            "span",
+            { className: "mdl-layout-title" },
+            "Project Management Tool"
+          ),
+          React.createElement("div", { className: "mdl-layout-spacer" }),
+          React.createElement(
+            "div",
+            { className: "mdl-textfield mdl-js-textfield mdl-textfield--expandable" },
+            React.createElement(
+              "label",
+              { className: "mdl-button mdl-js-button mdl-button--icon", htmlFor: "search" },
+              React.createElement(
+                "i",
+                { className: "material-icons" },
+                "search"
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "mdl-textfield__expandable-holder" },
+              React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "search" }),
+              React.createElement(
+                "label",
+                { className: "mdl-textfield__label", htmlFor: "search" },
+                "Enter your query..."
+              )
+            )
+          ),
+          React.createElement(
+            "button",
+            { className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon", id: "hdrbtn" },
+            React.createElement(
+              "i",
+              { className: "material-icons" },
+              "more_vert"
+            )
+          ),
+          React.createElement(
+            "ul",
+            { className: "mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right", htmlFor: "hdrbtn" },
+            React.createElement(
+              "li",
+              { className: "mdl-menu__item" },
+              "About"
+            ),
+            React.createElement(
+              "li",
+              { className: "mdl-menu__item" },
+              "Contact"
+            ),
+            React.createElement(
+              "li",
+              { className: "mdl-menu__item" },
+              "Legal information"
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return TopBar;
+}(React.Component);
+
+var SideBar = function (_React$Component3) {
+  _inherits(SideBar, _React$Component3);
+
+  function SideBar() {
+    _classCallCheck(this, SideBar);
+
+    return _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).apply(this, arguments));
+  }
+
+  _createClass(SideBar, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        { className: "demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" },
+        React.createElement(
+          "header",
+          { className: "demo-drawer-header" },
+          React.createElement("img", { src: "/images/user.jpg", className: "demo-avatar" }),
+          React.createElement(
+            "div",
+            { className: "demo-avatar-dropdown" },
+            React.createElement(
+              "span",
+              null,
+              this.state.user_email
+            ),
+            React.createElement("div", { className: "mdl-layout-spacer" }),
+            React.createElement(
+              "button",
+              { id: "accbtn", className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" },
+              React.createElement(
+                "i",
+                { className: "material-icons", role: "presentation" },
+                "arrow_drop_down"
+              ),
+              React.createElement(
+                "span",
+                { className: "visuallyhidden" },
+                "Accounts"
+              )
+            ),
+            React.createElement(
+              "ul",
+              { className: "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect", htmlFor: "accbtn" },
+              React.createElement(
+                "li",
+                { className: "mdl-menu__item" },
+                "hello@example.com"
+              ),
+              React.createElement(
+                "li",
+                { className: "mdl-menu__item" },
+                "info@example.com"
+              ),
+              React.createElement(
+                "li",
+                { className: "mdl-menu__item" },
+                React.createElement(
+                  "i",
+                  { className: "material-icons" },
+                  "add"
+                ),
+                "Add another account..."
+              )
+            )
+          )
+        ),
+        React.createElement(
+          "nav",
+          { className: "demo-navigation mdl-navigation mdl-color--blue-grey-800" },
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "home"
+            ),
+            "Home"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "/manage" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "inbox"
+            ),
+            "Projects"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "/chat" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "chat"
+            ),
+            "Chat"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "/issues" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "inbox"
+            ),
+            "Issues"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "people"
+            ),
+            "Admin"
+          ),
+          React.createElement("div", { className: "mdl-layout-spacer" }),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "help_outline"
+            ),
+            React.createElement(
+              "span",
+              { className: "visuallyhidden" },
+              "Help"
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return SideBar;
 }(React.Component);
 
 //# sourceMappingURL=project.js.map
