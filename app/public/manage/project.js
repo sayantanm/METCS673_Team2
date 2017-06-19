@@ -105,6 +105,11 @@ var ReactApp = function (_React$Component) {
 
       var self = this;
 
+      var viewProjectHandler = function viewProjectHandler(e) {
+
+        self.setState({ view_project: true });
+      };
+
       var projects_table = React.createElement(
         "table",
         { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
@@ -193,11 +198,6 @@ var ReactApp = function (_React$Component) {
           })
         )
       );
-
-      var viewProjectHandler = function viewProjectHandler(e) {
-
-        self.setState({ view_project: true });
-      };
 
       var addProjectHandler = function addProjectHandler(e) {
 

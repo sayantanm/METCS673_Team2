@@ -89,6 +89,11 @@ class ReactApp extends React.Component {
   render(){
     var self = this;
 
+    var viewProjectHandler = function(e){
+
+      self.setState({ view_project: true });
+    }
+
     var projects_table = (
       <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
         <thead>
@@ -123,11 +128,6 @@ class ReactApp extends React.Component {
         </tbody>
       </table>
     );
-
-    var viewProjectHandler = function(e){
-
-      self.setState({ view_project: true });
-    }
 
     var addProjectHandler = function(e){
 
