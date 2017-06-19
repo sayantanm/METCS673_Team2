@@ -1,8 +1,8 @@
 .addMember {
   border-style: solid;
   border-color: black;
-  width: 500px;
-  height: 325px;
+  width: auto;
+  height: auto;
 
 }
 .grid {
