@@ -129,6 +129,11 @@ class ReactApp extends React.Component {
       self.setState({ view_project: true });
     }
 
+    var addProjectHandler = function(e){
+
+      self.setState({ add_projects: true });
+    }
+
     var tasks_table = <p>No Tasks</p>;
 
     if (self.state.view_project && self.state.tasks.length > 0) {
@@ -156,11 +161,6 @@ class ReactApp extends React.Component {
           </tbody>
         </table>
       );
-    }
-
-    var addProjectHandler = function(e){
-
-      self.setState({ add_projects: true });
     }
 
 

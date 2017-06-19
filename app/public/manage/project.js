@@ -199,6 +199,11 @@ var ReactApp = function (_React$Component) {
         self.setState({ view_project: true });
       };
 
+      var addProjectHandler = function addProjectHandler(e) {
+
+        self.setState({ add_projects: true });
+      };
+
       var tasks_table = React.createElement(
         "p",
         null,
@@ -275,11 +280,6 @@ var ReactApp = function (_React$Component) {
           )
         );
       }
-
-      var addProjectHandler = function addProjectHandler(e) {
-
-        self.setState({ add_projects: true });
-      };
 
       return React.createElement(
         "div",
