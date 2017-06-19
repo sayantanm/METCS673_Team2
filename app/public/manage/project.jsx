@@ -4,8 +4,10 @@ class ReactApp extends React.Component {
     this.state = {
       user_email: 'hello@example.com',
       projects: [],
+      tasks: [],
       progress: 44,
-      add_project: false
+      add_project: false,
+      view_project: false
     };
     self.p1_material_object = null;
   }
@@ -62,7 +64,16 @@ class ReactApp extends React.Component {
      },   
     ];
 
+    var tasks = [
+      {
+        "name": "Example Task 1 ",
+        "status": "Not Started"
+      }
+    ];
+
     self.setState({'projects': projects});
+
+    self.setState({'tasks': tasks});
 
   }
 
@@ -87,6 +98,7 @@ class ReactApp extends React.Component {
             <th>End Date</th>
             <th>Status</th>
             <th>Progress</th>
+            <th>View</th>
           </tr>
          </thead>
         <tbody>
@@ -99,6 +111,11 @@ class ReactApp extends React.Component {
                 <td>{item.end_date}</td>
                 <td>{item.status}</td>
                 <td>{item.progress}</td>
+                <td><button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                onClick={viewProjectHandler}
+                >
+                View</button> 
+                </td>
               </tr>
             );
           })
@@ -107,10 +124,45 @@ class ReactApp extends React.Component {
       </table>
     );
 
+    var viewProjectHandler = function(e){
+
+      self.setState({ view_project: true });
+    }
+
+    var tasks_table = <p>No Tasks</p>;
+
+    if (self.state.view_project && self.state.tasks.length > 0) {
+      tasks_table = (
+        <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+          <thead>
+            <tr>
+            <th className="mdl-data-table__cell--non-numeric">Task</th>
+            <th>Status</th>
+          </tr>
+         </thead>
+          <tbody>
+          <tr>
+            <td className="mdl-data-table__cell--non-numeric">Create UI</td>
+            <td>Completed</td>
+          </tr>
+          <tr>
+            <td className="mdl-data-table__cell--non-numeric">Write Code</td>
+            <td>Completed</td>
+          </tr>
+          <tr>
+            <td className="mdl-data-table__cell--non-numeric">User Testing</td>
+            <td>Not Started</td>
+          </tr>
+          </tbody>
+        </table>
+      );
+    }
+
     var addProjectHandler = function(e){
 
       self.setState({ add_projects: true });
     }
+
 
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -129,34 +181,12 @@ class ReactApp extends React.Component {
             <br/>
             { this.state.add_projects ? (<AddProjectForm/>): projects_table }
 
-            {/* Start Task Table */}
-            <h4>
-              Project 1
-            </h4>
+            {/* View a project and then display tasks table */}
+            {tasks_table}
+
             <p>Progress:</p>
             <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
-            <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-              <thead>
-                <tr>
-                <th className="mdl-data-table__cell--non-numeric">Task</th>
-                <th>Status</th>
-              </tr>
-             </thead>
-              <tbody>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">Create UI</td>
-                <td>Completed</td>
-              </tr>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">Write Code</td>
-                <td>Completed</td>
-              </tr>
-              <tr>
-                <td className="mdl-data-table__cell--non-numeric">User Testing</td>
-                <td>Not Started</td>
-              </tr>
-              </tbody>
-            </table>
+            
           </div>
         </main>
       </div>
@@ -262,10 +292,7 @@ class AddProjectForm extends React.Component {
           Save
         </button>
       </form>
-
-   
     );
-
   }
 }
 
