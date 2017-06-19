@@ -70,27 +70,27 @@
 
   <body>
     <script>
-     document.addEventListener('DOMContentLoaded', function() {
-       // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-       // // The Firebase SDK is initialized and available here!
-       //
-       // firebase.auth().onAuthStateChanged(user => { });
-       // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-       // firebase.messaging().requestPermission().then(() => { });
-       // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-       //
-       // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+      document.addEventListener('DOMContentLoaded', function() {
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-       try {
-         let app = firebase.app();
-         let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-         document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-       } catch (e) {
-         console.error(e);
-         document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-       }
-     });
-   </script>
+        try {
+          let app = firebase.app();
+          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+        }
+      });
+     </script>
 
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
@@ -119,7 +119,7 @@
 
         <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
           <header class="demo-drawer-header">
-            <img src="/images/user.jpg" class="demo-avatar">
+            <img src="user.jpg" class="demo-avatar">
             <div class="demo-avatar-dropdown">
               <span>hello@example.com</span>
               <div class="mdl-layout-spacer"></div>
@@ -146,46 +146,11 @@
         </div>
         <main class="mdl-layout__content mdl-color--grey-100">
 
-  		<!-- Always shows a header, even in smaller screens. -->
-
-
-  <!--  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-
-
-          <button id="menu" class="mdl-button mdl-js-button mdl-button--icon">
-            <i class="material-icons">more_vert</i>
-          </button>
-
-          <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
-            for="menu">
-            <li class="mdl-menu__item">Some Action</li>
-            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Another Action</li>
-            <li disabled class="mdl-menu__item">Disabled Action</li>
-            <li class="mdl-menu__item">Yet Another Action</li>
-          </ul>
-
-          <!-- Title -->
-          <!--<span class="mdl-layout-title">Team 2 Project Management</span>
-          <div class="mdl-layout-spacer"></div>
-
-          <!-- Navigation. We hide it in small screens. -->
-          <!--<nav class="mdl-navigation mdl-layout--large-screen-only">
-            <img src ="/imgages/user.jpg" id = "userPic">
-            <a class="mdl-navigation__link" id = "user" href="index.html">User</a> <!--Do we want this to go a home page or to some settings page? Need Var here-->
-          <!--</nav>
-        </div>-->
-
-
-
-
     <div class = "mdl-grid grid">
-      <div class="demo-card-square mdl-card addMember">
+      <div class="demo-card-square mdl-card mdl-shadow--16dp addMember">
         <div class="mdl-cell mdl-cell--12-col">
-
           <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">Add A Team Member to Project</h2>
+            <h2 class="mdl-card__title-text">Add A Team Member to Your Project</h2>
           </div>
 
           <div>
@@ -193,7 +158,6 @@
               <div class = "mdl-card__actions mdl-textfield mdl-js-textfield input">
                 <form action="#">
                   <input class="mdl-textfield__input" type="text" id="email">
-                  <!--<label class="mdl-textfield__label" for="email">Email</label>-->
                 </form>
               </div></center>
             </h5>
@@ -204,7 +168,6 @@
               <div class = "mdl-card__actions mdl-textfield mdl-js-textfield input">
                 <form action="#">
                   <input class="mdl-textfield__input" type="text" id="role">
-                  <!--<label class="mdl-textfield__label" for="role">Role</label>-->
                 </form>
               </div></center>
             </h5>
@@ -263,20 +226,23 @@
     </main>
     </div>
   </div>
+
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
     <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyAE5gZ4dpDvC9p9dSVh-3iltIXcjjDtfGI",
-      authDomain: "cs673team2.firebaseapp.com",
-      databaseURL: "https://cs673team2.firebaseio.com",
-      projectId: "cs673team2",
-      storageBucket: "cs673team2.appspot.com",
-      messagingSenderId: "947879978889"
-    };
-  firebase.initializeApp(config);
-  </script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAE5gZ4dpDvC9p9dSVh-3iltIXcjjDtfGI",
+        authDomain: "cs673team2.firebaseapp.com",
+        databaseURL: "https://cs673team2.firebaseio.com",
+        projectId: "cs673team2",
+        storageBucket: "cs673team2.appspot.com",
+        messagingSenderId: "947879978889"
+      };
+      firebase.initializeApp(config);
+    </script>
 
-  <script src = "Admin.js"></script>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <script src = "Admin.js"></script>
   </body>
 </html>
