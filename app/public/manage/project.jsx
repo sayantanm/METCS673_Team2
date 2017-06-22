@@ -4,6 +4,7 @@ class ReactApp extends React.Component {
     this.state = {
       user_email: 'hello@example.com',
       projects: [],
+        project_idx: null,
       tasks: [],
       progress: 44,
       add_project: false,
@@ -71,9 +72,7 @@ class ReactApp extends React.Component {
       }
     ];
 
-    self.setState({'projects': projects});
-
-    self.setState({'tasks': tasks});
+    self.setState({'projects': projects, 'tasks': tasks});
 
   }
 
@@ -89,9 +88,9 @@ class ReactApp extends React.Component {
   render(){
     var self = this;
 
-    var viewProjectHandler = function(e){
+    var viewProjectHandler = function(e, idx){
 
-      self.setState({ view_project: true });
+      self.setState({ view_project: true , project_idx: idx});
     }
 
     var projects_table = (
@@ -117,7 +116,7 @@ class ReactApp extends React.Component {
                 <td>{item.status}</td>
                 <td>{item.progress}</td>
                 <td><button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                onClick={viewProjectHandler}
+                onClick={function(e){ viewProjectHandler(event, index)}}
                 >
                 View</button> 
                 </td>
@@ -136,7 +135,12 @@ class ReactApp extends React.Component {
 
     var tasks_table = <p>No Tasks</p>;
 
+
     if (self.state.view_project && self.state.tasks.length > 0) {
+      if (this.state.project_idx != null) { 
+          var heading = <h3> { this.state.projects[this.state.project_idx]['name'] } </h3>;
+        }
+
       tasks_table = (
         <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
           <thead>
@@ -182,6 +186,7 @@ class ReactApp extends React.Component {
             { this.state.add_projects ? (<AddProjectForm/>): projects_table }
 
             {/* View a project and then display tasks table */}
+            {heading}
             {tasks_table}
 
             <p>Progress:</p>

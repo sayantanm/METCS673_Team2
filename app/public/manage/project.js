@@ -19,6 +19,7 @@ var ReactApp = function (_React$Component) {
     _this.state = {
       user_email: 'hello@example.com',
       projects: [],
+      project_idx: null,
       tasks: [],
       progress: 44,
       add_project: false,
@@ -105,9 +106,9 @@ var ReactApp = function (_React$Component) {
 
       var self = this;
 
-      var viewProjectHandler = function viewProjectHandler(e) {
+      var viewProjectHandler = function viewProjectHandler(e, idx) {
 
-        self.setState({ view_project: true });
+        self.setState({ view_project: true, project_idx: idx });
       };
 
       var projects_table = React.createElement(
@@ -189,7 +190,9 @@ var ReactApp = function (_React$Component) {
                 React.createElement(
                   "button",
                   { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
-                    onClick: viewProjectHandler
+                    onClick: function onClick(e) {
+                      viewProjectHandler(event, index);
+                    }
                   },
                   "View"
                 )
@@ -211,6 +214,16 @@ var ReactApp = function (_React$Component) {
       );
 
       if (self.state.view_project && self.state.tasks.length > 0) {
+        if (this.state.project_idx != null) {
+          var heading = React.createElement(
+            "h3",
+            null,
+            " ",
+            this.state.projects[this.state.project_idx]['name'],
+            " "
+          );
+        }
+
         tasks_table = React.createElement(
           "table",
           { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
@@ -307,6 +320,7 @@ var ReactApp = function (_React$Component) {
             ),
             React.createElement("br", null),
             this.state.add_projects ? React.createElement(AddProjectForm, null) : projects_table,
+            heading,
             tasks_table,
             React.createElement(
               "p",
