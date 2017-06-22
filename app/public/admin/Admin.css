@@ -1,0 +1,68 @@
+.addMember {
+  border-style: solid;
+  border-color: black;
+  width: auto;
+  height: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.grid {
+  padding-left: 50px;
+  padding-top: 100px;
+  padding-right: 50px;
+}
+
+
+.gridDispTeam {
+  border-style: solid;
+  border-color: black;
+  width: auto;
+  height: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.input{
+  width: auto;
+  padding: 0px;
+  float: right;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  margin-right: 20px;
+}
+
+.addButton{
+  float: right;
+  margin-right: 10px;
+}
+
+.project{
+  margin-right: 20px;
+  float: right;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  padding: 0px;
+}
+
+.table {
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+}
+
+.team {
+  text-align: center;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  color: black;
+}
+
+#hdrName {
+
+  margin-left: 100px;
+  margin-right: 100px;
+}

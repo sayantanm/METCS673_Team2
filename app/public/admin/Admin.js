@@ -1,13 +1,10 @@
 
 var user = document.getElementById("user");
 var userPic = document.getElementById("userPic");
-
 var name = document.getElementById("name");
-
 var role = document.getElementById("role");
 var email = document.getElementById("email");
 var addButton = document.getElementById("addButton");
-
 
 var project1 = [];
 var project2 = [];
@@ -131,5 +128,4 @@ addButton.onclick = function() {
 
 function addAlert(){
   alert("New member added successfully");
-
 }
