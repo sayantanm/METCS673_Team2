@@ -12,6 +12,15 @@ class ReactApp extends React.Component {
     };
     self.p1_material_object = null;
   }
+
+  componentWillMount() {
+    this.firebaseRef = firebase.database().ref("projects/items")
+  }
+
+  componentWillUnmount() {
+    this.firebase.off();
+  }
+
   componentDidMount(){
     var self = this;
     var user = self.props.firebase.auth().currentUser;
