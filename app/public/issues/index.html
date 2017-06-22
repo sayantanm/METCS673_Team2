@@ -134,9 +134,8 @@
           <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
           <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
           <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
-          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
+          <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
           <div class="mdl-layout-spacer"></div>
-          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
@@ -145,19 +144,19 @@
 			<div style="margin-left:5%;" class="mdl-layout__header-row">
 			  <!-- Navigation. We hide it in small screens. -->
 			  <nav class="mdl-navigation">
-				<button style="width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+				<button id="issue_assign" style="width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					Assign
 				</button>
-				<button style="margin-left:1%;width:200px" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+				<button id="issue_start_progress" style="margin-left:1%;width:200px" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					Start Progress
 				</button>
-				<button style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+				<button id="issue_resolve" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					Resolve 
 				</button>
-				<button style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+				<button id="issue_on_hold" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					On Hold 
 				</button>
-				<button style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+				<button id="issue_create" style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					Create 
 				</button>
 			  </nav>
