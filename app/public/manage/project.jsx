@@ -37,6 +37,11 @@ class ReactApp extends React.Component {
         self.p1_material_object.setProgress(self.state.progress);
     });
 
+
+    //set up reference to Firebase Database
+    var database = firebase.database();
+
+
     var projects = [
       {
         "name": "Project 1",
@@ -87,6 +92,17 @@ class ReactApp extends React.Component {
 
   render(){
     var self = this;
+
+     {/*  Write Project data to Firebase Database */}
+    function writeProjectData(project_idx) {
+      firebase.database().ref('projects/' + project_idx).set({
+        "name": "Project 1",
+        "start_date": "tbd",
+        "end_date": "tbd",
+        "status": "Not Started",
+        "progress": "10%",
+      });
+    }
 
     var viewProjectHandler = function(e, idx){
 
@@ -268,14 +284,14 @@ class SideBar extends React.Component {
 class AddProjectForm extends React.Component {
   render() {
 
-    var formSaveHandler = function(e){
-      console.log("pass");
+    var formSaveHandler = function(e, project_idx){
+      writeProjectData(project_idx)
       e.stopPropagation();
       return false;
     }
 
     return (
-      <form action="#" onSubmit={formSaveHandler}>
+      <form action="#" onSubmit={function(e){ formSaveHandler(event, index)}}>
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="name" name="name" />
           <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
