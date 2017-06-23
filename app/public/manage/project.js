@@ -56,6 +56,9 @@ var ReactApp = function (_React$Component) {
         self.p1_material_object.setProgress(self.state.progress);
       });
 
+      //set up reference to Firebase Database
+      var database = firebase.database();
+
       var projects = [{
         "name": "Project 1",
         "start_date": "tbd",
@@ -87,9 +90,7 @@ var ReactApp = function (_React$Component) {
         "status": "Not Started"
       }];
 
-      self.setState({ 'projects': projects });
-
-      self.setState({ 'tasks': tasks });
+      self.setState({ 'projects': projects, 'tasks': tasks });
     }
   }, {
     key: "componentDidUpdate",
@@ -105,6 +106,17 @@ var ReactApp = function (_React$Component) {
       var _this2 = this;
 
       var self = this;
+
+      {/*  Write Project data to Firebase Database */}
+      function writeProjectData() {
+        firebase.database().ref('projects').set({
+          "name": "Project 1",
+          "start_date": "tbd",
+          "end_date": "tbd",
+          "status": "Not Started",
+          "progress": "10%"
+        });
+      }
 
       var viewProjectHandler = function viewProjectHandler(e, idx) {
 
@@ -576,13 +588,23 @@ var AddProjectForm = function (_React$Component4) {
   }
 
   _createClass(AddProjectForm, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      window.componentHandler.upgradeDom();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      window.componentHandler.upgradeDom();
+    }
+  }, {
     key: "render",
     value: function render() {
 
       var formSaveHandler = function formSaveHandler(e) {
-        console.log("pass");
-        e.stopPropagation();
-        return false;
+        writeProjectData();
+        e.preventDefault();
+        console.log(e);
       };
 
       return React.createElement(
@@ -622,6 +644,7 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "button",
           {
+            type: "submit",
             className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
           },
           "Save"

@@ -13,17 +13,52 @@ class ReactApp extends React.Component {
     self.p1_material_object = null;
   }
 
-  componentWillMount() {
-    this.firebaseRef = firebase.database().ref("projects/items")
+  this.addProjectHandler= this.addProjectHandler.bind(this);
+
+  this.db = this.props.firebase.database();
+
+  addProjectHandler(project) {
+    var result = this.firebaseItems.push(project);
+    this.loadItems();
+
   }
 
-  componentWillUnmount() {
-    this.firebase.off();
+  componentWillMount() {
+    // Based on this SO answer, I dediced to sign in anonymously:
+    this.props.firebase.auth().signInAnonymously().catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
+
+    this.firebaseItems = this.db.ref('app/projects');
+    this.loadItems();
+  }
+
+
+  loadItems(){
+    // this reads to me as, on each update call this callback which is
+    // given just a snapshot of the data, meaning that it can be modified by
+    // another client by the time this function finishes. Most databases
+    // are asyncrhonous like that, the data is stale, so they call it snapshot
+    this.firebaseItems.on('value', function(dataSnapshot) {
+      var items = [];
+      dataSnapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item['firebase_key'] = childSnapshot.key;
+        items.push(item);
+      });
+
+      this.setState({
+        projects: items
+      });
+    }.bind(this));
   }
 
   componentDidMount(){
     var self = this;
     var user = self.props.firebase.auth().currentUser;
+
     if (user != null) {
       user.providerData.forEach(function (profile) {
         console.log("Sign-in provider: "+profile.providerId);
@@ -38,6 +73,7 @@ class ReactApp extends React.Component {
       });
     }else{
       console.log('no user :(');
+    
     }
 
     // After material design initializes, we save the reference
@@ -45,10 +81,6 @@ class ReactApp extends React.Component {
         self.p1_material_object = this.MaterialProgress;
         self.p1_material_object.setProgress(self.state.progress);
     });
-
-
-    //set up reference to Firebase Database
-    var database = firebase.database();
 
 
     var projects = [
@@ -86,7 +118,7 @@ class ReactApp extends React.Component {
       }
     ];
 
-    self.setState({'projects': projects, 'tasks': tasks});
+    //self.setState({'projects': projects, 'tasks': tasks});
 
   }
 
@@ -102,16 +134,6 @@ class ReactApp extends React.Component {
   render(){
     var self = this;
 
-     {/*  Write Project data to Firebase Database */}
-    function writeProjectData(project_idx) {
-      firebase.database().ref('projects/' + project_idx).set({
-        "name": "Project 1",
-        "start_date": "tbd",
-        "end_date": "tbd",
-        "status": "Not Started",
-        "progress": "10%",
-      });
-    }
 
     var viewProjectHandler = function(e, idx){
 
@@ -153,7 +175,7 @@ class ReactApp extends React.Component {
       </table>
     );
 
-    var addProjectHandler = function(e){
+    var showFormHandler = function(e){
 
       self.setState({ add_projects: true });
     }
@@ -201,7 +223,7 @@ class ReactApp extends React.Component {
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <button 
               className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-              onClick={addProjectHandler}
+              onClick={showFormHandler}
             >
               Add Project
             </button>
@@ -291,35 +313,107 @@ class SideBar extends React.Component {
 }
 
 class AddProjectForm extends React.Component {
-  render() {
 
-    var formSaveHandler = function(e, project_idx){
-      writeProjectData(project_idx)
-      e.stopPropagation();
-      return false;
+  constructor(props) {
+    super(props);
+    this.state = {
+      errors: {},
+      values: {},
+    };
+
+    // This is to allow it to work as callback from other context
+    this.changeHandler = this.changeHandler.bind(this);
+  }
+
+  changeHandler(e){
+    var form = this.formRef;
+    var new_project = {};
+    var errors = {};
+
+    new_project['name'] = form.elements.namedItem("name").value;
+    if (!new_project['name']){
+      errors['name'] = 'Name is required.';
+    }else if (new_project['name'].length < 5){
+      errors['name'] = 'Name must be at least 5 characters.';
     }
 
-    return (
-      <form action="#" onSubmit={function(e){ formSaveHandler(event, index)}}>
+    new_project['start_date'] = form.elements.namedItem("start_date").value;
+    if (!new_project['start_date']){
+      errors['start_date'] = 'start_date is required.';
+    }
+
+    new_project['end_date'] = form.elements.namedItem("end_date").value;
+    if (!new_project['end_date']){
+      errors['end_date'] = 'end_date is required.';
+    }
+    
+
+    this.setState({
+      errors: errors, values: new_project
+    });
+  }
+
+
+  componentDidMount(){
+    window.componentHandler.upgradeDom();
+  }
+  componentDidUpdate(prevProps, prevState){
+    window.componentHandler.upgradeDom();
+  }
+
+  render() {
+    var self = this;
+    { /* Form Submit Handler */ }
+
+    var submitHandler = function(e){
+      e.preventDefault();
+      if (Object.keys(self.state.errors) == 0){
+        console.log(self.state);
+        self.props.addProjectHandler(self.state.values);
+      }else{
+        var text = Object.values(self.state.errors).join(" ");
+        alert('form still has errors: ' + text);
+      }
+  };
+
+  return (
+      <form  
+        onSubmit={submitHandler}
+        onChange={self.changeHandler}
+        ref={(ref)=>this.formRef = ref}
+        >
+
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="name" name="name" />
           <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
+          {this.state.errors.name ? (
+            <span className="mdl-textfield__error">{this.state.errors.name}</span>
+          ): null}
         </div>
+
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" />
           <label className="mdl-textfield__label" htmlFor="start_date">Start Date ...</label>
+          {this.state.errors.quantity ? (
+            <span className="mdl-textfield__error">{this.state.errors.quantity}</span>
+          ): null}
         </div>
+
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" />
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
+          {this.state.errors.price ? (
+            <span className="mdl-textfield__error">{this.state.errors.price}</span>
+          ): null}
         </div>
 
-           { /* Save Button */ }
+        { /* Add Project Button */ }
         <br/>
         <button 
+          type="submit"
           className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
           >
-          Save
+          Add Project
         </button>
       </form>
     );
