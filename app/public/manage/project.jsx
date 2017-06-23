@@ -1,4 +1,5 @@
 class ReactApp extends React.Component {
+
   constructor(props){
     super(props);
     this.state = {
@@ -10,20 +11,23 @@ class ReactApp extends React.Component {
       add_project: false,
       view_project: false
     };
-    self.p1_material_object = null;
-  }
+    this.p1_material_object = null;
+  
 
-  this.addProjectHandler= this.addProjectHandler.bind(this);
+   // bind callback so that 'this' works when called from different object
+   this.addProjectHandler= this.addProjectHandler.bind(this);
 
-  this.db = this.props.firebase.database();
+   this.db = this.props.firebase.database();
 
-  addProjectHandler(project) {
+   }
+
+   addProjectHandler(project) {
+    console.log("Add new ", project);
     var result = this.firebaseItems.push(project);
     this.loadItems();
+   }
 
-  }
-
-  componentWillMount() {
+   componentWillMount() {
     // Based on this SO answer, I dediced to sign in anonymously:
     this.props.firebase.auth().signInAnonymously().catch(function(error) {
       var errorCode = error.code;
@@ -52,7 +56,7 @@ class ReactApp extends React.Component {
       this.setState({
         projects: items
       });
-    }.bind(this));
+     }.bind(this));
   }
 
   componentDidMount(){
@@ -230,7 +234,7 @@ class ReactApp extends React.Component {
             <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete Project
             </button>
             <br/>
-            { this.state.add_projects ? (<AddProjectForm/>): projects_table }
+            { this.state.add_projects ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
 
             {/* View a project and then display tasks table */}
             {heading}
