@@ -39,8 +39,8 @@ var ReactApp = function (_React$Component) {
     key: 'addProjectHandler',
     value: function addProjectHandler(project) {
       console.log("Add new ", project);
-      var result = this.firebaseItems.push(project);
-      this.loadItems();
+      var result = this.firebaseProjects.push(project);
+      this.loadProjects();
     }
   }, {
     key: 'componentWillMount',
@@ -52,17 +52,17 @@ var ReactApp = function (_React$Component) {
         console.log(errorCode, errorMessage);
       });
 
-      this.firebaseItems = this.db.ref('app/projects');
-      this.loadItems();
+      this.firebaseProjects = this.db.ref('app/projects');
+      this.loadProjects();
     }
   }, {
-    key: 'loadItems',
-    value: function loadItems() {
+    key: 'loadProjects',
+    value: function loadProjects() {
       // this reads to me as, on each update call this callback which is
       // given just a snapshot of the data, meaning that it can be modified by
       // another client by the time this function finishes. Most databases
       // are asyncrhonous like that, the data is stale, so they call it snapshot
-      this.firebaseItems.on('value', function (dataSnapshot) {
+      this.firebaseProjects.on('value', function (dataSnapshot) {
         var items = [];
         dataSnapshot.forEach(function (childSnapshot) {
           var item = childSnapshot.val();
@@ -103,32 +103,6 @@ var ReactApp = function (_React$Component) {
         self.p1_material_object.setProgress(self.state.progress);
       });
 
-      var projects = [{
-        "name": "Project 1",
-        "start_date": "tbd",
-        "end_date": "tbd",
-        "status": "Not Started",
-        "progress": "10%"
-      }, {
-        "name": "Project 2",
-        "start_date": "1/1/2017",
-        "end_date": "tbd",
-        "status": "Not Started",
-        "progress": "tbd"
-      }, {
-        "name": "Project 3",
-        "start_date": "2/1/2017",
-        "end_date": "tbd",
-        "status": "Not Started",
-        "progress": "tbd"
-      }, {
-        "name": "Project 4",
-        "start_date": "tbd",
-        "end_date": "tbd",
-        "status": "Not Started",
-        "progress": "tbd"
-      }];
-
       var tasks = [{
         "name": "Example Task 1 ",
         "status": "Not Started"
@@ -158,7 +132,7 @@ var ReactApp = function (_React$Component) {
 
       var projects_table = React.createElement(
         'table',
-        { className: 'mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp' },
+        { className: 'mdl-data-table mdl-js-data-table mdl-shadow--2dp' },
         React.createElement(
           'thead',
           null,
@@ -188,12 +162,7 @@ var ReactApp = function (_React$Component) {
             React.createElement(
               'th',
               null,
-              'Progress'
-            ),
-            React.createElement(
-              'th',
-              null,
-              'View'
+              'Actions'
             )
           )
         ),
@@ -227,11 +196,6 @@ var ReactApp = function (_React$Component) {
               React.createElement(
                 'td',
                 null,
-                item.progress
-              ),
-              React.createElement(
-                'td',
-                null,
                 React.createElement(
                   'button',
                   { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
@@ -240,6 +204,12 @@ var ReactApp = function (_React$Component) {
                     }
                   },
                   'View'
+                ),
+                '\xA0',
+                React.createElement(
+                  'button',
+                  { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' },
+                  'Delete'
                 )
               )
             );
@@ -250,6 +220,11 @@ var ReactApp = function (_React$Component) {
       var showFormHandler = function showFormHandler(e) {
 
         self.setState({ add_projects: true });
+      };
+
+      var showProjectsHandler = function showProjectsHandler(e) {
+
+        self.setState({ add_projects: false });
       };
 
       var tasks_table = React.createElement(
@@ -351,19 +326,30 @@ var ReactApp = function (_React$Component) {
             'div',
             { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
             React.createElement(
-              'button',
-              {
-                className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
-                onClick: showFormHandler
-              },
-              'Add Project'
-            ),
-            React.createElement(
-              'button',
-              { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' },
-              'Delete Project'
-            ),
-            React.createElement('br', null),
+              'div',
+              { className: 'mdl-cell mdl-cell--4-col' },
+              React.createElement(
+                'button',
+                {
+                  className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
+                  onClick: showProjectsHandler
+                },
+                'List Projects'
+              ),
+              '\xA0',
+              React.createElement(
+                'button',
+                {
+                  className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
+                  onClick: showFormHandler
+                },
+                'Add Project'
+              )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
             this.state.add_projects ? React.createElement(AddProjectForm, { addProjectHandler: self.addProjectHandler }) : projects_table,
             heading,
             tasks_table,
@@ -747,7 +733,7 @@ var AddProjectForm = function (_React$Component4) {
             type: 'submit',
             className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'
           },
-          'Add Project'
+          'Save'
         )
       );
     }
