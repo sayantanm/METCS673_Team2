@@ -1,4 +1,6 @@
 
+
+
 var user = document.getElementById("user");
 var userPic = document.getElementById("userPic");
 var name = document.getElementById("name");
@@ -128,4 +130,12 @@ addButton.onclick = function() {
 
 function addAlert(){
   alert("New member added successfully");
+}
+
+function changeProfilePic(userID, name, email, imageUrl) {
+  firebase.database().ref('users/' + userID).set({
+    name: name,
+    email: email,
+    userIcon : imageUrl
+  });
 }

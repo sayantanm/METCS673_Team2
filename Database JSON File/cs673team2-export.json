@@ -1,0 +1,109 @@
+{
+  "chat" : "This should already be populated",
+  "projects" : {
+    "project1" : {
+      "admins" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "members" : {
+        "jsmith68" : true,
+        "hensonc" : true
+      },
+      "name" : "Web App",
+      "projectEndDate" : "8/3/17",
+      "projectID" : 119867665,
+      "projectStartDate" : "5/26/2017",
+      "status" : "In Progress"
+    },
+    "project2" : {
+      "admins" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "members" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "name" : "Another Project",
+      "projectEndDate" : "8/3/2017",
+      "projectID" : 1165,
+      "projectStartDate" : "5/26/2017",
+      "status" : "Not Started"
+    },
+    "project3" : {
+      "admins" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "members" : {
+        "jsmith68" : true,
+        "hensonc" : true
+      },
+      "name" : "Some Other App",
+      "projectEndDate" : "8/3/2017",
+      "projectID" : 65,
+      "projectStartDate" : "5/26/2017",
+      "status" : "Complete"
+    },
+    "project4" : {
+      "admins" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "members" : {
+        "jsmith68" : true,
+        "hensonc" : true
+      },
+      "name" : "Something Else",
+      "projectEndDate" : "8/3/2017",
+      "projectID" : 11111,
+      "projectStartDate" : "5/26/2017",
+      "status" : "In Progress"
+    },
+    "project5" : {
+      "admins" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "members" : {
+        "jsmith68" : false,
+        "hensonc" : true
+      },
+      "name" : "Side Project",
+      "projectEndDate" : "8/3/2017",
+      "projectID" : 777777,
+      "projectStartDate" : "5/26/2017",
+      "status" : "In Progress"
+    }
+  },
+  "tasks" : "NULL",
+  "users" : {
+    "jsmith68" : {
+      "email" : "jsmith68@fake.com",
+      "name" : "John Smith",
+      "projects" : {
+        "project1" : true,
+        "project2" : false,
+        "project3" : true,
+        "project4" : true,
+        "project5" : false
+      },
+      "userID" : 33333,
+      "userIcon" : "NULL"
+    },
+    "hensonc" : {
+      "email" : "hensonc@bu.edu",
+      "name" : "Chris Henson",
+      "projects" : {
+        "project1" : true,
+        "project2" : true,
+        "project3" : true,
+        "project4" : true,
+        "project5" : true
+      },
+      "userID" : 107,
+      "userIcon" : "NULL"
+    }
+  }
+}
