@@ -20,7 +20,6 @@ var ReactApp = function (_React$Component) {
       user_email: 'hello@example.com',
       projects: [],
       project_idx: null,
-      tasks: [],
       progress: 44,
       add_project: false,
       view_project: false
@@ -53,6 +52,8 @@ var ReactApp = function (_React$Component) {
       });
 
       this.firebaseProjects = this.db.ref('app/projects');
+      this.firebaseStories = this.db.ref('app/stories');
+
       this.loadProjects();
     }
   }, {
@@ -102,13 +103,6 @@ var ReactApp = function (_React$Component) {
         self.p1_material_object = this.MaterialProgress;
         self.p1_material_object.setProgress(self.state.progress);
       });
-
-      var tasks = [{
-        "name": "Example Task 1 ",
-        "status": "Not Started"
-      }];
-
-      //self.setState({'projects': projects, 'tasks': tasks});
     }
   }, {
     key: 'componentDidUpdate',
@@ -126,7 +120,6 @@ var ReactApp = function (_React$Component) {
       var self = this;
 
       var viewProjectHandler = function viewProjectHandler(e, idx) {
-
         self.setState({ view_project: true, project_idx: idx });
       };
 
@@ -227,93 +220,6 @@ var ReactApp = function (_React$Component) {
         self.setState({ add_projects: false });
       };
 
-      var tasks_table = React.createElement(
-        'p',
-        null,
-        'No Tasks'
-      );
-
-      if (self.state.view_project && self.state.tasks.length > 0) {
-        if (this.state.project_idx != null) {
-          var heading = React.createElement(
-            'h3',
-            null,
-            ' ',
-            this.state.projects[this.state.project_idx]['name'],
-            ' '
-          );
-        }
-
-        tasks_table = React.createElement(
-          'table',
-          { className: 'mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp' },
-          React.createElement(
-            'thead',
-            null,
-            React.createElement(
-              'tr',
-              null,
-              React.createElement(
-                'th',
-                { className: 'mdl-data-table__cell--non-numeric' },
-                'Task'
-              ),
-              React.createElement(
-                'th',
-                null,
-                'Status'
-              )
-            )
-          ),
-          React.createElement(
-            'tbody',
-            null,
-            React.createElement(
-              'tr',
-              null,
-              React.createElement(
-                'td',
-                { className: 'mdl-data-table__cell--non-numeric' },
-                'Create UI'
-              ),
-              React.createElement(
-                'td',
-                null,
-                'Completed'
-              )
-            ),
-            React.createElement(
-              'tr',
-              null,
-              React.createElement(
-                'td',
-                { className: 'mdl-data-table__cell--non-numeric' },
-                'Write Code'
-              ),
-              React.createElement(
-                'td',
-                null,
-                'Completed'
-              )
-            ),
-            React.createElement(
-              'tr',
-              null,
-              React.createElement(
-                'td',
-                { className: 'mdl-data-table__cell--non-numeric' },
-                'User Testing'
-              ),
-              React.createElement(
-                'td',
-                null,
-                'Not Started'
-              )
-            )
-          )
-        );
-      }
-
       return React.createElement(
         'div',
         { className: 'demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header' },
@@ -351,8 +257,7 @@ var ReactApp = function (_React$Component) {
             'div',
             { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
             this.state.add_projects ? React.createElement(AddProjectForm, { addProjectHandler: self.addProjectHandler }) : projects_table,
-            heading,
-            tasks_table,
+            this.state.project_idx && this.state.view_project ? React.createElement(UserStories, { project: this.state.projects[this.state.project_idx] }) : "null",
             React.createElement(
               'p',
               null,
@@ -740,6 +645,102 @@ var AddProjectForm = function (_React$Component4) {
   }]);
 
   return AddProjectForm;
+}(React.Component);
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UserStories = function (_React$Component) {
+  _inherits(UserStories, _React$Component);
+
+  function UserStories(props) {
+    _classCallCheck(this, UserStories);
+
+    var _this = _possibleConstructorReturn(this, (UserStories.__proto__ || Object.getPrototypeOf(UserStories)).call(this, props));
+
+    _this.state = {
+      stories: [{ "name": "story 1", "status": "completed" }]
+    };
+    return _this;
+  }
+
+  _createClass(UserStories, [{
+    key: "render",
+    value: function render() {
+
+      var self = this;
+
+      var body = this.state.stories.map(function (item, index) {
+        return React.createElement(
+          "tr",
+          { key: index },
+          React.createElement(
+            "td",
+            { className: "mdl-data-table__cell--non-numeric" },
+            item.name
+          ),
+          React.createElement(
+            "td",
+            null,
+            item.status
+          )
+        );
+      });
+
+      if (self.state.stories.length > 0) {
+        if (this.props.project != null) {
+          var heading = React.createElement(
+            "h3",
+            null,
+            " ",
+            this.props.project['name'],
+            " "
+          );
+        }
+      }
+
+      return React.createElement(
+        "div",
+        null,
+        heading,
+        React.createElement(
+          "table",
+          { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+          React.createElement(
+            "thead",
+            null,
+            React.createElement(
+              "tr",
+              null,
+              React.createElement(
+                "th",
+                { className: "mdl-data-table__cell--non-numeric" },
+                "Name"
+              ),
+              React.createElement(
+                "th",
+                null,
+                "Status"
+              )
+            )
+          ),
+          React.createElement(
+            "tbody",
+            null,
+            body
+          )
+        )
+      );
+    }
+  }]);
+
+  return UserStories;
 }(React.Component);
 
 //# sourceMappingURL=project.js.map

@@ -5,8 +5,7 @@ class ReactApp extends React.Component {
     this.state = {
       user_email: 'hello@example.com',
       projects: [],
-        project_idx: null,
-      tasks: [],
+      project_idx: null,
       progress: 44,
       add_project: false,
       view_project: false
@@ -36,6 +35,8 @@ class ReactApp extends React.Component {
     });
 
     this.firebaseProjects = this.db.ref('app/projects');
+    this.firebaseStories = this.db.ref('app/stories');
+
     this.loadProjects();
   }
 
@@ -86,15 +87,6 @@ class ReactApp extends React.Component {
         self.p1_material_object.setProgress(self.state.progress);
     });
 
-    var tasks = [
-      {
-        "name": "Example Task 1 ",
-        "status": "Not Started"
-      }
-    ];
-
-    //self.setState({'projects': projects, 'tasks': tasks});
-
   }
 
 
@@ -111,7 +103,6 @@ class ReactApp extends React.Component {
 
 
     var viewProjectHandler = function(e, idx){
-
       self.setState({ view_project: true , project_idx: idx});
     }
 
@@ -163,41 +154,6 @@ class ReactApp extends React.Component {
       self.setState({ add_projects: false });
     }
 
-    var tasks_table = <p>No Tasks</p>;
-
-
-    if (self.state.view_project && self.state.tasks.length > 0) {
-      if (this.state.project_idx != null) { 
-          var heading = <h3> { this.state.projects[this.state.project_idx]['name'] } </h3>;
-        }
-
-      tasks_table = (
-        <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-          <thead>
-            <tr>
-            <th className="mdl-data-table__cell--non-numeric">Task</th>
-            <th>Status</th>
-          </tr>
-         </thead>
-          <tbody>
-          <tr>
-            <td className="mdl-data-table__cell--non-numeric">Create UI</td>
-            <td>Completed</td>
-          </tr>
-          <tr>
-            <td className="mdl-data-table__cell--non-numeric">Write Code</td>
-            <td>Completed</td>
-          </tr>
-          <tr>
-            <td className="mdl-data-table__cell--non-numeric">User Testing</td>
-            <td>Not Started</td>
-          </tr>
-          </tbody>
-        </table>
-      );
-    }
-
-
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <TopBar/>
@@ -224,9 +180,12 @@ class ReactApp extends React.Component {
 
             { this.state.add_projects ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
 
-            {/* View a project and then display tasks table */}
-            {heading}
-            {tasks_table}
+            {/* If view is clicked, then display user stories table */}
+            { 
+              (this.state.project_idx && this.state.view_project ) ? 
+              <UserStories project={this.state.projects[this.state.project_idx]}/> :
+              "null" 
+            }
 
             <p>Progress:</p>
             <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
@@ -411,6 +370,8 @@ class AddProjectForm extends React.Component {
     );
   }
 }
+
+
 
 
 
