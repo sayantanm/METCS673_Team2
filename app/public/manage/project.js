@@ -797,6 +797,8 @@ var UserStories = function (_React$Component) {
 
     _this.addStoryHandler = _this.addStoryHandler.bind(_this);
 
+    _this.db = _this.props.firebase.database();
+
     return _this;
   }
 

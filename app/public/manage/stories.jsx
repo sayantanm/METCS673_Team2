@@ -9,9 +9,7 @@ class UserStories extends React.Component {
       stories: [ {"name": "story 1", "status": "completed"} ]
     };
 
-
-   this.addStoryHandler= this.addStoryHandler.bind(this);
-
+    this.addStoryHandler= this.addStoryHandler.bind(this);
   }
 
   addStoryHandler(story) {
@@ -98,4 +96,98 @@ class UserStories extends React.Component {
 
   }
 
+}
+
+class AddStoryForm extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      errors: {},
+      values: {},
+    };
+
+    // This is to allow it to work as callback from other context
+    this.changeHandler = this.changeHandler.bind(this);
+  }
+
+  changeHandler(e){
+    var form = this.formRef;
+    var story = {};
+    var errors = {};
+
+    story['name'] = form.elements.namedItem("name").value;
+    if (!story['name']){
+      errors['name'] = 'Name is required.';
+    }else if (story['name'].length < 5){
+      errors['name'] = 'Name must be at least 5 characters.';
+    }
+
+    story['status'] = form.elements.namedItem("status").value;
+    if (!story['status']){
+      errors['status'] = 'status is required.';
+    }
+
+    this.setState({
+      errors: errors, values: story
+    });
+  }
+
+
+  componentDidMount(){
+    window.componentHandler.upgradeDom();
+  }
+  componentDidUpdate(prevProps, prevState){
+    window.componentHandler.upgradeDom();
+  }
+
+  render() {
+    var self = this;
+    { /* Form Submit Handler */ }
+
+    var submitHandler = function(e){
+      e.preventDefault();
+      if (Object.keys(self.state.errors) == 0){
+        console.log(self.state);
+        self.props.addStoryHandler(self.state.values);
+      }else{
+        var text = Object.values(self.state.errors).join(" ");
+        alert('form still has errors: ' + text);
+      }
+  };
+
+  return (
+      <form  
+        onSubmit={submitHandler}
+        onChange={self.changeHandler}
+        ref={(ref)=>this.formRef = ref}
+        >
+
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="name" name="name" />
+          <label className="mdl-textfield__label" htmlFor="name">User Story Name</label>
+          {this.state.errors.name ? (
+            <span className="mdl-textfield__error">{this.state.errors.name}</span>
+          ): null}
+        </div>
+
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="status" name="status" />
+          <label className="mdl-textfield__label" htmlFor="status">Status</label>
+          {this.state.errors.status ? (
+            <span className="mdl-textfield__error">{this.state.errors.status}</span>
+          ): null}
+        </div>
+
+        { /* Add Story Button */ }
+        <br/>
+        <button 
+          type="submit"
+          className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+          >
+          Save
+        </button>
+      </form>
+    );
+  }
 }
