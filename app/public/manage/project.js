@@ -52,17 +52,12 @@ var ReactApp = function (_React$Component) {
       });
 
       this.firebaseProjects = this.db.ref('app/projects');
-      this.firebaseStories = this.db.ref('app/stories');
 
       this.loadProjects();
     }
   }, {
     key: 'loadProjects',
     value: function loadProjects() {
-      // this reads to me as, on each update call this callback which is
-      // given just a snapshot of the data, meaning that it can be modified by
-      // another client by the time this function finishes. Most databases
-      // are asyncrhonous like that, the data is stale, so they call it snapshot
       this.firebaseProjects.on('value', function (dataSnapshot) {
         var items = [];
         dataSnapshot.forEach(function (childSnapshot) {
@@ -203,6 +198,11 @@ var ReactApp = function (_React$Component) {
                   'button',
                   { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' },
                   'Delete'
+                ),
+                React.createElement(
+                  'button',
+                  { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' },
+                  'Edit'
                 )
               )
             );
@@ -237,7 +237,7 @@ var ReactApp = function (_React$Component) {
               React.createElement(
                 'button',
                 {
-                  className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
+                  className: 'mdl-button mdl-js-button mdl-button--raised',
                   onClick: showProjectsHandler
                 },
                 'List Projects'
@@ -610,10 +610,10 @@ var AddProjectForm = function (_React$Component4) {
             { className: 'mdl-textfield__label', htmlFor: 'start_date' },
             'Start Date ...'
           ),
-          this.state.errors.quantity ? React.createElement(
+          this.state.errors.start_date ? React.createElement(
             'span',
             { className: 'mdl-textfield__error' },
-            this.state.errors.quantity
+            this.state.errors.start_date
           ) : null
         ),
         React.createElement(
@@ -625,10 +625,10 @@ var AddProjectForm = function (_React$Component4) {
             { className: 'mdl-textfield__label', htmlFor: 'end_date' },
             'End Date ...'
           ),
-          this.state.errors.price ? React.createElement(
+          this.state.errors.end_date ? React.createElement(
             'span',
             { className: 'mdl-textfield__error' },
-            this.state.errors.price
+            this.state.errors.end_date
           ) : null
         ),
         React.createElement('br', null),
@@ -645,6 +645,131 @@ var AddProjectForm = function (_React$Component4) {
   }]);
 
   return AddProjectForm;
+}(React.Component);
+
+var AddStoryForm = function (_React$Component5) {
+  _inherits(AddStoryForm, _React$Component5);
+
+  function AddStoryForm(props) {
+    _classCallCheck(this, AddStoryForm);
+
+    var _this7 = _possibleConstructorReturn(this, (AddStoryForm.__proto__ || Object.getPrototypeOf(AddStoryForm)).call(this, props));
+
+    _this7.state = {
+      errors: {},
+      values: {}
+    };
+
+    // This is to allow it to work as callback from other context
+    _this7.changeHandler = _this7.changeHandler.bind(_this7);
+    return _this7;
+  }
+
+  _createClass(AddStoryForm, [{
+    key: 'changeHandler',
+    value: function changeHandler(e) {
+      var form = this.formRef;
+      var story = {};
+      var errors = {};
+
+      story['name'] = form.elements.namedItem("name").value;
+      if (!story['name']) {
+        errors['name'] = 'Name is required.';
+      } else if (story['name'].length < 5) {
+        errors['name'] = 'Name must be at least 5 characters.';
+      }
+
+      story['status'] = form.elements.namedItem("status").value;
+      if (!story['status']) {
+        errors['status'] = 'status is required.';
+      }
+
+      this.setState({
+        errors: errors, values: story
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      window.componentHandler.upgradeDom();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      window.componentHandler.upgradeDom();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this8 = this;
+
+      var self = this;
+      {/* Form Submit Handler */}
+
+      var submitHandler = function submitHandler(e) {
+        e.preventDefault();
+        if (Object.keys(self.state.errors) == 0) {
+          console.log(self.state);
+          self.props.addStoryHandler(self.state.values);
+        } else {
+          var text = Object.values(self.state.errors).join(" ");
+          alert('form still has errors: ' + text);
+        }
+      };
+
+      return React.createElement(
+        'form',
+        {
+          onSubmit: submitHandler,
+          onChange: self.changeHandler,
+          ref: function ref(_ref3) {
+            return _this8.formRef = _ref3;
+          }
+        },
+        React.createElement(
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'name', name: 'name' }),
+          React.createElement(
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'name' },
+            'User Story Name'
+          ),
+          this.state.errors.name ? React.createElement(
+            'span',
+            { className: 'mdl-textfield__error' },
+            this.state.errors.name
+          ) : null
+        ),
+        React.createElement(
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'status', name: 'status' }),
+          React.createElement(
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'status' },
+            'Status'
+          ),
+          this.state.errors.status ? React.createElement(
+            'span',
+            { className: 'mdl-textfield__error' },
+            this.state.errors.status
+          ) : null
+        ),
+        React.createElement('br', null),
+        React.createElement(
+          'button',
+          {
+            type: 'submit',
+            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'
+          },
+          'Save'
+        )
+      );
+    }
+  }]);
+
+  return AddStoryForm;
 }(React.Component);
 "use strict";
 
@@ -665,12 +790,54 @@ var UserStories = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (UserStories.__proto__ || Object.getPrototypeOf(UserStories)).call(this, props));
 
     _this.state = {
+      add_story: false,
+      story_idx: null,
       stories: [{ "name": "story 1", "status": "completed" }]
     };
+
+    _this.addStoryHandler = _this.addStoryHandler.bind(_this);
+
     return _this;
   }
 
   _createClass(UserStories, [{
+    key: "addStoryHandler",
+    value: function addStoryHandler(story) {
+      console.log("Add new ", story);
+      var result = this.firebaseProjects.push(story);
+      this.loadStories();
+    }
+  }, {
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      // Based on this SO answer, I dediced to sign in anonymously:
+      this.props.firebase.auth().signInAnonymously().catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+
+      this.firebaseStories = this.db.ref('app/stories');
+
+      this.loadStories();
+    }
+  }, {
+    key: "loadStories",
+    value: function loadStories() {
+      this.firebaseProjects.on('value', function (dataSnapshot) {
+        var items = [];
+        dataSnapshot.forEach(function (childSnapshot) {
+          var item = childSnapshot.val();
+          item['firebase_key'] = childSnapshot.key;
+          items.push(item);
+        });
+
+        this.setState({
+          stories: items
+        });
+      }.bind(this));
+    }
+  }, {
     key: "render",
     value: function render() {
 
@@ -705,35 +872,46 @@ var UserStories = function (_React$Component) {
         }
       }
 
-      return React.createElement(
-        "div",
-        null,
-        heading,
+      return (
+
+        //{ this.state.add_story ? (<AddStoryForm addStoryHandler={self.addStoryHandler} />): stories_table }
+
         React.createElement(
-          "table",
-          { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+          "div",
+          null,
+          heading,
+          React.createElement(AddStoryForm, { addStoryHandler: self.addStoryHandler }),
           React.createElement(
-            "thead",
-            null,
+            "table",
+            { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
             React.createElement(
-              "tr",
+              "thead",
               null,
               React.createElement(
-                "th",
-                { className: "mdl-data-table__cell--non-numeric" },
-                "Name"
-              ),
-              React.createElement(
-                "th",
+                "tr",
                 null,
-                "Status"
+                React.createElement(
+                  "th",
+                  { className: "mdl-data-table__cell--non-numeric" },
+                  "Name"
+                ),
+                React.createElement(
+                  "th",
+                  null,
+                  "Status"
+                )
               )
+            ),
+            React.createElement(
+              "tbody",
+              null,
+              body
             )
           ),
           React.createElement(
-            "tbody",
-            null,
-            body
+            "button",
+            { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
+            "Add Story"
           )
         )
       );

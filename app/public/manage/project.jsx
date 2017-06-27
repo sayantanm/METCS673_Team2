@@ -26,6 +26,7 @@ class ReactApp extends React.Component {
     this.loadProjects();
    }
 
+
    componentWillMount() {
     // Based on this SO answer, I dediced to sign in anonymously:
     this.props.firebase.auth().signInAnonymously().catch(function(error) {
@@ -35,17 +36,12 @@ class ReactApp extends React.Component {
     });
 
     this.firebaseProjects = this.db.ref('app/projects');
-    this.firebaseStories = this.db.ref('app/stories');
 
     this.loadProjects();
   }
 
 
   loadProjects(){
-    // this reads to me as, on each update call this callback which is
-    // given just a snapshot of the data, meaning that it can be modified by
-    // another client by the time this function finishes. Most databases
-    // are asyncrhonous like that, the data is stale, so they call it snapshot
     this.firebaseProjects.on('value', function(dataSnapshot) {
       var items = [];
       dataSnapshot.forEach(function(childSnapshot) {
@@ -135,6 +131,9 @@ class ReactApp extends React.Component {
                   <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                   Delete
                   </button>
+                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                  Edit
+                  </button>
                 </td>
               </tr>
             );
@@ -162,7 +161,7 @@ class ReactApp extends React.Component {
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <div className="mdl-cell mdl-cell--4-col">
               <button 
-                className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                className="mdl-button mdl-js-button mdl-button--raised"
                 onClick={showProjectsHandler}
               >
                 List Projects
@@ -345,16 +344,16 @@ class AddProjectForm extends React.Component {
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" />
           <label className="mdl-textfield__label" htmlFor="start_date">Start Date ...</label>
-          {this.state.errors.quantity ? (
-            <span className="mdl-textfield__error">{this.state.errors.quantity}</span>
+          {this.state.errors.start_date ? (
+            <span className="mdl-textfield__error">{this.state.errors.start_date}</span>
           ): null}
         </div>
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" />
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
-          {this.state.errors.price ? (
-            <span className="mdl-textfield__error">{this.state.errors.price}</span>
+          {this.state.errors.end_date ? (
+            <span className="mdl-textfield__error">{this.state.errors.end_date}</span>
           ): null}
         </div>
 
@@ -371,7 +370,99 @@ class AddProjectForm extends React.Component {
   }
 }
 
+class AddStoryForm extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      errors: {},
+      values: {},
+    };
+
+    // This is to allow it to work as callback from other context
+    this.changeHandler = this.changeHandler.bind(this);
+  }
+
+  changeHandler(e){
+    var form = this.formRef;
+    var story = {};
+    var errors = {};
+
+    story['name'] = form.elements.namedItem("name").value;
+    if (!story['name']){
+      errors['name'] = 'Name is required.';
+    }else if (story['name'].length < 5){
+      errors['name'] = 'Name must be at least 5 characters.';
+    }
+
+    story['status'] = form.elements.namedItem("status").value;
+    if (!story['status']){
+      errors['status'] = 'status is required.';
+    }
+
+    this.setState({
+      errors: errors, values: story
+    });
+  }
+
+
+  componentDidMount(){
+    window.componentHandler.upgradeDom();
+  }
+  componentDidUpdate(prevProps, prevState){
+    window.componentHandler.upgradeDom();
+  }
+
+  render() {
+    var self = this;
+    { /* Form Submit Handler */ }
+
+    var submitHandler = function(e){
+      e.preventDefault();
+      if (Object.keys(self.state.errors) == 0){
+        console.log(self.state);
+        self.props.addStoryHandler(self.state.values);
+      }else{
+        var text = Object.values(self.state.errors).join(" ");
+        alert('form still has errors: ' + text);
+      }
+  };
+
+  return (
+      <form  
+        onSubmit={submitHandler}
+        onChange={self.changeHandler}
+        ref={(ref)=>this.formRef = ref}
+        >
+
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="name" name="name" />
+          <label className="mdl-textfield__label" htmlFor="name">User Story Name</label>
+          {this.state.errors.name ? (
+            <span className="mdl-textfield__error">{this.state.errors.name}</span>
+          ): null}
+        </div>
+
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="status" name="status" />
+          <label className="mdl-textfield__label" htmlFor="status">Status</label>
+          {this.state.errors.status ? (
+            <span className="mdl-textfield__error">{this.state.errors.status}</span>
+          ): null}
+        </div>
+
+        { /* Add Story Button */ }
+        <br/>
+        <button 
+          type="submit"
+          className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+          >
+          Save
+        </button>
+      </form>
+    );
+  }
+}
 
 
 
