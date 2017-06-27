@@ -1,36 +1,36 @@
-[debug] [2017-06-27T15:03:24.520Z] ----------------------------------------------------------------------
-[debug] [2017-06-27T15:03:24.522Z] Command:      /usr/local/bin/node /usr/local/bin/firebase serve --project cs673team2
-[debug] [2017-06-27T15:03:24.523Z] CLI Version:  3.9.1
-[debug] [2017-06-27T15:03:24.523Z] Platform:     darwin
-[debug] [2017-06-27T15:03:24.523Z] Node Version: v6.11.0
-[debug] [2017-06-27T15:03:24.523Z] Time:         Tue Jun 27 2017 11:03:24 GMT-0400 (EDT)
-[debug] [2017-06-27T15:03:24.523Z] ----------------------------------------------------------------------
+[debug] [2017-06-27T15:22:08.229Z] ----------------------------------------------------------------------
+[debug] [2017-06-27T15:22:08.233Z] Command:      /usr/local/bin/node /usr/local/bin/firebase serve --project cs673team2
+[debug] [2017-06-27T15:22:08.234Z] CLI Version:  3.9.1
+[debug] [2017-06-27T15:22:08.234Z] Platform:     darwin
+[debug] [2017-06-27T15:22:08.234Z] Node Version: v6.11.0
+[debug] [2017-06-27T15:22:08.234Z] Time:         Tue Jun 27 2017 11:22:08 GMT-0400 (EDT)
+[debug] [2017-06-27T15:22:08.234Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2017-06-27T15:03:24.534Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2017-06-27T15:03:24.535Z] > authorizing via signed-in user
-[debug] [2017-06-27T15:03:24.536Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
-[debug] [2017-06-27T15:03:24.537Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/gjfzZW-RY-nkzKxv4TrEqdsqN6w7T2sqmi0bvGZF9C7HrH9Wwv0l9iIqttXk7wJ6',
+[debug] [2017-06-27T15:22:08.247Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-06-27T15:22:08.248Z] > authorizing via signed-in user
+[debug] [2017-06-27T15:22:08.249Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-06-27T15:22:08.249Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/gjfzZW-RY-nkzKxv4TrEqdsqN6w7T2sqmi0bvGZF9C7HrH9Wwv0l9iIqttXk7wJ6',
   client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
   client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
   grant_type: 'refresh_token',
   scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
- Tue Jun 27 2017 11:03:24 GMT-0400 (EDT)
-[debug] [2017-06-27T15:03:24.823Z] <<< HTTP RESPONSE 200
-[debug] [2017-06-27T15:03:24.841Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/cs673team2  
- Tue Jun 27 2017 11:03:24 GMT-0400 (EDT)
-[debug] [2017-06-27T15:03:25.411Z] <<< HTTP RESPONSE 200
-[debug] [2017-06-27T15:03:25.412Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/cs673team2/tokens  
- Tue Jun 27 2017 11:03:25 GMT-0400 (EDT)
-[debug] [2017-06-27T15:03:26.126Z] <<< HTTP RESPONSE 200
+ Tue Jun 27 2017 11:22:08 GMT-0400 (EDT)
+[debug] [2017-06-27T15:22:08.541Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-27T15:22:08.556Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/cs673team2  
+ Tue Jun 27 2017 11:22:08 GMT-0400 (EDT)
+[debug] [2017-06-27T15:22:09.028Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-27T15:22:09.030Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/cs673team2/tokens  
+ Tue Jun 27 2017 11:22:09 GMT-0400 (EDT)
+[debug] [2017-06-27T15:22:09.585Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from '/Users/Chris/GitHub/METCS673_Team2/app'...
 [info] 
-[debug] [2017-06-27T15:03:26.130Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/cs673team2  
- Tue Jun 27 2017 11:03:26 GMT-0400 (EDT)
-[debug] [2017-06-27T15:03:26.491Z] <<< HTTP RESPONSE 200
-[debug] [2017-06-27T15:03:26.492Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/947879978889/clients/_:getWebAppConfig  
- Tue Jun 27 2017 11:03:26 GMT-0400 (EDT)
-[debug] [2017-06-27T15:03:27.047Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-27T15:22:09.589Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/cs673team2  
+ Tue Jun 27 2017 11:22:09 GMT-0400 (EDT)
+[debug] [2017-06-27T15:22:09.935Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-27T15:22:09.935Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/947879978889/clients/_:getWebAppConfig  
+ Tue Jun 27 2017 11:22:09 GMT-0400 (EDT)
+[debug] [2017-06-27T15:22:12.365Z] <<< HTTP RESPONSE 200
 [info] i  hosting: Serving hosting files from: public
 [info] ✔  hosting: Local server: http://localhost:5000
 

@@ -64,7 +64,7 @@
   </head>
 
   <body>
-    <script>
+    <!--<script>
       document.addEventListener('DOMContentLoaded', function() {
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
@@ -85,7 +85,7 @@
           document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
         }
       });
-     </script>
+    </script>-->
 
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
@@ -257,28 +257,28 @@
       </main>
     </div>
     <script src="https://www.gstatic.com/firebase/init.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyAE5gZ4dpDvC9p9dSVh-3iltIXcjjDtfGI",
-        authDomain: "cs673team2.firebaseapp.com",
-        databaseURL: "https://cs673team2.firebaseio.com",
-        projectId: "cs673team2",
-        storageBucket: "cs673team2.appspot.com",
-        messagingSenderId: "947879978889"
-      };
-      firebase.initializeApp(config);
-      var database = firebase.database();
-    </script>
 
-    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAE5gZ4dpDvC9p9dSVh-3iltIXcjjDtfGI",
+          authDomain: "cs673team2.firebaseapp.com",
+          databaseURL: "https://cs673team2.firebaseio.com",
+          projectId: "cs673team2",
+          storageBucket: "cs673team2.appspot.com",
+          messagingSenderId: "947879978889"
+        };
+        firebase.initializeApp(config);
+      </script>
+    <script>var database = firebase.database();</script>
+
+    <!--<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-messaging.js"></script>
-    <script src="https://ww.gstatic.com/firebase/4.1.2/firebase-storage.js"></script>
+    <script src="https://ww.gstatic.com/firebase/4.1.2/firebase-storage.js"></script>-->
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script src = "Admin.js"></script>
-    <script src="./bower_components/mdl-selectfield/dist/mdl-selectfield.min.js"></script>
   </body>
 </html>
