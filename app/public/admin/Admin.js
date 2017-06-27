@@ -8,13 +8,9 @@ var role = document.getElementById("role");
 var email = document.getElementById("email");
 var addButton = document.getElementById("addButton");
 
-var project1 = [];
-var project2 = [];
-var project3 = [];
-var project4 = [];
-var project5 = [];
 var projList = [project1, project2, project3, project4, project5];
-
+var oRef = firebase.database().ref('projects' ) ;
+alert (oRef);
 
 //This is just an example of how I will build the project name list dynamically:
 /*var x = document.getElementById("mySelect");
