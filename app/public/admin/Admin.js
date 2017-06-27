@@ -10,7 +10,13 @@ var addButton = document.getElementById("addButton");
 
 var projList = [project1, project2, project3, project4, project5];
 var oRef = firebase.database().ref('projects' ) ;
-alert (oRef);
+oRef.once('value', function(snapshot) {
+  snapshot.forEach(function(childSnapshot) {
+    var childKey = childSnapshot.key; console.log ( childKey ) ;
+    var childData = childSnapshot.val(); console.log ( childData ) ;
+     });
+});
+
 
 //This is just an example of how I will build the project name list dynamically:
 /*var x = document.getElementById("mySelect");
@@ -23,6 +29,13 @@ x.options.remove(1);*/
 
 
 function showMembers(){
+  var oRef = firebase.database().ref('projects' ) ;
+  oRef.once('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var childKey = childSnapshot.key; console.log ( childKey ) ;
+      var childData = childSnapshot.val(); console.log ( childData ) ;
+       });
+  });
   var projects = document.getElementById("projectList");
   selected = projects.options[projects.selectedIndex].value;
 

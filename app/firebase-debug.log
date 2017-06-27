@@ -34,3 +34,31 @@
 [info] i  hosting: Serving hosting files from: public
 [info] ✔  hosting: Local server: http://localhost:5000
 
+[debug] [2017-06-27T16:14:56.180Z] ----------------------------------------------------------------------
+[debug] [2017-06-27T16:14:56.182Z] Command:      /usr/local/bin/node /usr/local/bin/firebase serve --project cs673team2
+[debug] [2017-06-27T16:14:56.183Z] CLI Version:  3.9.1
+[debug] [2017-06-27T16:14:56.183Z] Platform:     darwin
+[debug] [2017-06-27T16:14:56.183Z] Node Version: v6.11.0
+[debug] [2017-06-27T16:14:56.183Z] Time:         Tue Jun 27 2017 12:14:56 GMT-0400 (EDT)
+[debug] [2017-06-27T16:14:56.183Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-06-27T16:14:56.196Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-06-27T16:14:56.196Z] > authorizing via signed-in user
+[debug] [2017-06-27T16:14:56.198Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/cs673team2  
+ Tue Jun 27 2017 12:14:56 GMT-0400 (EDT)
+[debug] [2017-06-27T16:14:57.735Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-27T16:14:57.736Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/cs673team2/tokens  
+ Tue Jun 27 2017 12:14:57 GMT-0400 (EDT)
+[debug] [2017-06-27T16:14:58.114Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/Chris/GitHub/METCS673_Team2/app'...
+[info] 
+[debug] [2017-06-27T16:14:58.117Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/cs673team2  
+ Tue Jun 27 2017 12:14:58 GMT-0400 (EDT)
+[debug] [2017-06-27T16:14:58.469Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-27T16:14:58.469Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/947879978889/clients/_:getWebAppConfig  
+ Tue Jun 27 2017 12:14:58 GMT-0400 (EDT)
+[debug] [2017-06-27T16:14:58.957Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+
