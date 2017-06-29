@@ -563,6 +563,11 @@ var AddProjectForm = function (_React$Component4) {
         errors['end_date'] = 'end_date is required.';
       }
 
+      new_project['status'] = form.elements.namedItem("status").value;
+      if (!new_project['status']) {
+        errors['status'] = 'status is required.';
+      }
+
       new_project['desc'] = form.elements.namedItem("desc").value;
       if (!new_project['desc']) {
         errors['desc'] = 'desc is required.';
@@ -654,6 +659,35 @@ var AddProjectForm = function (_React$Component4) {
             { className: "mdl-textfield__error" },
             this.state.errors.end_date
           ) : null
+        ),
+        React.createElement(
+          "div",
+          { "class": "mdl-selectfield mdl-js-selectfield" },
+          React.createElement(
+            "label",
+            { "class": "mdl-selectfield__label", "for": "status" },
+            "Status"
+          ),
+          React.createElement(
+            "select",
+            { "class": "mdl-selectfield__select", id: "status", name: "status" },
+            React.createElement("option", { value: "" }),
+            React.createElement(
+              "option",
+              { value: "Not Started" },
+              "Not Started"
+            ),
+            React.createElement(
+              "option",
+              { value: "In Progress" },
+              "In Progress"
+            ),
+            React.createElement(
+              "option",
+              { value: "Completed" },
+              "Completed"
+            )
+          )
         ),
         React.createElement(
           "div",

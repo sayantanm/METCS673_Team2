@@ -181,9 +181,8 @@ class ReactApp extends React.Component {
                 Add Project
               </button>
             </div>
-          </div>
+          </div>    
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-
             { this.state.add_project ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
 
             {/* If view is clicked, then display user stories table */}
@@ -301,7 +300,12 @@ class AddProjectForm extends React.Component {
       errors['end_date'] = 'end_date is required.';
     }
 
-   new_project['desc'] = form.elements.namedItem("desc").value;
+    new_project['status'] = form.elements.namedItem("status").value;
+    if (!new_project['status']){
+      errors['status'] = 'status is required.';
+    }
+
+    new_project['desc'] = form.elements.namedItem("desc").value;
     if (!new_project['desc']){
       errors['desc'] = 'desc is required.';
     }
@@ -363,6 +367,16 @@ class AddProjectForm extends React.Component {
           {this.state.errors.end_date ? (
             <span className="mdl-textfield__error">{this.state.errors.end_date}</span>
           ): null}
+        </div>
+
+        <div class="mdl-selectfield mdl-js-selectfield">
+          <label class="mdl-selectfield__label" for="status">Status</label>
+          <select class="mdl-selectfield__select" id="status" name="status">
+            <option value=""></option>
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
 
         <div className="mdl-textfield mdl-js-textfield">
