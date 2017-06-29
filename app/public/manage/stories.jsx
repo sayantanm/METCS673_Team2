@@ -73,7 +73,7 @@ class UserStories extends React.Component {
 
     var stories_table = (
       <div>
-        <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
           <thead>
             <tr>
             <th className="mdl-data-table__cell--non-numeric">Name</th>

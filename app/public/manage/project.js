@@ -268,7 +268,7 @@ var ReactApp = function (_React$Component) {
             "div",
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
             this.state.add_project ? React.createElement(AddProjectForm, { addProjectHandler: self.addProjectHandler }) : projects_table,
-            React.createElement(UserStories, { project: self.result, db: self.db }),
+            React.createElement(UserStories, { project: project, db: self.db }),
             React.createElement(
               "p",
               null,
@@ -763,7 +763,7 @@ var UserStories = function (_React$Component) {
         null,
         React.createElement(
           "table",
-          { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+          { className: "mdl-data-table mdl-js-data-table mdl-shadow--2dp" },
           React.createElement(
             "thead",
             null,

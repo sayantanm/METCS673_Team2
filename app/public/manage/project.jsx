@@ -23,7 +23,7 @@ class ReactApp extends React.Component {
     console.log("Add new ", project);
     var result = this.firebaseProjects.push(project);
     console.log("result: ", result);
-    
+
     this.setState({'add_project': false});
     this.loadProjects();
   }
@@ -190,7 +190,7 @@ class ReactApp extends React.Component {
             { this.state.add_project ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
 
             {/* If view is clicked, then display user stories table */}
-            <UserStories project={self.result} db={self.db} />
+            <UserStories project={project} db={self.db} />
      
             <p>Progress:</p>
             <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
