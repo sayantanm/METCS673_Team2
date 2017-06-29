@@ -97,15 +97,7 @@ class ReactApp extends React.Component {
 
 
   render(){
-
-    console.log(this.state.projects);
-
     var self = this;
-
-    var viewProjectHandler = function(e, idx){
-      console.log(idx);
-      self.setState({ view_project: true , project_idx: idx});
-    }
 
     var projects_table = (
       <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
@@ -121,8 +113,11 @@ class ReactApp extends React.Component {
         <tbody>
         {
           self.state.projects.map(function(item, index){
+            var viewProjectHandler = function(){
+              self.setState({ view_project: true , project_idx: index});
+            }
             return (
-              <tr key={index}>
+              <tr key={item.firebase_key}>
                 <td className="mdl-data-table__cell--non-numeric">
                   {item.name} {(self.state.project_idx === index) ? "<--" : null}
                 </td>
@@ -131,7 +126,7 @@ class ReactApp extends React.Component {
                 <td>{item.status}</td>
                 <td>
                   <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                  onClick={function(e){ viewProjectHandler(event, index)}}
+                  onClick={viewProjectHandler}
                   >
                   View</button>
                   &nbsp;
@@ -159,7 +154,7 @@ class ReactApp extends React.Component {
     }
 
     var project = null;
-    if(this.state.project_idx ==! null && this.state.view_project){
+    if((self.state.project_idx !== null) && self.state.view_project){
       project = self.state.projects[self.state.project_idx];
     }
 
@@ -190,8 +185,10 @@ class ReactApp extends React.Component {
             { this.state.add_project ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
 
             {/* If view is clicked, then display user stories table */}
-            <UserStories project={project} db={self.db} />
-     
+            {
+              project ?
+              <UserStories project={project} db={self.db}/>
+              : <p>View Project to see stories.</p>}
             <p>Progress:</p>
             <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
           </div>

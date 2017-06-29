@@ -115,14 +115,7 @@ var ReactApp = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      console.log(this.state.projects);
-
       var self = this;
-
-      var viewProjectHandler = function viewProjectHandler(e, idx) {
-        console.log(idx);
-        self.setState({ view_project: true, project_idx: idx });
-      };
 
       var projects_table = React.createElement(
         "table",
@@ -164,9 +157,12 @@ var ReactApp = function (_React$Component) {
           "tbody",
           null,
           self.state.projects.map(function (item, index) {
+            var viewProjectHandler = function viewProjectHandler() {
+              self.setState({ view_project: true, project_idx: index });
+            };
             return React.createElement(
               "tr",
-              { key: index },
+              { key: item.firebase_key },
               React.createElement(
                 "td",
                 { className: "mdl-data-table__cell--non-numeric" },
@@ -195,9 +191,7 @@ var ReactApp = function (_React$Component) {
                 React.createElement(
                   "button",
                   { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
-                    onClick: function onClick(e) {
-                      viewProjectHandler(event, index);
-                    }
+                    onClick: viewProjectHandler
                   },
                   "View"
                 ),
@@ -227,7 +221,7 @@ var ReactApp = function (_React$Component) {
       };
 
       var project = null;
-      if (this.state.project_idx == !null && this.state.view_project) {
+      if (self.state.project_idx !== null && self.state.view_project) {
         project = self.state.projects[self.state.project_idx];
       }
 
@@ -268,7 +262,11 @@ var ReactApp = function (_React$Component) {
             "div",
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
             this.state.add_project ? React.createElement(AddProjectForm, { addProjectHandler: self.addProjectHandler }) : projects_table,
-            React.createElement(UserStories, { project: project, db: self.db }),
+            project ? React.createElement(UserStories, { project: project, db: self.db }) : React.createElement(
+              "p",
+              null,
+              "View Project to see stories."
+            ),
             React.createElement(
               "p",
               null,
@@ -697,23 +695,31 @@ var UserStories = function (_React$Component) {
     key: "addStoryHandler",
     value: function addStoryHandler(story) {
       console.log("Add new ", story);
-      console.log("Print Project: ", this.props.project
-      //story['project_key'] = this.props.project.key;
-      );var result = this.firebaseStories.push(story);
+      console.log("Print Project: ", this.props.project);
+      story['project_key'] = this.props.project.firebase_key;
+      var result = this.firebaseStories.push(story);
+      console.log('result');
       this.loadStories();
     }
   }, {
     key: "componentWillMount",
     value: function componentWillMount() {
-
       this.firebaseStories = this.props.db.ref('app/stories');
-
       this.loadStories();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (this.props.project && this.props.project.firebase_key != prevProps.project.firebase_key) {
+        this.loadStories();
+      }
     }
   }, {
     key: "loadStories",
     value: function loadStories() {
-      this.firebaseStories.on('value', function (dataSnapshot) {
+      var self = this;
+      console.log(self.props.project.firebase_key);
+      this.firebaseStories.orderByChild('project_key').equalTo(self.props.project.firebase_key).on('value', function (dataSnapshot) {
         var items = [];
         dataSnapshot.forEach(function (childSnapshot) {
           var item = childSnapshot.val();
@@ -734,22 +740,62 @@ var UserStories = function (_React$Component) {
 
       console.log(this.props);
 
-      var body = this.state.stories.map(function (item, index) {
-        return React.createElement(
-          "tr",
-          { key: index },
+      if (this.state.stories.length > 0) {
+        var body = this.state.stories.map(function (item, index) {
+          return React.createElement(
+            "tr",
+            { key: index },
+            React.createElement(
+              "td",
+              { className: "mdl-data-table__cell--non-numeric" },
+              item.name
+            ),
+            React.createElement(
+              "td",
+              null,
+              item.status
+            )
+          );
+        });
+
+        var stories_table = React.createElement(
+          "div",
+          null,
           React.createElement(
-            "td",
-            { className: "mdl-data-table__cell--non-numeric" },
-            item.name
-          ),
-          React.createElement(
-            "td",
-            null,
-            item.status
+            "table",
+            { className: "mdl-data-table mdl-js-data-table mdl-shadow--2dp" },
+            React.createElement(
+              "thead",
+              null,
+              React.createElement(
+                "tr",
+                null,
+                React.createElement(
+                  "th",
+                  { className: "mdl-data-table__cell--non-numeric" },
+                  "Name"
+                ),
+                React.createElement(
+                  "th",
+                  null,
+                  "Status"
+                )
+              )
+            ),
+            React.createElement(
+              "tbody",
+              null,
+              body
+            )
           )
         );
-      });
+      } else {
+        stories_table = React.createElement(
+          "p",
+          null,
+          "No stories"
+        );
+      }
 
       var add_story_button = React.createElement(
         "button",
@@ -758,47 +804,13 @@ var UserStories = function (_React$Component) {
         "Add Story"
       );
 
-      var stories_table = React.createElement(
-        "div",
+      var heading = React.createElement(
+        "h3",
         null,
-        React.createElement(
-          "table",
-          { className: "mdl-data-table mdl-js-data-table mdl-shadow--2dp" },
-          React.createElement(
-            "thead",
-            null,
-            React.createElement(
-              "tr",
-              null,
-              React.createElement(
-                "th",
-                { className: "mdl-data-table__cell--non-numeric" },
-                "Name"
-              ),
-              React.createElement(
-                "th",
-                null,
-                "Status"
-              )
-            )
-          ),
-          React.createElement(
-            "tbody",
-            null,
-            body
-          )
-        )
+        " ",
+        self.props.project['name'],
+        " "
       );
-
-      if (self.props.project != null) {
-        var heading = React.createElement(
-          "h3",
-          null,
-          " ",
-          self.props.project['name'],
-          " "
-        );
-      }
 
       return React.createElement(
         "div",

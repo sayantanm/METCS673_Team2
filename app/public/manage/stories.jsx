@@ -22,20 +22,33 @@ class UserStories extends React.Component {
   addStoryHandler(story) {
     console.log("Add new ", story);
     console.log("Print Project: ", this.props.project)
-    //story['project_key'] = this.props.project.key;
+    story['project_key'] = this.props.project.firebase_key;
     var result = this.firebaseStories.push(story);
+    console.log('result');
     this.loadStories();
   }
 
   componentWillMount() {
-
     this.firebaseStories = this.props.db.ref('app/stories');
-
     this.loadStories();
   }
 
+  componentDidUpdate(prevProps, prevState){
+    if (
+      this.props.project && (
+        this.props.project.firebase_key != prevProps.project.firebase_key
+      )
+    ){
+      this.loadStories();
+    }
+  }
+
   loadStories(){
-    this.firebaseStories.on('value', function(dataSnapshot) {
+    var self = this;
+    console.log(self.props.project.firebase_key);
+    this.firebaseStories.orderByChild('project_key').equalTo(
+      self.props.project.firebase_key
+    ).on('value', function(dataSnapshot) {
       var items = [];
       dataSnapshot.forEach(function(childSnapshot) {
         var item = childSnapshot.val();
@@ -55,14 +68,36 @@ class UserStories extends React.Component {
 
     console.log(this.props);
 
-    var body = this.state.stories.map(function(item, index){
-      return (
-        <tr key={index}>
-          <td className="mdl-data-table__cell--non-numeric">{item.name}</td>
-          <td>{item.status}</td>
-        </tr>
+    if (this.state.stories.length > 0){
+      var body = this.state.stories.map(function(item, index){
+        return (
+          <tr key={index}>
+            <td className="mdl-data-table__cell--non-numeric">{item.name}</td>
+            <td>{item.status}</td>
+          </tr>
+        );
+      });
+
+      var stories_table = (
+        <div>
+          <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+            <thead>
+              <tr>
+              <th className="mdl-data-table__cell--non-numeric">Name</th>
+              <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                body
+              }
+            </tbody>
+          </table>
+        </div>
       );
-    });
+    } else {
+      stories_table = <p>No stories</p>;
+    }
 
     var add_story_button = (
       <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
@@ -71,27 +106,7 @@ class UserStories extends React.Component {
       </button>
     );
 
-    var stories_table = (
-      <div>
-        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-          <thead>
-            <tr>
-            <th className="mdl-data-table__cell--non-numeric">Name</th>
-            <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              body
-            }
-          </tbody>
-        </table>
-      </div>
-    );
-
-    if (self.props.project != null) { 
-        var heading = <h3> { self.props.project['name'] } </h3>;
-    }
+    var heading = <h3> { self.props.project['name'] } </h3>;
 
     return (
       <div>
