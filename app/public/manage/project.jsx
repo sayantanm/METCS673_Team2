@@ -11,23 +11,25 @@ class ReactApp extends React.Component {
       view_project: false
     };
     this.p1_material_object = null;
-  
 
-   // bind callback so that 'this' works when called from different object
-   this.addProjectHandler= this.addProjectHandler.bind(this);
+    // bind callback so that 'this' works when called from different object
+    this.addProjectHandler= this.addProjectHandler.bind(this);
 
-   this.db = this.props.firebase.database();
+    this.db = this.props.firebase.database();
 
-   }
+  }
 
-   addProjectHandler(project) {
+  addProjectHandler(project) {
     console.log("Add new ", project);
     var result = this.firebaseProjects.push(project);
+    console.log("result: ", result);
+    
+    this.setState({'add_project': false});
     this.loadProjects();
-   }
+  }
 
 
-   componentWillMount() {
+  componentWillMount() {
     // Based on this SO answer, I dediced to sign in anonymously:
     this.props.firebase.auth().signInAnonymously().catch(function(error) {
       var errorCode = error.code;
@@ -74,7 +76,7 @@ class ReactApp extends React.Component {
       });
     }else{
       console.log('no user :(');
-    
+
     }
 
     // After material design initializes, we save the reference
@@ -101,6 +103,7 @@ class ReactApp extends React.Component {
     var self = this;
 
     var viewProjectHandler = function(e, idx){
+      console.log(idx);
       self.setState({ view_project: true , project_idx: idx});
     }
 
@@ -117,10 +120,12 @@ class ReactApp extends React.Component {
          </thead>
         <tbody>
         {
-          this.state.projects.map(function(item, index){
+          self.state.projects.map(function(item, index){
             return (
               <tr key={index}>
-                <td className="mdl-data-table__cell--non-numeric">{item.name}</td>
+                <td className="mdl-data-table__cell--non-numeric">
+                  {item.name} {(self.state.project_idx === index) ? "<--" : null}
+                </td>
                 <td>{item.start_date}</td>
                 <td>{item.end_date}</td>
                 <td>{item.status}</td>
@@ -146,16 +151,17 @@ class ReactApp extends React.Component {
     );
 
     var showFormHandler = function(e){
-
-      self.setState({ add_projects: true });
+      self.setState({ add_project: true });
     }
 
     var showProjectsHandler = function(e){
-
-      self.setState({ add_projects: false });
+      self.setState({ add_project: false });
     }
 
-    console.log(this.state.projects[this.state.project_idx]);
+    var project = null;
+    if(this.state.project_idx ==! null && this.state.view_project){
+      project = self.state.projects[self.state.project_idx];
+    }
 
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -164,14 +170,14 @@ class ReactApp extends React.Component {
         <main className="mdl-layout__content mdl-color--grey-100">
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <div className="mdl-cell mdl-cell--4-col">
-              <button 
+              <button
                 className="mdl-button mdl-js-button mdl-button--raised"
                 onClick={showProjectsHandler}
               >
                 List Projects
               </button>
               &nbsp;
-              <button 
+              <button
                 className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
                 onClick={showFormHandler}
               >
@@ -181,18 +187,13 @@ class ReactApp extends React.Component {
           </div>
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
 
-            { this.state.add_projects ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
+            { this.state.add_project ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
 
             {/* If view is clicked, then display user stories table */}
-            { 
-              (this.state.project_idx =! null && this.state.view_project ) ? 
-              <UserStories project={self.state.projects[self.state.project_idx]} db={self.db} /> :
-              "null" 
-            }
-
+            <UserStories project={self.result} db={self.db} />
+     
             <p>Progress:</p>
             <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
-            
           </div>
         </main>
       </div>
@@ -300,7 +301,7 @@ class AddProjectForm extends React.Component {
     if (!new_project['end_date']){
       errors['end_date'] = 'end_date is required.';
     }
-    
+
 
     this.setState({
       errors: errors, values: new_project
@@ -328,10 +329,10 @@ class AddProjectForm extends React.Component {
         var text = Object.values(self.state.errors).join(" ");
         alert('form still has errors: ' + text);
       }
-  };
+    };
 
   return (
-      <form  
+      <form
         onSubmit={submitHandler}
         onChange={self.changeHandler}
         ref={(ref)=>this.formRef = ref}
@@ -363,7 +364,7 @@ class AddProjectForm extends React.Component {
 
         { /* Add Project Button */ }
         <br/>
-        <button 
+        <button
           type="submit"
           className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
           >

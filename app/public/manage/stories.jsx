@@ -8,7 +8,7 @@ class UserStories extends React.Component {
     this.state = {
       add_story: false,
       story_idx: null,
-      stories: [ {"name": "story 1", "status": "completed"} ]
+      stories: []
     };
 
     this.addStoryHandler= this.addStoryHandler.bind(this);
@@ -21,6 +21,8 @@ class UserStories extends React.Component {
 
   addStoryHandler(story) {
     console.log("Add new ", story);
+    console.log("Print Project: ", this.props.project)
+    //story['project_key'] = this.props.project.key;
     var result = this.firebaseStories.push(story);
     this.loadStories();
   }
@@ -62,6 +64,13 @@ class UserStories extends React.Component {
       );
     });
 
+    var add_story_button = (
+      <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+      onClick={self.showFormHandler}>
+        Add Story
+      </button>
+    );
+
     var stories_table = (
       <div>
         <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
@@ -77,23 +86,18 @@ class UserStories extends React.Component {
             }
           </tbody>
         </table>
-
-        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-        onClick={self.showFormHandler}>
-          Add Story
-        </button>
       </div>
     );
 
-    if ( self.state.stories.length > 0) {
-      if (self.props.project != null) { 
-          var heading = <h3> { self.props.project['name'] } </h3>;
-        }
+    if (self.props.project != null) { 
+        var heading = <h3> { self.props.project['name'] } </h3>;
     }
 
     return (
       <div>
         {heading}
+        {console.log("length", self.state.stories.length)}
+
         { this.state.add_story ? (
           <AddStoryForm
             addStoryHandler={self.addStoryHandler}
@@ -104,6 +108,9 @@ class UserStories extends React.Component {
             }
           />
         ): stories_table }
+
+        {add_story_button}
+    
       </div>
     );
   }
@@ -192,7 +199,6 @@ class AddStoryForm extends React.Component {
           ): null}
         </div>
 
-        { /* Add Story Button */ }
         <br/>
         <button 
           type="submit"
