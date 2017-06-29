@@ -107,6 +107,7 @@ class ReactApp extends React.Component {
             <th>Start Date</th>
             <th>End Date</th>
             <th>Status</th>
+            <th>Description</th>
             <th>Actions</th>
           </tr>
          </thead>
@@ -124,6 +125,7 @@ class ReactApp extends React.Component {
                 <td>{item.start_date}</td>
                 <td>{item.end_date}</td>
                 <td>{item.status}</td>
+                <td>{item.desc}</td>
                 <td>
                   <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
                   onClick={viewProjectHandler}
@@ -299,6 +301,10 @@ class AddProjectForm extends React.Component {
       errors['end_date'] = 'end_date is required.';
     }
 
+   new_project['desc'] = form.elements.namedItem("desc").value;
+    if (!new_project['desc']){
+      errors['desc'] = 'desc is required.';
+    }
 
     this.setState({
       errors: errors, values: new_project
@@ -356,6 +362,14 @@ class AddProjectForm extends React.Component {
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
           {this.state.errors.end_date ? (
             <span className="mdl-textfield__error">{this.state.errors.end_date}</span>
+          ): null}
+        </div>
+
+        <div className="mdl-textfield mdl-js-textfield">
+          <input className="mdl-textfield__input" type="text" id="desc" name="desc" />
+          <label className="mdl-textfield__label" htmlFor="desc">Description</label>
+          {this.state.errors.desc ? (
+            <span className="mdl-textfield__error">{this.state.errors.desc}</span>
           ): null}
         </div>
 

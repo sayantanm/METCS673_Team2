@@ -149,6 +149,11 @@ var ReactApp = function (_React$Component) {
             React.createElement(
               "th",
               null,
+              "Description"
+            ),
+            React.createElement(
+              "th",
+              null,
               "Actions"
             )
           )
@@ -184,6 +189,11 @@ var ReactApp = function (_React$Component) {
                 "td",
                 null,
                 item.status
+              ),
+              React.createElement(
+                "td",
+                null,
+                item.desc
               ),
               React.createElement(
                 "td",
@@ -553,6 +563,11 @@ var AddProjectForm = function (_React$Component4) {
         errors['end_date'] = 'end_date is required.';
       }
 
+      new_project['desc'] = form.elements.namedItem("desc").value;
+      if (!new_project['desc']) {
+        errors['desc'] = 'desc is required.';
+      }
+
       this.setState({
         errors: errors, values: new_project
       });
@@ -638,6 +653,21 @@ var AddProjectForm = function (_React$Component4) {
             "span",
             { className: "mdl-textfield__error" },
             this.state.errors.end_date
+          ) : null
+        ),
+        React.createElement(
+          "div",
+          { className: "mdl-textfield mdl-js-textfield" },
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc" }),
+          React.createElement(
+            "label",
+            { className: "mdl-textfield__label", htmlFor: "desc" },
+            "Description"
+          ),
+          this.state.errors.desc ? React.createElement(
+            "span",
+            { className: "mdl-textfield__error" },
+            this.state.errors.desc
           ) : null
         ),
         React.createElement("br", null),
