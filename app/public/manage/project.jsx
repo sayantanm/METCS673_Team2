@@ -95,8 +95,10 @@ class ReactApp extends React.Component {
 
 
   render(){
-    var self = this;
 
+    console.log(this.state.projects);
+
+    var self = this;
 
     var viewProjectHandler = function(e, idx){
       self.setState({ view_project: true , project_idx: idx});
@@ -153,6 +155,8 @@ class ReactApp extends React.Component {
       self.setState({ add_projects: false });
     }
 
+    console.log(this.state.projects[this.state.project_idx]);
+
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <TopBar/>
@@ -181,8 +185,8 @@ class ReactApp extends React.Component {
 
             {/* If view is clicked, then display user stories table */}
             { 
-              (this.state.project_idx && this.state.view_project ) ? 
-              <UserStories project={this.state.projects[this.state.project_idx]}/> :
+              (this.state.project_idx =! null && this.state.view_project ) ? 
+              <UserStories project={self.state.projects[self.state.project_idx]} db={self.db} /> :
               "null" 
             }
 
@@ -369,100 +373,4 @@ class AddProjectForm extends React.Component {
     );
   }
 }
-
-class AddStoryForm extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {},
-      values: {},
-    };
-
-    // This is to allow it to work as callback from other context
-    this.changeHandler = this.changeHandler.bind(this);
-  }
-
-  changeHandler(e){
-    var form = this.formRef;
-    var story = {};
-    var errors = {};
-
-    story['name'] = form.elements.namedItem("name").value;
-    if (!story['name']){
-      errors['name'] = 'Name is required.';
-    }else if (story['name'].length < 5){
-      errors['name'] = 'Name must be at least 5 characters.';
-    }
-
-    story['status'] = form.elements.namedItem("status").value;
-    if (!story['status']){
-      errors['status'] = 'status is required.';
-    }
-
-    this.setState({
-      errors: errors, values: story
-    });
-  }
-
-
-  componentDidMount(){
-    window.componentHandler.upgradeDom();
-  }
-  componentDidUpdate(prevProps, prevState){
-    window.componentHandler.upgradeDom();
-  }
-
-  render() {
-    var self = this;
-    { /* Form Submit Handler */ }
-
-    var submitHandler = function(e){
-      e.preventDefault();
-      if (Object.keys(self.state.errors) == 0){
-        console.log(self.state);
-        self.props.addStoryHandler(self.state.values);
-      }else{
-        var text = Object.values(self.state.errors).join(" ");
-        alert('form still has errors: ' + text);
-      }
-  };
-
-  return (
-      <form  
-        onSubmit={submitHandler}
-        onChange={self.changeHandler}
-        ref={(ref)=>this.formRef = ref}
-        >
-
-        <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="name" name="name" />
-          <label className="mdl-textfield__label" htmlFor="name">User Story Name</label>
-          {this.state.errors.name ? (
-            <span className="mdl-textfield__error">{this.state.errors.name}</span>
-          ): null}
-        </div>
-
-        <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="status" name="status" />
-          <label className="mdl-textfield__label" htmlFor="status">Status</label>
-          {this.state.errors.status ? (
-            <span className="mdl-textfield__error">{this.state.errors.status}</span>
-          ): null}
-        </div>
-
-        { /* Add Story Button */ }
-        <br/>
-        <button 
-          type="submit"
-          className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-          >
-          Save
-        </button>
-      </form>
-    );
-  }
-}
-
-
 

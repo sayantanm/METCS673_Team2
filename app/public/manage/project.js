@@ -112,6 +112,8 @@ var ReactApp = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      console.log(this.state.projects);
+
       var self = this;
 
       var viewProjectHandler = function viewProjectHandler(e, idx) {
@@ -220,6 +222,8 @@ var ReactApp = function (_React$Component) {
         self.setState({ add_projects: false });
       };
 
+      console.log(this.state.projects[this.state.project_idx]);
+
       return React.createElement(
         'div',
         { className: 'demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header' },
@@ -257,7 +261,7 @@ var ReactApp = function (_React$Component) {
             'div',
             { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
             this.state.add_projects ? React.createElement(AddProjectForm, { addProjectHandler: self.addProjectHandler }) : projects_table,
-            this.state.project_idx && this.state.view_project ? React.createElement(UserStories, { project: this.state.projects[this.state.project_idx] }) : "null",
+            (this.state.project_idx = !null && this.state.view_project) ? React.createElement(UserStories, { project: self.state.projects[self.state.project_idx], db: self.db }) : "null",
             React.createElement(
               'p',
               null,
@@ -646,27 +650,185 @@ var AddProjectForm = function (_React$Component4) {
 
   return AddProjectForm;
 }(React.Component);
+"use strict";
 
-var AddStoryForm = function (_React$Component5) {
-  _inherits(AddStoryForm, _React$Component5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UserStories = function (_React$Component) {
+  _inherits(UserStories, _React$Component);
+
+  function UserStories(props) {
+    _classCallCheck(this, UserStories);
+
+    var _this = _possibleConstructorReturn(this, (UserStories.__proto__ || Object.getPrototypeOf(UserStories)).call(this, props));
+
+    console.log(props);
+
+    _this.state = {
+      add_story: false,
+      story_idx: null,
+      stories: [{ "name": "story 1", "status": "completed" }]
+    };
+
+    _this.addStoryHandler = _this.addStoryHandler.bind(_this);
+    _this.showFormHandler = _this.showFormHandler.bind(_this);
+    return _this;
+  }
+
+  _createClass(UserStories, [{
+    key: "showFormHandler",
+    value: function showFormHandler(e) {
+      this.setState({ add_story: true });
+    }
+  }, {
+    key: "addStoryHandler",
+    value: function addStoryHandler(story) {
+      console.log("Add new ", story);
+      var result = this.firebaseStories.push(story);
+      this.loadStories();
+    }
+  }, {
+    key: "componentWillMount",
+    value: function componentWillMount() {
+
+      this.firebaseStories = this.props.db.ref('app/stories');
+
+      this.loadStories();
+    }
+  }, {
+    key: "loadStories",
+    value: function loadStories() {
+      this.firebaseStories.on('value', function (dataSnapshot) {
+        var items = [];
+        dataSnapshot.forEach(function (childSnapshot) {
+          var item = childSnapshot.val();
+          item['firebase_key'] = childSnapshot.key;
+          items.push(item);
+        });
+
+        this.setState({
+          stories: items
+        });
+      }.bind(this));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+
+      var self = this;
+
+      console.log(this.props);
+
+      var body = this.state.stories.map(function (item, index) {
+        return React.createElement(
+          "tr",
+          { key: index },
+          React.createElement(
+            "td",
+            { className: "mdl-data-table__cell--non-numeric" },
+            item.name
+          ),
+          React.createElement(
+            "td",
+            null,
+            item.status
+          )
+        );
+      });
+
+      var stories_table = React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "table",
+          { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
+          React.createElement(
+            "thead",
+            null,
+            React.createElement(
+              "tr",
+              null,
+              React.createElement(
+                "th",
+                { className: "mdl-data-table__cell--non-numeric" },
+                "Name"
+              ),
+              React.createElement(
+                "th",
+                null,
+                "Status"
+              )
+            )
+          ),
+          React.createElement(
+            "tbody",
+            null,
+            body
+          )
+        ),
+        React.createElement(
+          "button",
+          { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+            onClick: self.showFormHandler },
+          "Add Story"
+        )
+      );
+
+      if (self.state.stories.length > 0) {
+        if (self.props.project != null) {
+          var heading = React.createElement(
+            "h3",
+            null,
+            " ",
+            self.props.project['name'],
+            " "
+          );
+        }
+      }
+
+      return React.createElement(
+        "div",
+        null,
+        heading,
+        this.state.add_story ? React.createElement(AddStoryForm, {
+          addStoryHandler: self.addStoryHandler,
+          hideForm: function hideForm() {
+            self.setState({ add_story: false });
+          }
+        }) : stories_table
+      );
+    }
+  }]);
+
+  return UserStories;
+}(React.Component);
+
+var AddStoryForm = function (_React$Component2) {
+  _inherits(AddStoryForm, _React$Component2);
 
   function AddStoryForm(props) {
     _classCallCheck(this, AddStoryForm);
 
-    var _this7 = _possibleConstructorReturn(this, (AddStoryForm.__proto__ || Object.getPrototypeOf(AddStoryForm)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (AddStoryForm.__proto__ || Object.getPrototypeOf(AddStoryForm)).call(this, props));
 
-    _this7.state = {
+    _this2.state = {
       errors: {},
       values: {}
     };
 
     // This is to allow it to work as callback from other context
-    _this7.changeHandler = _this7.changeHandler.bind(_this7);
-    return _this7;
+    _this2.changeHandler = _this2.changeHandler.bind(_this2);
+    return _this2;
   }
 
   _createClass(AddStoryForm, [{
-    key: 'changeHandler',
+    key: "changeHandler",
     value: function changeHandler(e) {
       var form = this.formRef;
       var story = {};
@@ -689,19 +851,19 @@ var AddStoryForm = function (_React$Component5) {
       });
     }
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       window.componentHandler.upgradeDom();
     }
   }, {
-    key: 'componentDidUpdate',
+    key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
       window.componentHandler.upgradeDom();
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
-      var _this8 = this;
+      var _this3 = this;
 
       var self = this;
       {/* Form Submit Handler */}
@@ -709,8 +871,10 @@ var AddStoryForm = function (_React$Component5) {
       var submitHandler = function submitHandler(e) {
         e.preventDefault();
         if (Object.keys(self.state.errors) == 0) {
-          console.log(self.state);
+
           self.props.addStoryHandler(self.state.values);
+
+          self.setState({ add_story: false });
         } else {
           var text = Object.values(self.state.errors).join(" ");
           alert('form still has errors: ' + text);
@@ -718,209 +882,70 @@ var AddStoryForm = function (_React$Component5) {
       };
 
       return React.createElement(
-        'form',
+        "form",
         {
           onSubmit: submitHandler,
           onChange: self.changeHandler,
-          ref: function ref(_ref3) {
-            return _this8.formRef = _ref3;
+          ref: function ref(_ref) {
+            return _this3.formRef = _ref;
           }
         },
         React.createElement(
-          'div',
-          { className: 'mdl-textfield mdl-js-textfield' },
-          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'name', name: 'name' }),
+          "div",
+          { className: "mdl-textfield mdl-js-textfield" },
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name" }),
           React.createElement(
-            'label',
-            { className: 'mdl-textfield__label', htmlFor: 'name' },
-            'User Story Name'
+            "label",
+            { className: "mdl-textfield__label", htmlFor: "name" },
+            "User Story Name"
           ),
           this.state.errors.name ? React.createElement(
-            'span',
-            { className: 'mdl-textfield__error' },
+            "span",
+            { className: "mdl-textfield__error" },
             this.state.errors.name
           ) : null
         ),
         React.createElement(
-          'div',
-          { className: 'mdl-textfield mdl-js-textfield' },
-          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'status', name: 'status' }),
+          "div",
+          { className: "mdl-textfield mdl-js-textfield" },
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "status", name: "status" }),
           React.createElement(
-            'label',
-            { className: 'mdl-textfield__label', htmlFor: 'status' },
-            'Status'
+            "label",
+            { className: "mdl-textfield__label", htmlFor: "status" },
+            "Status"
           ),
           this.state.errors.status ? React.createElement(
-            'span',
-            { className: 'mdl-textfield__error' },
+            "span",
+            { className: "mdl-textfield__error" },
             this.state.errors.status
           ) : null
         ),
-        React.createElement('br', null),
+        React.createElement("br", null),
         React.createElement(
-          'button',
+          "button",
           {
-            type: 'submit',
-            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'
+            type: "submit",
+            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
           },
-          'Save'
+          "Save"
+        ),
+        React.createElement(
+          "button",
+          {
+            type: "button",
+            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+            onClick: function onClick(e) {
+              e.preventDefault();
+              self.props.hideForm();
+            }
+          },
+          "Cancel"
         )
       );
     }
   }]);
 
   return AddStoryForm;
-}(React.Component);
-"use strict";
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var UserStories = function (_React$Component) {
-  _inherits(UserStories, _React$Component);
-
-  function UserStories(props) {
-    _classCallCheck(this, UserStories);
-
-    var _this = _possibleConstructorReturn(this, (UserStories.__proto__ || Object.getPrototypeOf(UserStories)).call(this, props));
-
-    _this.state = {
-      add_story: false,
-      story_idx: null,
-      stories: [{ "name": "story 1", "status": "completed" }]
-    };
-
-    _this.addStoryHandler = _this.addStoryHandler.bind(_this);
-
-    _this.db = _this.props.firebase.database();
-
-    return _this;
-  }
-
-  _createClass(UserStories, [{
-    key: "addStoryHandler",
-    value: function addStoryHandler(story) {
-      console.log("Add new ", story);
-      var result = this.firebaseProjects.push(story);
-      this.loadStories();
-    }
-  }, {
-    key: "componentWillMount",
-    value: function componentWillMount() {
-      // Based on this SO answer, I dediced to sign in anonymously:
-      this.props.firebase.auth().signInAnonymously().catch(function (error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-
-      this.firebaseStories = this.db.ref('app/stories');
-
-      this.loadStories();
-    }
-  }, {
-    key: "loadStories",
-    value: function loadStories() {
-      this.firebaseProjects.on('value', function (dataSnapshot) {
-        var items = [];
-        dataSnapshot.forEach(function (childSnapshot) {
-          var item = childSnapshot.val();
-          item['firebase_key'] = childSnapshot.key;
-          items.push(item);
-        });
-
-        this.setState({
-          stories: items
-        });
-      }.bind(this));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-
-      var self = this;
-
-      var body = this.state.stories.map(function (item, index) {
-        return React.createElement(
-          "tr",
-          { key: index },
-          React.createElement(
-            "td",
-            { className: "mdl-data-table__cell--non-numeric" },
-            item.name
-          ),
-          React.createElement(
-            "td",
-            null,
-            item.status
-          )
-        );
-      });
-
-      if (self.state.stories.length > 0) {
-        if (this.props.project != null) {
-          var heading = React.createElement(
-            "h3",
-            null,
-            " ",
-            this.props.project['name'],
-            " "
-          );
-        }
-      }
-
-      return (
-
-        //{ this.state.add_story ? (<AddStoryForm addStoryHandler={self.addStoryHandler} />): stories_table }
-
-        React.createElement(
-          "div",
-          null,
-          heading,
-          React.createElement(AddStoryForm, { addStoryHandler: self.addStoryHandler }),
-          React.createElement(
-            "table",
-            { className: "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" },
-            React.createElement(
-              "thead",
-              null,
-              React.createElement(
-                "tr",
-                null,
-                React.createElement(
-                  "th",
-                  { className: "mdl-data-table__cell--non-numeric" },
-                  "Name"
-                ),
-                React.createElement(
-                  "th",
-                  null,
-                  "Status"
-                )
-              )
-            ),
-            React.createElement(
-              "tbody",
-              null,
-              body
-            )
-          ),
-          React.createElement(
-            "button",
-            { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
-            "Add Story"
-          )
-        )
-      );
-    }
-  }]);
-
-  return UserStories;
 }(React.Component);
 
 //# sourceMappingURL=project.js.map

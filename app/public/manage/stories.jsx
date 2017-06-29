@@ -3,6 +3,8 @@ class UserStories extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
+
     this.state = {
       add_story: false,
       story_idx: null,
@@ -10,29 +12,28 @@ class UserStories extends React.Component {
     };
 
     this.addStoryHandler= this.addStoryHandler.bind(this);
+    this.showFormHandler = this.showFormHandler.bind(this);
+  }
+
+  showFormHandler(e){
+    this.setState({ add_story: true });
   }
 
   addStoryHandler(story) {
     console.log("Add new ", story);
-    var result = this.firebaseProjects.push(story);
+    var result = this.firebaseStories.push(story);
     this.loadStories();
   }
 
   componentWillMount() {
-    // Based on this SO answer, I dediced to sign in anonymously:
-    this.props.firebase.auth().signInAnonymously().catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
 
-    this.firebaseStories = this.db.ref('app/stories');
+    this.firebaseStories = this.props.db.ref('app/stories');
 
     this.loadStories();
   }
 
   loadStories(){
-    this.firebaseProjects.on('value', function(dataSnapshot) {
+    this.firebaseStories.on('value', function(dataSnapshot) {
       var items = [];
       dataSnapshot.forEach(function(childSnapshot) {
         var item = childSnapshot.val();
@@ -50,6 +51,8 @@ class UserStories extends React.Component {
 
     var self = this;
 
+    console.log(this.props);
+
     var body = this.state.stories.map(function(item, index){
       return (
         <tr key={index}>
@@ -59,43 +62,51 @@ class UserStories extends React.Component {
       );
     });
 
-
-    if ( self.state.stories.length > 0) {
-      if (this.props.project != null) { 
-          var heading = <h3> { this.props.project['name'] } </h3>;
-        }
-    }
-
-    return (
-
-      //{ this.state.add_story ? (<AddStoryForm addStoryHandler={self.addStoryHandler} />): stories_table }
-    
+    var stories_table = (
       <div>
-        {heading}
-
-        <AddStoryForm addStoryHandler= {self.addStoryHandler} />
-       
         <table className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
           <thead>
             <tr>
             <th className="mdl-data-table__cell--non-numeric">Name</th>
             <th>Status</th>
-          </tr>
-         </thead>
+            </tr>
+          </thead>
           <tbody>
-          {
-            body
-          }
+            {
+              body
+            }
           </tbody>
         </table>
-        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+
+        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        onClick={self.showFormHandler}>
           Add Story
         </button>
       </div>
     );
 
-  }
+    if ( self.state.stories.length > 0) {
+      if (self.props.project != null) { 
+          var heading = <h3> { self.props.project['name'] } </h3>;
+        }
+    }
 
+    return (
+      <div>
+        {heading}
+        { this.state.add_story ? (
+          <AddStoryForm
+            addStoryHandler={self.addStoryHandler}
+            hideForm={
+              function() {
+                self.setState({add_story: false});
+              }
+            }
+          />
+        ): stories_table }
+      </div>
+    );
+  }
 }
 
 class AddStoryForm extends React.Component {
@@ -148,8 +159,10 @@ class AddStoryForm extends React.Component {
     var submitHandler = function(e){
       e.preventDefault();
       if (Object.keys(self.state.errors) == 0){
-        console.log(self.state);
+
         self.props.addStoryHandler(self.state.values);
+
+        self.setState({add_story: false});
       }else{
         var text = Object.values(self.state.errors).join(" ");
         alert('form still has errors: ' + text);
@@ -186,6 +199,18 @@ class AddStoryForm extends React.Component {
           className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
           >
           Save
+        </button>
+        <button 
+          type="button"
+          className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+          onClick={
+            function(e){
+              e.preventDefault();
+              self.props.hideForm();
+            }
+          }
+        >
+          Cancel
         </button>
       </form>
     );
