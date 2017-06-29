@@ -29,4 +29,20 @@ $(document).ready ( function()
     });
 
 
+    var projects = firebase.database().ref('app/projects') ; 
+    projects.once('value', function(snapshot) {
+            var projects_display = $('<select id=project_list></select>') ; 
+        snapshot.forEach(function(childSnapshot) {
+            var childKey = childSnapshot.key; 
+            var childData = childSnapshot.val(); 
+				projects_display.append ('<option>' + childData.name + '</option>' ) ; 
+         });
+        $('#project_list').chosen() ; 
+        $('#projects_container').append ( projects_display ) ; 
+    });
 }) ;
+
+$(window).on('load',function() { 
+    console.log ( 'this worked!' ) ; 
+    $('#project_list').chosen() ; 
+}) ; 
