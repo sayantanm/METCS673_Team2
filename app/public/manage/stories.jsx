@@ -21,10 +21,9 @@ class UserStories extends React.Component {
 
   addStoryHandler(story) {
     console.log("Add new ", story);
-    console.log("Print Project: ", this.props.project)
     story['project_key'] = this.props.project.firebase_key;
     var result = this.firebaseStories.push(story);
-    console.log('result');
+    this.setState({add_story: false});
     this.loadStories();
   }
 
@@ -184,7 +183,7 @@ class AddStoryForm extends React.Component {
 
         self.props.addStoryHandler(self.state.values);
 
-        self.setState({add_story: false});
+        
       }else{
         var text = Object.values(self.state.errors).join(" ");
         alert('form still has errors: ' + text);
@@ -206,12 +205,14 @@ class AddStoryForm extends React.Component {
           ): null}
         </div>
 
-        <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="status" name="status" />
-          <label className="mdl-textfield__label" htmlFor="status">Status</label>
-          {this.state.errors.status ? (
-            <span className="mdl-textfield__error">{this.state.errors.status}</span>
-          ): null}
+        <div className="mdl-selectfield mdl-js-selectfield">
+          <label className="mdl-selectfield__label" for="status">Status</label>
+          <select className="mdl-selectfield__select" id="status" name="status">
+            <option value=""></option>
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
 
         <br/>

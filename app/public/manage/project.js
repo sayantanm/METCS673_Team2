@@ -719,7 +719,7 @@ var AddProjectForm = function (_React$Component4) {
 
   return AddProjectForm;
 }(React.Component);
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -751,35 +751,34 @@ var UserStories = function (_React$Component) {
   }
 
   _createClass(UserStories, [{
-    key: "showFormHandler",
+    key: 'showFormHandler',
     value: function showFormHandler(e) {
       this.setState({ add_story: true });
     }
   }, {
-    key: "addStoryHandler",
+    key: 'addStoryHandler',
     value: function addStoryHandler(story) {
       console.log("Add new ", story);
-      console.log("Print Project: ", this.props.project);
       story['project_key'] = this.props.project.firebase_key;
       var result = this.firebaseStories.push(story);
-      console.log('result');
+      this.setState({ add_story: false });
       this.loadStories();
     }
   }, {
-    key: "componentWillMount",
+    key: 'componentWillMount',
     value: function componentWillMount() {
       this.firebaseStories = this.props.db.ref('app/stories');
       this.loadStories();
     }
   }, {
-    key: "componentDidUpdate",
+    key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
       if (this.props.project && this.props.project.firebase_key != prevProps.project.firebase_key) {
         this.loadStories();
       }
     }
   }, {
-    key: "loadStories",
+    key: 'loadStories',
     value: function loadStories() {
       var self = this;
       console.log(self.props.project.firebase_key);
@@ -797,7 +796,7 @@ var UserStories = function (_React$Component) {
       }.bind(this));
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
 
       var self = this;
@@ -807,15 +806,15 @@ var UserStories = function (_React$Component) {
       if (this.state.stories.length > 0) {
         var body = this.state.stories.map(function (item, index) {
           return React.createElement(
-            "tr",
+            'tr',
             { key: index },
             React.createElement(
-              "td",
-              { className: "mdl-data-table__cell--non-numeric" },
+              'td',
+              { className: 'mdl-data-table__cell--non-numeric' },
               item.name
             ),
             React.createElement(
-              "td",
+              'td',
               null,
               item.status
             )
@@ -823,31 +822,31 @@ var UserStories = function (_React$Component) {
         });
 
         var stories_table = React.createElement(
-          "div",
+          'div',
           null,
           React.createElement(
-            "table",
-            { className: "mdl-data-table mdl-js-data-table mdl-shadow--2dp" },
+            'table',
+            { className: 'mdl-data-table mdl-js-data-table mdl-shadow--2dp' },
             React.createElement(
-              "thead",
+              'thead',
               null,
               React.createElement(
-                "tr",
+                'tr',
                 null,
                 React.createElement(
-                  "th",
-                  { className: "mdl-data-table__cell--non-numeric" },
-                  "Name"
+                  'th',
+                  { className: 'mdl-data-table__cell--non-numeric' },
+                  'Name'
                 ),
                 React.createElement(
-                  "th",
+                  'th',
                   null,
-                  "Status"
+                  'Status'
                 )
               )
             ),
             React.createElement(
-              "tbody",
+              'tbody',
               null,
               body
             )
@@ -855,29 +854,29 @@ var UserStories = function (_React$Component) {
         );
       } else {
         stories_table = React.createElement(
-          "p",
+          'p',
           null,
-          "No stories"
+          'No stories'
         );
       }
 
       var add_story_button = React.createElement(
-        "button",
-        { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+        'button',
+        { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
           onClick: self.showFormHandler },
-        "Add Story"
+        'Add Story'
       );
 
       var heading = React.createElement(
-        "h3",
+        'h3',
         null,
-        " ",
+        ' ',
         self.props.project['name'],
-        " "
+        ' '
       );
 
       return React.createElement(
-        "div",
+        'div',
         null,
         heading,
         console.log("length", self.state.stories.length),
@@ -914,7 +913,7 @@ var AddStoryForm = function (_React$Component2) {
   }
 
   _createClass(AddStoryForm, [{
-    key: "changeHandler",
+    key: 'changeHandler',
     value: function changeHandler(e) {
       var form = this.formRef;
       var story = {};
@@ -937,17 +936,17 @@ var AddStoryForm = function (_React$Component2) {
       });
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       window.componentHandler.upgradeDom();
     }
   }, {
-    key: "componentDidUpdate",
+    key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
       window.componentHandler.upgradeDom();
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this3 = this;
 
@@ -959,8 +958,6 @@ var AddStoryForm = function (_React$Component2) {
         if (Object.keys(self.state.errors) == 0) {
 
           self.props.addStoryHandler(self.state.values);
-
-          self.setState({ add_story: false });
         } else {
           var text = Object.values(self.state.errors).join(" ");
           alert('form still has errors: ' + text);
@@ -968,7 +965,7 @@ var AddStoryForm = function (_React$Component2) {
       };
 
       return React.createElement(
-        "form",
+        'form',
         {
           onSubmit: submitHandler,
           onChange: self.changeHandler,
@@ -977,55 +974,69 @@ var AddStoryForm = function (_React$Component2) {
           }
         },
         React.createElement(
-          "div",
-          { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name" }),
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'name', name: 'name' }),
           React.createElement(
-            "label",
-            { className: "mdl-textfield__label", htmlFor: "name" },
-            "User Story Name"
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'name' },
+            'User Story Name'
           ),
           this.state.errors.name ? React.createElement(
-            "span",
-            { className: "mdl-textfield__error" },
+            'span',
+            { className: 'mdl-textfield__error' },
             this.state.errors.name
           ) : null
         ),
         React.createElement(
-          "div",
-          { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "status", name: "status" }),
+          'div',
+          { className: 'mdl-selectfield mdl-js-selectfield' },
           React.createElement(
-            "label",
-            { className: "mdl-textfield__label", htmlFor: "status" },
-            "Status"
+            'label',
+            { className: 'mdl-selectfield__label', 'for': 'status' },
+            'Status'
           ),
-          this.state.errors.status ? React.createElement(
-            "span",
-            { className: "mdl-textfield__error" },
-            this.state.errors.status
-          ) : null
+          React.createElement(
+            'select',
+            { className: 'mdl-selectfield__select', id: 'status', name: 'status' },
+            React.createElement('option', { value: '' }),
+            React.createElement(
+              'option',
+              { value: 'Not Started' },
+              'Not Started'
+            ),
+            React.createElement(
+              'option',
+              { value: 'In Progress' },
+              'In Progress'
+            ),
+            React.createElement(
+              'option',
+              { value: 'Completed' },
+              'Completed'
+            )
+          )
         ),
-        React.createElement("br", null),
+        React.createElement('br', null),
         React.createElement(
-          "button",
+          'button',
           {
-            type: "submit",
-            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+            type: 'submit',
+            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'
           },
-          "Save"
+          'Save'
         ),
         React.createElement(
-          "button",
+          'button',
           {
-            type: "button",
-            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+            type: 'button',
+            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
             onClick: function onClick(e) {
               e.preventDefault();
               self.props.hideForm();
             }
           },
-          "Cancel"
+          'Cancel'
         )
       );
     }
