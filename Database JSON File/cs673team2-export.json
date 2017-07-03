@@ -1,106 +1,97 @@
 {
-  "chat" : "This should already be populated",
   "projects" : {
-    "project1" : {
-      "admins" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
-      "members" : {
-        "jsmith68" : true,
-        "hensonc" : true
-      },
+    "Web App" : {
       "name" : "Web App",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "John Smith" : "PM",
+        "Chris Henson" : "QA"
+      },
       "projectEndDate" : "8/3/17",
       "projectID" : 119867665,
       "projectStartDate" : "5/26/2017",
       "status" : "In Progress"
     },
-    "project2" : {
-      "admins" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
-      "members" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
+    "Another Project" : {
       "name" : "Another Project",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "Chris Henson" : "PM"
+      },
       "projectEndDate" : "8/3/2017",
       "projectID" : 1165,
       "projectStartDate" : "5/26/2017",
       "status" : "Not Started"
     },
-    "project3" : {
-      "admins" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
-      "members" : {
-        "jsmith68" : true,
-        "hensonc" : true
-      },
+    "Some Other App" : {
       "name" : "Some Other App",
+      "admins" :
+        "hensonc"
+      ,
+      "members" : {
+        "John Smith" : "PM",
+        "Chris Henson" : "DEVOPS"
+      },
       "projectEndDate" : "8/3/2017",
       "projectID" : 65,
       "projectStartDate" : "5/26/2017",
       "status" : "Complete"
     },
-    "project4" : {
-      "admins" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
-      "members" : {
-        "jsmith68" : true,
-        "hensonc" : true
-      },
+    "Something Else" : {
       "name" : "Something Else",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "John Smith" : "PM",
+        "Chris Henson" : "QA"
+      },
       "projectEndDate" : "8/3/2017",
       "projectID" : 11111,
       "projectStartDate" : "5/26/2017",
       "status" : "In Progress"
     },
-    "project5" : {
-      "admins" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
-      "members" : {
-        "jsmith68" : false,
-        "hensonc" : true
-      },
+     "Side Project" : {
       "name" : "Side Project",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "Chris Henson" : "NA"
+      },
       "projectEndDate" : "8/3/2017",
       "projectID" : 777777,
       "projectStartDate" : "5/26/2017",
       "status" : "In Progress"
     }
   },
-  "tasks" : "NULL",
   "users" : {
-    "jsmith68" : {
+    "John Smith" : {
       "email" : "jsmith68@fake.com",
       "name" : "John Smith",
       "projects" : {
-        "project1" : true,
-        "project2" : false,
-        "project3" : true,
-        "project4" : true,
-        "project5" : false
+	  "Web App" : true,
+	  "Another Project" : false,
+	  "Some Other App"  : true,
+          "Something Else" : true,
+          "Side Project" : false
       },
       "userID" : 33333,
       "userIcon" : "NULL"
     },
-    "hensonc" : {
+    "Chris Henson" : {
       "email" : "hensonc@bu.edu",
       "name" : "Chris Henson",
       "projects" : {
-        "project1" : true,
-        "project2" : true,
-        "project3" : true,
-        "project4" : true,
-        "project5" : true
+          "Web App" : true,
+          "Another Project" : true,
+          "Some Other App" : true,
+          "Something Else" : true,
+          "Side Project" : true
       },
       "userID" : 107,
       "userIcon" : "NULL"

@@ -1,105 +1,87 @@
+$(document).ready (function()
+{
+var projects = firebase.database().ref('projects');
 
-
-
-var user = document.getElementById("user");
-var userPic = document.getElementById("userPic");
-var name = document.getElementById("name");
-var role = document.getElementById("role");
-var email = document.getElementById("email");
-var addButton = document.getElementById("addButton");
-
-var projList = [project1, project2, project3, project4, project5];
-var oRef = firebase.database().ref('projects' ) ;
-oRef.once('value', function(snapshot) {
-  snapshot.forEach(function(childSnapshot) {
-    var childKey = childSnapshot.key; console.log ( childKey ) ;
-    var childData = childSnapshot.val(); console.log ( childData ) ;
-     });
+//Populates the project list drop down menu:
+projects.once('value', function(snapshot) {
+        var projects_display = ('<option id=choose selected>Please select a project</option>') ;
+        snapshot.forEach(function(childSnapshot) {
+          var childData = childSnapshot.val().name;
+          projects_display = projects_display + ('<option>' + childData + '</option>');
+        });
+    $('#projects_container').append(projects_display).html();
 });
 
-
-//This is just an example of how I will build the project name list dynamically:
-/*var x = document.getElementById("mySelect");
-var c = document.createElement("option");
-c.text = "Kiwi";
-x.options.add(c, 1);
-
-var x = document.getElementById("mySelect");
-x.options.remove(1);*/
+//Triggers the change in the members list when a project is selected:
+document.getElementById("projects_container").addEventListener("change", showMembers);
 
 
 function showMembers(){
-  var oRef = firebase.database().ref('projects' ) ;
-  oRef.once('value', function(snapshot) {
+  //clears previous lists that might be on screen:
+  let memberRows = "";
+  $('#table tbody tr').remove();
+
+  let project = document.getElementById("projects_container");
+  let selected = project.options[project.selectedIndex].value;
+
+  if(selected == "Please select a project"){
+    return;
+  }
+
+  let db = firebase.database().ref();
+  let selectProj = db.child('projects/' + selected + '/members');
+
+  selectProj.once("value", function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
-      var childKey = childSnapshot.key; console.log ( childKey ) ;
-      var childData = childSnapshot.val(); console.log ( childData ) ;
-       });
+      memberName = childSnapshot.key;
+      console.log("Name:" + memberName);
+      memberRole = childSnapshot.val();
+      console.log("memberRole:" + memberRole);
+      memberRows = ('<tr><td class="mdl-data-table__cell--non-numeric team">' +
+        memberName + '</td><td class="mdl-data-table__cell--non-numeric team" >' + memberRole +
+        '</td></tr>');
+      $('#memberList').append(memberRows).html();
+    });
   });
-  var projects = document.getElementById("projectList");
-  selected = projects.options[projects.selectedIndex].value;
 
-  for (i = 0; i <7; i++){
-    var name = "" + i + ".name";
-    document.getElementById(name).innerHTML= "";
-    var j = "" + i + ".role";
-    document.getElementById(j).innerHTML= "";
-  }
+    }
 
-  switch(selected){
-    case("project1"):
-      for (i = 0; i < project1.length; i++){
-        var name = "" + i + ".name";
-        document.getElementById(name).innerHTML= project1[i].name;
-        var j = "" + i + ".role";
-        document.getElementById(j).innerHTML= project1[i].role;
-      }
-      break;
 
-    case("project2"):
-      for (i = 0; i < project2.length; i++){
-        var name = "" + i + ".name";
-        document.getElementById(name).innerHTML= project2[i].name;
-        var j = "" + i+ ".role";
-        document.getElementById(j).innerHTML= project2[i].role;
-      }
-      break;
+  /*selectProj.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot) {
+        var userName = childSnapshot.key;
+        //console.log(userName);
+        users.once('value').then(function(snapshot){
 
-    case("project3"):
-      for (i = 0; i < project3.length; i++){
-        var name = "" + i + ".name";
-        document.getElementById(name).innerHTML= project3[i].name;
-        var j = "" + i+ ".role";
-        document.getElementById(j).innerHTML= project3[i].role;
-      }
-      break;
+            memberName = childSnapshot.val().name
+            console.log(memberName);
+          });
+        });
+        var memberRole = childSnapshot.val();
+        console.log(memberName);
+        //console.log(memberRole);
+        //console.log(memberName);
 
-    case("project4"):
-      for (i = 0; i < project4.length; i++){
-        var name = "" + i + ".name";
-        document.getElementById(name).innerHTML= project4[i].name;
-        var j = "" + i+ ".role";
-        document.getElementById(j).innerHTML= project4[i].role;
-      }
-      break;
+  }*/
 
-    case("project5"):
-      for (i = 0; i < project5.length; i++){
-        var name = "" + i + ".name";
-        document.getElementById(name).innerHTML= project5[i].name;
-        var j = "" + i+ ".role";
-        document.getElementById(j).innerHTML= project5[i].role;
-      }
-  }
-}
+
 
 addButton.onclick = function() {
-  projects = document.getElementById("projectList");
-  selected = projects.options[projects.selectedIndex].value;
+  let project = document.getElementById("projects_container");
+  let selected = project.options[project.selectedIndex].value;
 
-  if (selected == "choose"){
+  if(selected == "Please select a project"){
     alert("Please select a project first");
+    return;
   }
+
+  //try{
+
+//  }
+  //catch(e){
+  //  alert("Please select a project first");
+  //  return;
+//  }
 
   var teamMember = {
     name: document.getElementById("name").value,
@@ -148,3 +130,6 @@ function changeProfilePic(userID, name, email, imageUrl) {
     userIcon : imageUrl
   });
 }
+
+
+}) ;
