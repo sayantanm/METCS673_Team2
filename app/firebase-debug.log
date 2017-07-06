@@ -1,0 +1,36 @@
+[debug] [2017-07-03T13:57:18.112Z] ----------------------------------------------------------------------
+[debug] [2017-07-03T13:57:18.114Z] Command:      /usr/local/bin/node /usr/local/bin/firebase serve --project cs673team2
+[debug] [2017-07-03T13:57:18.115Z] CLI Version:  3.9.1
+[debug] [2017-07-03T13:57:18.115Z] Platform:     darwin
+[debug] [2017-07-03T13:57:18.115Z] Node Version: v6.11.0
+[debug] [2017-07-03T13:57:18.115Z] Time:         Mon Jul 03 2017 09:57:18 GMT-0400 (EDT)
+[debug] [2017-07-03T13:57:18.116Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-07-03T13:57:18.130Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-07-03T13:57:18.130Z] > authorizing via signed-in user
+[debug] [2017-07-03T13:57:18.132Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-07-03T13:57:18.133Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/gjfzZW-RY-nkzKxv4TrEqdsqN6w7T2sqmi0bvGZF9C7HrH9Wwv0l9iIqttXk7wJ6',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Mon Jul 03 2017 09:57:18 GMT-0400 (EDT)
+[debug] [2017-07-03T13:57:18.357Z] <<< HTTP RESPONSE 200
+[debug] [2017-07-03T13:57:18.375Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/cs673team2  
+ Mon Jul 03 2017 09:57:18 GMT-0400 (EDT)
+[debug] [2017-07-03T13:57:19.049Z] <<< HTTP RESPONSE 200
+[debug] [2017-07-03T13:57:19.050Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/cs673team2/tokens  
+ Mon Jul 03 2017 09:57:19 GMT-0400 (EDT)
+[debug] [2017-07-03T13:57:19.388Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/Chris/GitHub/METCS673_Team2/app'...
+[info] 
+[debug] [2017-07-03T13:57:19.392Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/cs673team2  
+ Mon Jul 03 2017 09:57:19 GMT-0400 (EDT)
+[debug] [2017-07-03T13:57:19.794Z] <<< HTTP RESPONSE 200
+[debug] [2017-07-03T13:57:19.795Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/947879978889/clients/_:getWebAppConfig  
+ Mon Jul 03 2017 09:57:19 GMT-0400 (EDT)
+[debug] [2017-07-03T13:57:20.399Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+
