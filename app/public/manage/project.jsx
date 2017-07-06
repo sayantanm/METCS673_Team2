@@ -8,7 +8,8 @@ class ReactApp extends React.Component {
       project_idx: null,
       progress: 44,
       add_project: false,
-      view_project: false
+      view_project: false,
+      edit_project: false
     };
     this.p1_material_object = null;
 
@@ -28,6 +29,13 @@ class ReactApp extends React.Component {
     this.loadProjects();
   }
 
+  updateProjectHandler(project) {
+    console.log("Updating: ", project);
+    var result = this.firebaseProjects.push(project);
+
+    this.setState({'edit_project': false});
+    this.loadProjects();
+  }
 
   componentWillMount() {
     // Based on this SO answer, I dediced to sign in anonymously:
@@ -117,6 +125,9 @@ class ReactApp extends React.Component {
             var viewProjectHandler = function(){
               self.setState({ view_project: true , project_idx: index});
             }
+            var editProjectHandler = function(){
+              self.setState({ edit_project: true , project_idx: index});
+            }
             return (
               <tr key={item.firebase_key}>
                 <td className="mdl-data-table__cell--non-numeric">
@@ -135,7 +146,9 @@ class ReactApp extends React.Component {
                   <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                   Delete
                   </button>
-                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                  <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                  onClick={editProjectHandler}
+                  >
                   Edit
                   </button>
                 </td>
@@ -156,7 +169,7 @@ class ReactApp extends React.Component {
     }
 
     var project = null;
-    if((self.state.project_idx !== null) && self.state.view_project){
+    if((self.state.project_idx !== null) && self.state.projects.length > 0 ){
       project = self.state.projects[self.state.project_idx];
     }
 
@@ -183,11 +196,13 @@ class ReactApp extends React.Component {
             </div>
           </div>    
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-            { this.state.add_project ? (<AddProjectForm addProjectHandler={self.addProjectHandler} />): projects_table }
+            { this.state.add_project ? (<AddProjectForm saveProjectHandler={self.addProjectHandler} />):
+               (this.state.edit_project ? (<AddProjectForm saveProjectHandler={self.updateProjectHandler} project={project} />): projects_table)
+            }
 
             {/* If view is clicked, then display user stories table */}
             {
-              project ?
+              (project && self.state.view_project) ?
               <UserStories project={project} db={self.db}/>
               : <p>View Project to see stories.</p>}
             <p>Progress:</p>
@@ -331,7 +346,7 @@ class AddProjectForm extends React.Component {
       e.preventDefault();
       if (Object.keys(self.state.errors) == 0){
         console.log(self.state);
-        self.props.addProjectHandler(self.state.values);
+        self.props.saveProjectHandler(self.state.values);
       }else{
         var text = Object.values(self.state.errors).join(" ");
         alert('form still has errors: ' + text);
@@ -341,12 +356,12 @@ class AddProjectForm extends React.Component {
   return (
       <form
         onSubmit={submitHandler}
-        onChange={self.changeHandler}
+        
         ref={(ref)=>this.formRef = ref}
         >
 
         <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="name" name="name" />
+          <input className="mdl-textfield__input" type="text" id="name" name="name" onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
           {this.state.errors.name ? (
             <span className="mdl-textfield__error">{this.state.errors.name}</span>
@@ -354,7 +369,9 @@ class AddProjectForm extends React.Component {
         </div>
 
         <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" />
+          <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" 
+            value={this.props.project ? this.props.project.start_date : ""} onChange={self.changeHandler}
+          />
           <label className="mdl-textfield__label" htmlFor="start_date">Start Date ...</label>
           {this.state.errors.start_date ? (
             <span className="mdl-textfield__error">{this.state.errors.start_date}</span>
@@ -362,16 +379,16 @@ class AddProjectForm extends React.Component {
         </div>
 
         <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" />
+          <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
           {this.state.errors.end_date ? (
             <span className="mdl-textfield__error">{this.state.errors.end_date}</span>
           ): null}
         </div>
 
-        <div class="mdl-selectfield mdl-js-selectfield">
-          <label class="mdl-selectfield__label" for="status">Status</label>
-          <select class="mdl-selectfield__select" id="status" name="status">
+        <div className="mdl-selectfield mdl-js-selectfield">
+          <label className="mdl-selectfield__label" htmlFor="status">Status</label>
+          <select className="mdl-selectfield__select" id="status" name="status" onChange={self.changeHandler}>
             <option value=""></option>
             <option value="Not Started">Not Started</option>
             <option value="In Progress">In Progress</option>
@@ -380,7 +397,7 @@ class AddProjectForm extends React.Component {
         </div>
 
         <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="desc" name="desc" />
+          <input className="mdl-textfield__input" type="text" id="desc" name="desc" onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="desc">Description</label>
           {this.state.errors.desc ? (
             <span className="mdl-textfield__error">{this.state.errors.desc}</span>

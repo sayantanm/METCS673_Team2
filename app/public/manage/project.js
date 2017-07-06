@@ -22,7 +22,8 @@ var ReactApp = function (_React$Component) {
       project_idx: null,
       progress: 44,
       add_project: false,
-      view_project: false
+      view_project: false,
+      edit_project: false
     };
     _this.p1_material_object = null;
 
@@ -42,6 +43,15 @@ var ReactApp = function (_React$Component) {
       console.log("result: ", result);
 
       this.setState({ 'add_project': false });
+      this.loadProjects();
+    }
+  }, {
+    key: "updateProjectHandler",
+    value: function updateProjectHandler(project) {
+      console.log("Updating: ", project);
+      var result = this.firebaseProjects.push(project);
+
+      this.setState({ 'edit_project': false });
       this.loadProjects();
     }
   }, {
@@ -165,6 +175,9 @@ var ReactApp = function (_React$Component) {
             var viewProjectHandler = function viewProjectHandler() {
               self.setState({ view_project: true, project_idx: index });
             };
+            var editProjectHandler = function editProjectHandler() {
+              self.setState({ edit_project: true, project_idx: index });
+            };
             return React.createElement(
               "tr",
               { key: item.firebase_key },
@@ -213,7 +226,9 @@ var ReactApp = function (_React$Component) {
                 ),
                 React.createElement(
                   "button",
-                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
+                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                    onClick: editProjectHandler
+                  },
                   "Edit"
                 )
               )
@@ -231,7 +246,7 @@ var ReactApp = function (_React$Component) {
       };
 
       var project = null;
-      if (self.state.project_idx !== null && self.state.view_project) {
+      if (self.state.project_idx !== null && self.state.projects.length > 0) {
         project = self.state.projects[self.state.project_idx];
       }
 
@@ -271,8 +286,8 @@ var ReactApp = function (_React$Component) {
           React.createElement(
             "div",
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
-            this.state.add_project ? React.createElement(AddProjectForm, { addProjectHandler: self.addProjectHandler }) : projects_table,
-            project ? React.createElement(UserStories, { project: project, db: self.db }) : React.createElement(
+            this.state.add_project ? React.createElement(AddProjectForm, { saveProjectHandler: self.addProjectHandler }) : this.state.edit_project ? React.createElement(AddProjectForm, { saveProjectHandler: self.updateProjectHandler, project: project }) : projects_table,
+            project && self.state.view_project ? React.createElement(UserStories, { project: project, db: self.db }) : React.createElement(
               "p",
               null,
               "View Project to see stories."
@@ -599,7 +614,7 @@ var AddProjectForm = function (_React$Component4) {
         e.preventDefault();
         if (Object.keys(self.state.errors) == 0) {
           console.log(self.state);
-          self.props.addProjectHandler(self.state.values);
+          self.props.saveProjectHandler(self.state.values);
         } else {
           var text = Object.values(self.state.errors).join(" ");
           alert('form still has errors: ' + text);
@@ -610,7 +625,7 @@ var AddProjectForm = function (_React$Component4) {
         "form",
         {
           onSubmit: submitHandler,
-          onChange: self.changeHandler,
+
           ref: function ref(_ref2) {
             return _this6.formRef = _ref2;
           }
@@ -618,7 +633,7 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name" }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "name" },
@@ -633,7 +648,9 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date" }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date",
+            value: this.props.project ? this.props.project.start_date : "", onChange: self.changeHandler
+          }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "start_date" },
@@ -648,7 +665,7 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date" }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "end_date" },
@@ -662,15 +679,15 @@ var AddProjectForm = function (_React$Component4) {
         ),
         React.createElement(
           "div",
-          { "class": "mdl-selectfield mdl-js-selectfield" },
+          { className: "mdl-selectfield mdl-js-selectfield" },
           React.createElement(
             "label",
-            { "class": "mdl-selectfield__label", "for": "status" },
+            { className: "mdl-selectfield__label", htmlFor: "status" },
             "Status"
           ),
           React.createElement(
             "select",
-            { "class": "mdl-selectfield__select", id: "status", name: "status" },
+            { className: "mdl-selectfield__select", id: "status", name: "status", onChange: self.changeHandler },
             React.createElement("option", { value: "" }),
             React.createElement(
               "option",
@@ -692,7 +709,7 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc" }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "desc" },
