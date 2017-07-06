@@ -43,6 +43,7 @@ $(document).ready ( function()
 
     $('#issue_create_submit').click( function() 
     {
+        var issue_status= $('#istatus_input').val() ; 
         var issue_type  = $('#itype_input').val() ; 
         var assigned_to = $('#uname_input').val() ; 
         var due_by      = $('#due_input').val() ; 
@@ -58,7 +59,8 @@ $(document).ready ( function()
                 'due_by'      : due_by , 
                 'project_name': project_nm , 
                 'summary'     : summary,
-                'description' : descr 
+                'description' : descr ,
+                'status'      : issue_status 
 			} ) ;  
         ic_dialog.close() ; 
     } ) ; 
