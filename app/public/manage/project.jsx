@@ -286,8 +286,9 @@ class AddProjectForm extends React.Component {
     super(props);
     this.state = {
       errors: {},
-      values: {},
     };
+
+    this.state.values = this.props.project ? this.props.project: {};
 
     // This is to allow it to work as callback from other context
     this.changeHandler = this.changeHandler.bind(this);
@@ -362,7 +363,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="name" name="name" 
-          value={this.props.project ? this.props.project.name : ""} onChange={self.changeHandler}/>
+          value={this.props.project ? this.state.values.name : undefined } onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
           {this.state.errors.name ? (
             <span className="mdl-textfield__error">{this.state.errors.name}</span>
@@ -371,7 +372,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" 
-            value={this.props.project ? this.props.project.start_date : ""} onChange={self.changeHandler}
+            value={this.props.project ? this.props.project.start_date : undefined} onChange={self.changeHandler}
           />
           <label className="mdl-textfield__label" htmlFor="start_date">Start Date ...</label>
           {this.state.errors.start_date ? (
@@ -381,7 +382,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" 
-          value={this.props.project ? this.props.project.end_date : ""} onChange={self.changeHandler}/>
+          value={this.props.project ? this.props.project.end_date : undefined} onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
           {this.state.errors.end_date ? (
             <span className="mdl-textfield__error">{this.state.errors.end_date}</span>
@@ -391,8 +392,8 @@ class AddProjectForm extends React.Component {
         <div className="mdl-selectfield mdl-js-selectfield">
           <label className="mdl-selectfield__label" htmlFor="status">Status</label>
           <select className="mdl-selectfield__select" id="status" name="status" 
-          value={this.props.project ? this.props.project.status : ""} onChange={self.changeHandler}>
-            <option value=""></option>
+          value={this.props.project ? this.props.project.status : undefined} onChange={self.changeHandler}>
+            <option value= ""></option>
             <option value="Not Started">Not Started</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
@@ -401,7 +402,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="desc" name="desc" 
-          value={this.props.project ? this.props.project.desc : ""} onChange={self.changeHandler}/>
+          value={this.props.project ? this.props.project.desc : undefined} onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="desc">Description</label>
           {this.state.errors.desc ? (
             <span className="mdl-textfield__error">{this.state.errors.desc}</span>

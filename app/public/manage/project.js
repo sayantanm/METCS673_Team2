@@ -545,9 +545,10 @@ var AddProjectForm = function (_React$Component4) {
     var _this5 = _possibleConstructorReturn(this, (AddProjectForm.__proto__ || Object.getPrototypeOf(AddProjectForm)).call(this, props));
 
     _this5.state = {
-      errors: {},
-      values: {}
+      errors: {}
     };
+
+    _this5.state.values = _this5.props.project ? _this5.props.project : {};
 
     // This is to allow it to work as callback from other context
     _this5.changeHandler = _this5.changeHandler.bind(_this5);
@@ -634,7 +635,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name",
-            value: this.props.project ? this.props.project.name : "", onChange: self.changeHandler }),
+            value: this.props.project ? this.state.values.name : undefined, onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "name" },
@@ -650,7 +651,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date",
-            value: this.props.project ? this.props.project.start_date : "", onChange: self.changeHandler
+            value: this.props.project ? this.props.project.start_date : undefined, onChange: self.changeHandler
           }),
           React.createElement(
             "label",
@@ -667,7 +668,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date",
-            value: this.props.project ? this.props.project.end_date : "", onChange: self.changeHandler }),
+            value: this.props.project ? this.props.project.end_date : undefined, onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "end_date" },
@@ -690,7 +691,7 @@ var AddProjectForm = function (_React$Component4) {
           React.createElement(
             "select",
             { className: "mdl-selectfield__select", id: "status", name: "status",
-              value: this.props.project ? this.props.project.status : "", onChange: self.changeHandler },
+              value: this.props.project ? this.props.project.status : undefined, onChange: self.changeHandler },
             React.createElement("option", { value: "" }),
             React.createElement(
               "option",
@@ -713,7 +714,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc",
-            value: this.props.project ? this.props.project.desc : "", onChange: self.changeHandler }),
+            value: this.props.project ? this.props.project.desc : undefined, onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "desc" },
