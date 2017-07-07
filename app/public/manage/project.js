@@ -633,7 +633,8 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name", onChange: self.changeHandler }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name",
+            value: this.props.project ? this.props.project.name : "", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "name" },
@@ -665,7 +666,8 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date", onChange: self.changeHandler }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date",
+            value: this.props.project ? this.props.project.end_date : "", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "end_date" },
@@ -687,7 +689,8 @@ var AddProjectForm = function (_React$Component4) {
           ),
           React.createElement(
             "select",
-            { className: "mdl-selectfield__select", id: "status", name: "status", onChange: self.changeHandler },
+            { className: "mdl-selectfield__select", id: "status", name: "status",
+              value: this.props.project ? this.props.project.status : "", onChange: self.changeHandler },
             React.createElement("option", { value: "" }),
             React.createElement(
               "option",
@@ -709,7 +712,8 @@ var AddProjectForm = function (_React$Component4) {
         React.createElement(
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc", onChange: self.changeHandler }),
+          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc",
+            value: this.props.project ? this.props.project.desc : "", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "desc" },
