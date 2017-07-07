@@ -255,7 +255,7 @@
 				<div class="demo-card-event mdl-card mdl-color-text--white mdl-color--blue-grey-300 mdl-shadow--2dp">
 				  <div class="mdl-card__title mdl-color-text--white mdl-card--expand">
 					<h4>
-					  Issue Due On:<br>
+					  Issue Due By:<br>
 					  Jun 26, 2017<br>
 					  7-11pm
 					</h4>
@@ -310,21 +310,42 @@
                 <div class="mdl-dialog__content">
                   <p>
                     <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input" type="text" id="sample1">
-                        <label class="mdl-textfield__label" for="sample1">Project Name</label>
+                        <select class="mdl-textfield__input" id=itype_input>
+                            <option>Task</option>
+                            <option>Bug</option>
+                        </select>
+                        <br> 
+                        <select class="mdl-textfield__input" id=istatus_input>
+                            <option>In Progress</option>
+                            <option>Open</option>
+                            <option>Resolved</option>
+                            <option>Closed</option>
+                        </select>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type=text id=uname_input>
+                        <label class="mdl-textfield__label" for="uname_input">Assigned To</label> 
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type=text id=due_input>
+                        <label class="mdl-textfield__label" for="due_input">Due By</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" id="pname_input">
+                        <label class="mdl-textfield__label" for="pname_input">Project Name</label>
                       </div>
 					 <div class="mdl-textfield mdl-js-textfield">
-						<textarea class="mdl-textfield__input" type="text" rows= "3" id="sample5" ></textarea>
-						<label class="mdl-textfield__label" for="sample5">Summary</label>
+						<textarea class="mdl-textfield__input" type="text" rows= "3" id="summary_input" ></textarea>
+						<label class="mdl-textfield__label" for="summary_input">Summary</label>
 					  </div>
 					 <div class="mdl-textfield mdl-js-textfield">
-						<textarea class="mdl-textfield__input" type="text" rows= "5" id="sample5" ></textarea>
-						<label class="mdl-textfield__label" for="sample5">Description</label>
+						<textarea class="mdl-textfield__input" type="text" rows= "5" id="desc_input" ></textarea>
+						<label class="mdl-textfield__label" for="desc_input">Description</label>
 					  </div>
                   </p>
                 </div>
                 <div class="mdl-dialog__actions">
-                  <button type="button" class="mdl-button">Submit</button>
+                  <button type="button" class="mdl-button" id=issue_create_submit>Submit</button>
                   <button type="button" class="mdl-button close">Cancel</button>
                 </div>
               </dialog>
