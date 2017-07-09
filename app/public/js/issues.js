@@ -37,7 +37,7 @@ $(document).ready ( function()
             var childData = childSnapshot.val(); 
 				projects_display.append ('<option>' + childData.name + '</option>' ) ; 
          });
-        $('#project_list').chosen() ; 
+        // $('#project_list').chosen() ; 
         $('#projects_container').append ( projects_display ) ; 
     });
 
