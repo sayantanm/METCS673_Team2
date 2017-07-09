@@ -603,6 +603,19 @@ var AddProjectForm = function (_React$Component4) {
     key: "componentDidMount",
     value: function componentDidMount() {
       window.componentHandler.upgradeDom();
+      console.log(window);
+
+      var picker = new MaterialDatetimePicker().on('submit', function (val) {
+        return console.log("data: " + val);
+      }).on('open', function () {
+        return console.log('opened');
+      }).on('close', function () {
+        return console.log('closed');
+      });
+
+      this.btn.addEventListener('click', function () {
+        return picker.open();
+      });
     }
   }, {
     key: "componentDidUpdate",
@@ -633,8 +646,8 @@ var AddProjectForm = function (_React$Component4) {
         {
           onSubmit: submitHandler,
 
-          ref: function ref(_ref2) {
-            return _this6.formRef = _ref2;
+          ref: function ref(_ref3) {
+            return _this6.formRef = _ref3;
           }
         },
         React.createElement(
@@ -659,6 +672,13 @@ var AddProjectForm = function (_React$Component4) {
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date",
             value: this.state.values ? this.state.values.start_date : undefined, onChange: self.changeHandler
           }),
+          React.createElement(
+            "a",
+            { className: "c-btn c-datepicker-btn", ref: function ref(_ref2) {
+                return self.btn = _ref2;
+              } },
+            "Open Picker"
+          ),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "start_date" },
