@@ -242,12 +242,12 @@ var ReactApp = function (_React$Component) {
         )
       );
 
-      var showFormHandler = function showFormHandler(e) {
-        self.setState({ add_project: true });
+      var showAddFormHandler = function showAddFormHandler(e) {
+        self.setState({ add_project: true, edit_project: false });
       };
 
       var showProjectsHandler = function showProjectsHandler(e) {
-        self.setState({ add_project: false });
+        self.setState({ add_project: false, edit_project: false });
       };
 
       var project = null;
@@ -282,7 +282,7 @@ var ReactApp = function (_React$Component) {
                 "button",
                 {
                   className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
-                  onClick: showFormHandler
+                  onClick: showAddFormHandler
                 },
                 "Add Project"
               )
@@ -291,7 +291,7 @@ var ReactApp = function (_React$Component) {
           React.createElement(
             "div",
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
-            this.state.add_project ? React.createElement(AddProjectForm, { saveProjectHandler: self.addProjectHandler }) : this.state.edit_project ? React.createElement(AddProjectForm, { saveProjectHandler: self.updateProjectHandler, project: project }) : projects_table,
+            this.state.add_project ? React.createElement(ProjectForm, { saveProjectHandler: self.addProjectHandler }) : this.state.edit_project ? React.createElement(ProjectForm, { saveProjectHandler: self.updateProjectHandler, project: project }) : projects_table,
             project && self.state.view_project ? React.createElement(UserStories, { project: project, db: self.db }) : React.createElement(
               "p",
               null,
@@ -541,69 +541,69 @@ var SideBar = function (_React$Component3) {
   return SideBar;
 }(React.Component);
 
-var AddProjectForm = function (_React$Component4) {
-  _inherits(AddProjectForm, _React$Component4);
+var ProjectForm = function (_React$Component4) {
+  _inherits(ProjectForm, _React$Component4);
 
-  function AddProjectForm(props) {
-    _classCallCheck(this, AddProjectForm);
+  function ProjectForm(props) {
+    _classCallCheck(this, ProjectForm);
 
-    var _this5 = _possibleConstructorReturn(this, (AddProjectForm.__proto__ || Object.getPrototypeOf(AddProjectForm)).call(this, props));
+    var _this5 = _possibleConstructorReturn(this, (ProjectForm.__proto__ || Object.getPrototypeOf(ProjectForm)).call(this, props));
 
     _this5.state = {
-      errors: {}
+      errors: {},
+      values: null,
+      firebase_key: null
     };
 
-    _this5.state.values = _this5.props.project ? _this5.props.project : {};
-    _this5.state.firebase_key = _this5.props.project ? _this5.props.project.firebase_key : null;
-
+    _this5.state.values = props.project ? props.project : null;
+    _this5.state.firebase_key = props.project ? props.project.firebase_key : null;
     // This is to allow it to work as callback from other context
     _this5.changeHandler = _this5.changeHandler.bind(_this5);
     return _this5;
   }
 
-  _createClass(AddProjectForm, [{
+  _createClass(ProjectForm, [{
     key: "changeHandler",
     value: function changeHandler(e) {
       var form = this.formRef;
-      var new_project = {};
+      var values = {};
       var errors = {};
 
-      new_project['name'] = form.elements.namedItem("name").value;
-      if (!new_project['name']) {
+      values['name'] = form.elements.namedItem("name").value;
+      if (!values['name']) {
         errors['name'] = 'Name is required.';
-      } else if (new_project['name'].length < 5) {
+      } else if (values['name'].length < 5) {
         errors['name'] = 'Name must be at least 5 characters.';
       }
 
-      new_project['start_date'] = form.elements.namedItem("start_date").value;
-      if (!new_project['start_date']) {
+      values['start_date'] = form.elements.namedItem("start_date").value;
+      if (!values['start_date']) {
         errors['start_date'] = 'start_date is required.';
       }
 
-      new_project['end_date'] = form.elements.namedItem("end_date").value;
-      if (!new_project['end_date']) {
+      values['end_date'] = form.elements.namedItem("end_date").value;
+      if (!values['end_date']) {
         errors['end_date'] = 'end_date is required.';
       }
 
-      new_project['status'] = form.elements.namedItem("status").value;
-      if (!new_project['status']) {
+      values['status'] = form.elements.namedItem("status").value;
+      if (!values['status']) {
         errors['status'] = 'status is required.';
       }
 
-      new_project['desc'] = form.elements.namedItem("desc").value;
-      if (!new_project['desc']) {
+      values['desc'] = form.elements.namedItem("desc").value;
+      if (!values['desc']) {
         errors['desc'] = 'desc is required.';
       }
 
       this.setState({
-        errors: errors, values: new_project
+        errors: errors, values: values
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       window.componentHandler.upgradeDom();
-      console.log(window);
 
       var picker = new MaterialDatetimePicker().on('submit', function (val) {
         return console.log("data: " + val);
@@ -621,6 +621,19 @@ var AddProjectForm = function (_React$Component4) {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
       window.componentHandler.upgradeDom();
+      console.log("prevProps: ", prevProps);
+    }
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      console.log("nextProps ", nextProps);
+      if (this.props.project != nextProps.project) {
+        var state = {};
+        state.values = nextProps.project ? nextProps.project : null;
+        state.firebase_key = nextProps.project ? nextProps.project.firebase_key : null;
+
+        this.setState(state);
+      }
     }
   }, {
     key: "render",
@@ -654,7 +667,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name",
-            value: this.state.values ? this.state.values.name : undefined, onChange: self.changeHandler }),
+            value: this.state.values ? this.state.values.name : "", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "name" },
@@ -670,7 +683,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date",
-            value: this.state.values ? this.state.values.start_date : undefined, onChange: self.changeHandler
+            value: this.state.values ? this.state.values.start_date : "", onChange: self.changeHandler
           }),
           React.createElement(
             "a",
@@ -694,7 +707,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date",
-            value: this.state.values ? this.state.values.end_date : undefined, onChange: self.changeHandler }),
+            value: this.state.values ? this.state.values.end_date : "", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "end_date" },
@@ -717,7 +730,7 @@ var AddProjectForm = function (_React$Component4) {
           React.createElement(
             "select",
             { className: "mdl-selectfield__select", id: "status", name: "status",
-              value: this.state.values ? this.state.values.status : undefined, onChange: self.changeHandler },
+              value: this.state.values ? this.state.values.status : "", onChange: self.changeHandler },
             React.createElement("option", { value: "" }),
             React.createElement(
               "option",
@@ -740,7 +753,7 @@ var AddProjectForm = function (_React$Component4) {
           "div",
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc",
-            value: this.state.values ? this.state.values.desc : undefined, onChange: self.changeHandler }),
+            value: this.state.values ? this.state.values.desc : "", onChange: self.changeHandler }),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "desc" },
@@ -765,7 +778,7 @@ var AddProjectForm = function (_React$Component4) {
     }
   }]);
 
-  return AddProjectForm;
+  return ProjectForm;
 }(React.Component);
 'use strict';
 

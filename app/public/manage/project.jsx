@@ -165,12 +165,12 @@ class ReactApp extends React.Component {
       </table>
     );
 
-    var showFormHandler = function(e){
-      self.setState({ add_project: true });
+    var showAddFormHandler = function(e){
+      self.setState({ add_project: true, edit_project: false});
     }
 
     var showProjectsHandler = function(e){
-      self.setState({ add_project: false });
+      self.setState({ add_project: false, edit_project: false});
     }
 
     var project = null;
@@ -194,15 +194,15 @@ class ReactApp extends React.Component {
               &nbsp;
               <button
                 className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                onClick={showFormHandler}
+                onClick={showAddFormHandler}
               >
                 Add Project
               </button>
             </div>
           </div>    
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-            { this.state.add_project ? (<AddProjectForm saveProjectHandler={self.addProjectHandler} />):
-               (this.state.edit_project ? (<AddProjectForm saveProjectHandler={self.updateProjectHandler} project={project} />): projects_table)
+            { this.state.add_project ? (<ProjectForm saveProjectHandler={self.addProjectHandler} />):
+               (this.state.edit_project ? (<ProjectForm saveProjectHandler={self.updateProjectHandler} project={project} />): projects_table)
             }
 
             {/* If view is clicked, then display user stories table */}
@@ -285,62 +285,62 @@ class SideBar extends React.Component {
   }
 }
 
-class AddProjectForm extends React.Component {
+class ProjectForm extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       errors: {},
+      values: null,
+      firebase_key: null
     };
 
-    this.state.values = this.props.project ? this.props.project: {};
-    this.state.firebase_key = this.props.project ? this.props.project.firebase_key : null;
-
+    this.state.values = props.project ? props.project: null;
+    this.state.firebase_key = props.project ? props.project.firebase_key : null;
     // This is to allow it to work as callback from other context
     this.changeHandler = this.changeHandler.bind(this);
   }
 
   changeHandler(e){
     var form = this.formRef;
-    var new_project = {};
+    var values = {};
     var errors = {};
 
-    new_project['name'] = form.elements.namedItem("name").value;
-    if (!new_project['name']){
+    values['name'] = form.elements.namedItem("name").value;
+    if (!values['name']){
       errors['name'] = 'Name is required.';
-    }else if (new_project['name'].length < 5){
+    }else if (values['name'].length < 5){
       errors['name'] = 'Name must be at least 5 characters.';
     }
 
-    new_project['start_date'] = form.elements.namedItem("start_date").value;
-    if (!new_project['start_date']){
+    values['start_date'] = form.elements.namedItem("start_date").value;
+    if (!values['start_date']){
       errors['start_date'] = 'start_date is required.';
     }
 
-    new_project['end_date'] = form.elements.namedItem("end_date").value;
-    if (!new_project['end_date']){
+    values['end_date'] = form.elements.namedItem("end_date").value;
+    if (!values['end_date']){
       errors['end_date'] = 'end_date is required.';
     }
 
-    new_project['status'] = form.elements.namedItem("status").value;
-    if (!new_project['status']){
+    values['status'] = form.elements.namedItem("status").value;
+    if (!values['status']){
       errors['status'] = 'status is required.';
     }
 
-    new_project['desc'] = form.elements.namedItem("desc").value;
-    if (!new_project['desc']){
+    values['desc'] = form.elements.namedItem("desc").value;
+    if (!values['desc']){
       errors['desc'] = 'desc is required.';
     }
 
     this.setState({
-      errors: errors, values: new_project
+      errors: errors, values: values
     });
   }
 
 
   componentDidMount(){
     window.componentHandler.upgradeDom();
-    console.log(window);
 
     var picker = new MaterialDatetimePicker()    
     .on('submit', (val) => console.log(`data: ${val}`))
@@ -352,6 +352,19 @@ class AddProjectForm extends React.Component {
 
   componentDidUpdate(prevProps, prevState){
     window.componentHandler.upgradeDom();
+    console.log("prevProps: ", prevProps);
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log("nextProps ", nextProps);
+    if (this.props.project != nextProps.project) {
+      var state = {};
+      state.values = nextProps.project ? nextProps.project: null;
+      state.firebase_key = nextProps.project ? nextProps.project.firebase_key : null;
+
+      this.setState(state);
+    }
+
   }
 
   render() {
@@ -369,7 +382,7 @@ class AddProjectForm extends React.Component {
       }
     };
 
-  return (
+    return (
       <form
         onSubmit={submitHandler}
         
@@ -378,7 +391,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="name" name="name" 
-          value={this.state.values ? this.state.values.name : undefined } onChange={self.changeHandler}/>
+          value={this.state.values ? this.state.values.name : "" } onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="name">Project Name ...</label>
           {this.state.errors.name ? (
             <span className="mdl-textfield__error">{this.state.errors.name}</span>
@@ -387,7 +400,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" 
-            value={this.state.values ? this.state.values.start_date : undefined} onChange={self.changeHandler}
+            value={this.state.values ? this.state.values.start_date : ""} onChange={self.changeHandler}
           />
           <a className="c-btn c-datepicker-btn" ref={(ref)=>self.btn = ref}>Open Picker</a>
 
@@ -399,7 +412,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" 
-          value={this.state.values ? this.state.values.end_date : undefined} onChange={self.changeHandler}/>
+          value={this.state.values ? this.state.values.end_date : ""} onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
           {this.state.errors.end_date ? (
             <span className="mdl-textfield__error">{this.state.errors.end_date}</span>
@@ -409,7 +422,7 @@ class AddProjectForm extends React.Component {
         <div className="mdl-selectfield mdl-js-selectfield">
           <label className="mdl-selectfield__label" htmlFor="status">Status</label>
           <select className="mdl-selectfield__select" id="status" name="status" 
-          value={this.state.values ? this.state.values.status : undefined} onChange={self.changeHandler}>
+          value={this.state.values ? this.state.values.status : ""} onChange={self.changeHandler}>
             <option value= ""></option>
             <option value="Not Started">Not Started</option>
             <option value="In Progress">In Progress</option>
@@ -419,7 +432,7 @@ class AddProjectForm extends React.Component {
 
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="desc" name="desc" 
-          value={this.state.values ? this.state.values.desc : undefined} onChange={self.changeHandler}/>
+          value={this.state.values ? this.state.values.desc : ""} onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="desc">Description</label>
           {this.state.errors.desc ? (
             <span className="mdl-textfield__error">{this.state.errors.desc}</span>
