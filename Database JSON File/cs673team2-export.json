@@ -8,11 +8,7 @@
       "members" : {
         "John Smith" : "PM",
         "Chris Henson" : "QA"
-      },
-      "projectEndDate" : "8/3/17",
-      "projectID" : 119867665,
-      "projectStartDate" : "5/26/2017",
-      "status" : "In Progress"
+      }
     },
     "Another Project" : {
       "name" : "Another Project",
@@ -21,25 +17,17 @@
       ,
       "members" : {
         "Chris Henson" : "PM"
-      },
-      "projectEndDate" : "8/3/2017",
-      "projectID" : 1165,
-      "projectStartDate" : "5/26/2017",
-      "status" : "Not Started"
+      }
     },
     "Some Other App" : {
       "name" : "Some Other App",
       "admins" :
-        "hensonc"
+        "Chris Henson"
       ,
       "members" : {
         "John Smith" : "PM",
         "Chris Henson" : "DEVOPS"
-      },
-      "projectEndDate" : "8/3/2017",
-      "projectID" : 65,
-      "projectStartDate" : "5/26/2017",
-      "status" : "Complete"
+      }
     },
     "Something Else" : {
       "name" : "Something Else",
@@ -49,11 +37,7 @@
       "members" : {
         "John Smith" : "PM",
         "Chris Henson" : "QA"
-      },
-      "projectEndDate" : "8/3/2017",
-      "projectID" : 11111,
-      "projectStartDate" : "5/26/2017",
-      "status" : "In Progress"
+      }
     },
      "Side Project" : {
       "name" : "Side Project",
@@ -62,38 +46,18 @@
       ,
       "members" : {
         "Chris Henson" : "NA"
-      },
-      "projectEndDate" : "8/3/2017",
-      "projectID" : 777777,
-      "projectStartDate" : "5/26/2017",
-      "status" : "In Progress"
-    }
-  },
+      }
+  }
+},
   "users" : {
     "John Smith" : {
       "email" : "jsmith68@fake.com",
       "name" : "John Smith",
-      "projects" : {
-	  "Web App" : true,
-	  "Another Project" : false,
-	  "Some Other App"  : true,
-          "Something Else" : true,
-          "Side Project" : false
-      },
-      "userID" : 33333,
       "userIcon" : "NULL"
     },
     "Chris Henson" : {
       "email" : "hensonc@bu.edu",
       "name" : "Chris Henson",
-      "projects" : {
-          "Web App" : true,
-          "Another Project" : true,
-          "Some Other App" : true,
-          "Something Else" : true,
-          "Side Project" : true
-      },
-      "userID" : 107,
       "userIcon" : "NULL"
     }
   }
