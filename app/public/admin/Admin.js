@@ -1,6 +1,6 @@
 $(document).ready (function()
 {
-var projects = firebase.database().ref('projects');
+var projects = firebase.database().ref('app/projects');
 
 //Populates the project list drop down menu:
 projects.once('value', function(snapshot) {
@@ -9,16 +9,16 @@ projects.once('value', function(snapshot) {
     var childData = childSnapshot.val().name;
     projects_display = projects_display + ('<option>' + childData + '</option>');
   });
-  $('#projects_container').append(projects_display).html();
+  $('projects_container').html(projects_display);
 });
 
 //Triggers the change in the members list when a project is selected:
-document.getElementById("projects_container").addEventListener("change", showMembers);
+//document.getElementById("projects_container").addEventListener("change", showMembers);
 
 
 //This section populates the existing users dropdown menu:
-var users = firebase.database().ref('users');
-
+//var users = firebase.database().ref('users');
+/*
 users.once('value', function(snapshot){
   var member_display = ('<option id=choose2 >Existing Users</option>') ;
   snapshot.forEach(function(childSnapshot) {
@@ -30,7 +30,7 @@ $('#existingUsers').append(member_display).html();
 
 
 //Populates the 'Current project team members' table to the right:
-function showMembers(){
+/*function showMembers(){
   //clears previous lists that might be on screen:
   let memberRows = "";
   $('#table tbody tr').remove();
@@ -56,7 +56,7 @@ function showMembers(){
     });
   });
 }
-
+*/
 
 //Dicates the actions for when the 'add' button is clicked:
 addButton.onclick = function() {
