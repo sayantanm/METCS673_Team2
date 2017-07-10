@@ -99,6 +99,15 @@ main, #messages-card {
   font-size: 12px;
   box-sizing: border-box;
 }
+.message-container .timesent {
+  display: inline-block;
+  width: 100%;
+  padding-left: 40px;
+  color: #bbb;
+  font-style: italic;
+  font-size: 12px;
+  box-sizing: border-box;
+}
 #message-form {
   display: flex;
   flex-direction: row;
