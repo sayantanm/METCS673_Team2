@@ -37,9 +37,33 @@ $(document).ready ( function()
             var childData = childSnapshot.val(); 
 				projects_display.append ('<option>' + childData.name + '</option>' ) ; 
          });
-        $('#project_list').chosen() ; 
+        // $('#project_list').chosen() ; 
         $('#projects_container').append ( projects_display ) ; 
     });
+
+    $('#issue_create_submit').click( function() 
+    {
+        var issue_status= $('#istatus_input').val() ; 
+        var issue_type  = $('#itype_input').val() ; 
+        var assigned_to = $('#uname_input').val() ; 
+        var due_by      = $('#due_input').val() ; 
+        var project_nm  = $('#pname_input').val() ; 
+        var summary     = $('#summary_input').val() ; 
+        var descr       = $('#desc_input').val() ; 
+
+	    var issues_ref = firebase.database().ref('issues') ; 
+		var iref = issues_ref.push() ; 
+			iref.set ( { 
+   				'issue_type'  : issue_type , 
+                'assigned_to' : assigned_to , 
+                'due_by'      : due_by , 
+                'project_name': project_nm , 
+                'summary'     : summary,
+                'description' : descr ,
+                'status'      : issue_status 
+			} ) ;  
+        ic_dialog.close() ; 
+    } ) ; 
 }) ;
 
 $(window).on('load',function() { 
