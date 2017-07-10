@@ -87,6 +87,7 @@ main, #messages-card {
 }
 .message-container .message {
   display: table-cell;
+  font-size: 20px ; 
   width: calc(100% - 40px);
   padding: 5px 0 5px 10px;
 }
