@@ -16,7 +16,7 @@
 'use strict';
 
 // Initializes FriendlyChat.
-function FriendlyChat() {
+function FriendlyChat( project_id ) {
   this.checkSetup();
 
   // Shortcuts to DOM Elements.
@@ -32,6 +32,8 @@ function FriendlyChat() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.project_id = project_id ; 
+  this.counter = 0 ; 
 
   // Saves message on form submit.
   this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
@@ -59,6 +61,10 @@ FriendlyChat.prototype.initFirebase = function() {
   this.auth = firebase.auth();
   this.database = firebase.database();
   this.storage = firebase.storage();
+
+  this.messagesRef = this.database.ref('acl' + this.project_id + '/messages'); 
+  // Make sure we remove all previous listeners.
+  this.messagesRef.off();
   // Initiates Firebase auth and listen to auth state changes.
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
@@ -79,18 +85,16 @@ FriendlyChat.prototype.signOut = function() {
 
 // Loads chat messages history and listens for upcoming ones.
 FriendlyChat.prototype.loadMessages = function() {
-	// Reference to the /messages/ database path.
-  this.messagesRef = this.database.ref('messages');
-  // Make sure we remove all previous listeners.
-  this.messagesRef.off();
+      // Reference to the /messages/ database path.
+      // Get the id of the project, add messages to under the ref 
 
-  // Loads the last 12 messages and listen for new ones.
-  var setMessage = function(data) {
-    var val = data.val();
-    this.displayMessage(data.key, val.name, val.text, val.timesent , val.photoUrl, val.imageUrl);
-  }.bind(this);
-  this.messagesRef.limitToLast(12).on('child_added', setMessage);
-  this.messagesRef.limitToLast(12).on('child_changed', setMessage);
+      // Loads the last 12 messages and listen for new ones.
+      var setMessage = function(data) {
+        var val = data.val();
+        this.displayMessage(data.key, val.name, val.text, val.timesent , val.photoUrl, val.imageUrl);
+      }.bind(this);
+      this.messagesRef.limitToLast(100).on('child_added', setMessage);
+      this.messagesRef.limitToLast(100).on('child_changed', setMessage);
 };
 
 // Saves a new message on the Firebase DB.
@@ -99,6 +103,9 @@ FriendlyChat.prototype.saveMessage = function(e) {
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
     var currentUser = this.auth.currentUser;
+    // Make sure we remove all previous listeners.
+    this.counter++ ; 
+    console.log ( this.counter + ' ' + 'acl' + this.project_id + '/messages' ) ; 
     // Add a new message entry to the Firebase Database.
     this.messagesRef.push({
       name: currentUser.displayName,
@@ -228,6 +235,7 @@ FriendlyChat.prototype.checkSignedInWithMessage = function() {
 
 // Saves the messaging device token to the datastore.
 FriendlyChat.prototype.saveMessagingDeviceToken = function() {
+   /* 
    firebase.messaging().getToken().then(function(currentToken) {
     if (currentToken) {
       console.log('Got FCM device token:', currentToken);
@@ -239,12 +247,14 @@ FriendlyChat.prototype.saveMessagingDeviceToken = function() {
       this.requestNotificationsPermissions();
     }
   }.bind(this)).catch(function(error){
-    console.error('Unable to get messaging token.', error);
+    // console.error('Unable to get messaging token.', error);
   }); 
+  */ 
 };
 
 // Requests permissions to show notifications.
 FriendlyChat.prototype.requestNotificationsPermissions = function() {
+    /* 
     console.log('Requesting notifications permission...');
   firebase.messaging().requestPermission().then(function() {
     // Notification permission granted.
@@ -252,6 +262,7 @@ FriendlyChat.prototype.requestNotificationsPermissions = function() {
   }.bind(this)).catch(function(error) {
     console.error('Unable to get permission to notify.', error);
   });
+  */ 
 };
 
 // Resets the given MaterialTextField.
@@ -328,6 +339,34 @@ FriendlyChat.prototype.checkSetup = function() {
   }
 };
 
+FriendlyChat.prototype.destroy = function () 
+{
+  delete this.messageList ;
+  delete this.messageForm ;
+  delete this.messageInput;
+  delete this.submitButton;
+  delete this.submitImageButton ;
+  delete this.imageForm ;
+  delete this.mediaCapture ;
+  delete this.userPic ;
+  delete this.userName ;
+  delete this.signInButton ;
+  delete this.signOutButton ;
+  delete this.signInSnackbar;
+  delete this.project_id  ;
+  delete this.counter ;
+  delete this.messagesRef ; 
+} ; 
+
 window.onload = function() {
-  window.friendlyChat = new FriendlyChat();
+    console.log ( 'window.onload' ) ; 
+    window.friendlyChat = new FriendlyChat ( '-first' ) ; 
 };
+
+$(document).on('change','#project_list',function () 
+{ 
+    console.log ( 'document.on.change' ) ; 
+    window.friendlyChat.destroy() ; 
+    $('.message-container').remove();
+    window.friendlyChat = new FriendlyChat( $(this).val() );
+} ) ; 
