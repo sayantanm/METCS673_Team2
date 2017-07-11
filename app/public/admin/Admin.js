@@ -1,16 +1,22 @@
-$(document).ready (function()
+$(document).ready(function()
 {
+//function showProjects(){
 var projects = firebase.database().ref('app/projects');
 
 //Populates the project list drop down menu:
-projects.once('value', function(snapshot) {
-  var projects_display = ('<option id=choose selected>Please select a project</option>') ;
+projects.on('value', function(snapshot) {
+  var projects_display = ('<option id=choose>Please select your project</option>') ;
+  console.log(projects_display);
   snapshot.forEach(function(childSnapshot) {
     var childData = childSnapshot.val().name;
     projects_display = projects_display + ('<option>' + childData + '</option>');
+    console.log(projects_display);
   });
-  $('projects_container').html(projects_display);
+  $('#projects_container').html(projects_display);
+  console.log(projects_display);
 });
+//}
+showProjects();
 
 //Triggers the change in the members list when a project is selected:
 //document.getElementById("projects_container").addEventListener("change", showMembers);
