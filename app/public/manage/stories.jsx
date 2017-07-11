@@ -206,7 +206,7 @@ class AddStoryForm extends React.Component {
         </div>
 
         <div className="mdl-selectfield mdl-js-selectfield">
-          <label className="mdl-selectfield__label" for="status">Status</label>
+          <label className="mdl-selectfield__label" htmlFor="status">Status</label>
           <select className="mdl-selectfield__select" id="status" name="status">
             <option value=""></option>
             <option value="Not Started">Not Started</option>

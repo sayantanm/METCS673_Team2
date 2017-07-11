@@ -128,8 +128,6 @@ var ReactApp = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       var self = this;
 
       var projects_table = React.createElement(
@@ -296,15 +294,7 @@ var ReactApp = function (_React$Component) {
               "p",
               null,
               "View Project to see stories."
-            ),
-            React.createElement(
-              "p",
-              null,
-              "Progress:"
-            ),
-            React.createElement("div", { ref: function ref(_ref) {
-                return _this2.p1 = _ref;
-              }, className: "mdl-progress mdl-js-progress" })
+            )
           )
         )
       );
@@ -547,19 +537,19 @@ var ProjectForm = function (_React$Component4) {
   function ProjectForm(props) {
     _classCallCheck(this, ProjectForm);
 
-    var _this5 = _possibleConstructorReturn(this, (ProjectForm.__proto__ || Object.getPrototypeOf(ProjectForm)).call(this, props));
+    var _this4 = _possibleConstructorReturn(this, (ProjectForm.__proto__ || Object.getPrototypeOf(ProjectForm)).call(this, props));
 
-    _this5.state = {
+    _this4.state = {
       errors: {},
       values: null,
       firebase_key: null
     };
 
-    _this5.state.values = props.project ? props.project : null;
-    _this5.state.firebase_key = props.project ? props.project.firebase_key : null;
+    _this4.state.values = props.project ? props.project : null;
+    _this4.state.firebase_key = props.project ? props.project.firebase_key : null;
     // This is to allow it to work as callback from other context
-    _this5.changeHandler = _this5.changeHandler.bind(_this5);
-    return _this5;
+    _this4.changeHandler = _this4.changeHandler.bind(_this4);
+    return _this4;
   }
 
   _createClass(ProjectForm, [{
@@ -638,7 +628,7 @@ var ProjectForm = function (_React$Component4) {
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this5 = this;
 
       var self = this;
       {/* Form Submit Handler */}
@@ -659,8 +649,8 @@ var ProjectForm = function (_React$Component4) {
         {
           onSubmit: submitHandler,
 
-          ref: function ref(_ref3) {
-            return _this6.formRef = _ref3;
+          ref: function ref(_ref2) {
+            return _this5.formRef = _ref2;
           }
         },
         React.createElement(
@@ -687,8 +677,8 @@ var ProjectForm = function (_React$Component4) {
           }),
           React.createElement(
             "a",
-            { className: "c-btn c-datepicker-btn", ref: function ref(_ref2) {
-                return self.btn = _ref2;
+            { className: "c-btn c-datepicker-btn", ref: function ref(_ref) {
+                return self.btn = _ref;
               } },
             "Open Picker"
           ),
@@ -1054,7 +1044,7 @@ var AddStoryForm = function (_React$Component2) {
           { className: 'mdl-selectfield mdl-js-selectfield' },
           React.createElement(
             'label',
-            { className: 'mdl-selectfield__label', 'for': 'status' },
+            { className: 'mdl-selectfield__label', htmlFor: 'status' },
             'Status'
           ),
           React.createElement(

@@ -210,8 +210,8 @@ class ReactApp extends React.Component {
               (project && self.state.view_project) ?
               <UserStories project={project} db={self.db}/>
               : <p>View Project to see stories.</p>}
-            <p>Progress:</p>
-            <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div>
+            {/* <p>Progress:</p> */}
+            {/*  <div ref={(ref)=>this.p1 = ref} className="mdl-progress mdl-js-progress"></div> */ }
           </div>
         </main>
       </div>
