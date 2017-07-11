@@ -18,7 +18,7 @@ $(document).ready(function(){
   //This section populates the existing users dropdown menu:
   var users = firebase.database().ref('users');
 
-  users.on('value', function(snapshot){
+  users.once('value', function(snapshot){
     var member_display = ('<option id=choose2 >Existing Users</option>') ;
     snapshot.forEach(function(childSnapshot) {
       var childData = childSnapshot.val().name;
@@ -47,6 +47,7 @@ $(document).ready(function(){
     selectProj.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         memberName = childSnapshot.val().name;
+        //put in button to delete and make admin here...
         memberRows = ('<tr><td></td><td class="mdl-data-table__cell--non-numeric team">' +
           memberName + '</td><td class="mdl-data-table__cell--non-numeric team" >' +
           '</td></tr>');
@@ -57,9 +58,8 @@ $(document).ready(function(){
 
   //Dicates the actions for when the 'add' button is clicked:
   addButton.onclick = function() {
-    let project = document.getElementById("projects_container");
-    let selected = project.options[project.selectedIndex].value;
-    //let role = document.getElementById("role").value; //need to throw a check on this
+    var project = document.getElementById("projects_container");
+    var selected = project.options[project.selectedIndex].value;
 
     //checks to make sure a project was actually selected:
     if(selected == "Please select a project"){
@@ -67,24 +67,47 @@ $(document).ready(function(){
       return;
     }
 
-    let user = document.getElementById("existingUsers");
-    let userSel = user.options[user.selectedIndex].value;
+    var user = document.getElementById("existingUsers");
+    var userSel = user.options[user.selectedIndex].value;
 
     //Actions if adding a new user (if any user selected in existing user field
     //any items written into text field will be ignored):
     if(userSel == "Existing Users"){
-      let name =  document.getElementById("name").value; //TODO: add check of elements here...
-      //TODO: also need to check and see if this will be a duplicate entry...
-      let email = document.getElementById("email").value;
+      var name =  document.getElementById("name").value;
+      //name input validation:
+      if (name == ""){
+        alert("Please enter a name");
+        return;
+      }
+      //I'm not checking to see if there are only characters, as the user could want to use some sort of
+      //usernames for their naming convention--only length is checked here:
+      if (name.length > 20){
+        alert("Name must not be greater than 20 characters. Please try again.");
+        return;
+      }
+
+      //email input validation:
+      var email = document.getElementById("email").value;
+      if (email == ""){
+        alert("Please enter an email address");
+        return;
+      }
+      var pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$");
+      var validation = pattern.test(email);
+      if (!validation){
+        alert("Please enter a valid email address");
+        return;
+      }
+
       newUser(name, email, selected);
+      location.reload(true);
       return;
     }
 
     //This will add an existing member to the project:
     var email = getEmail(userSel);
     addToProject(userSel, email, selected);
-    addAlert(name);
-
+    location.reload(true);
   }
 
   function hashFinder(projName){
@@ -143,11 +166,10 @@ $(document).ready(function(){
       snapshot.forEach(function(childSnapshot){
         if (childSnapshot.val().name == name){
           key = childSnapshot.key;
-          console.log(key);
         }
       });
     });
-    var userEmail = "";
+    var userEmail;
     var users = firebase.database().ref('users/' + key);
     users.once('value', function(snapshot){
       userEmail = snapshot.val().email;
