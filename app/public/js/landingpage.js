@@ -10,34 +10,18 @@ window.onload = function() {
     };
     var myApp = firebase.initializeApp(config);
 
-    // add data to the issue object
-    function submitData() {
-        var newIssueKey = myApp.database().ref().child('issues/' + firebase.auth().currentUser.uid).push();
-
-        var type = document.getElementById('type').value;
-        var description = document.getElementById('description').value;
-        newIssueKey.set({
-            type: type,
-            description: description
+    // add users to the database
+    function addUser(firstName, lastName, emailAddress) {
+        var newUserKey = myApp.database().ref('users/' + firebase.auth().currentUser.uid);
+        newUserKey.set({
+            first_name: firstName,
+            last_name: lastName,
+            email_address: emailAddress
         });
+        console.log("user added.");
     };
 
-    function clearTextFields() {
-        document.getElementById('type').value = '';
-        document.getElementById('description').value = '';
-    }
-/*
-    myApp.database().ref('issues').on('value', function(snapshot) {
-        var list = document.getElementById('ul_issues');
-        snapshot.forEach(function(childSnapshot) {
-            var entry = document.createElement('li');
-            entry.appendChild(document.createTextNode(childSnapshot.val().title));
-            list.appendChild(entry);
-        });
-    });
-*/
-
-    // sign-up/login event handler
+    // login event handler
     document.getElementById("button_login").addEventListener("click", function() {
         var email = document.getElementById("input_login_email_address").value;
         var password = document.getElementById("input_login_password").value;
@@ -55,6 +39,7 @@ window.onload = function() {
         });
     });
 
+    // join even handler
     document.getElementById("button_join").addEventListener("click", function() {
         var fname = document.getElementById("input_join_first_name").value;
         var lname = document.getElementById("input_join_last_name").value;
@@ -67,7 +52,16 @@ window.onload = function() {
             return;
         }
 
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // validate the the passwords match
+        if (password != confirmpassword) {
+            alert("Your passwords do not match");
+            return;
+        }
+
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+            // if firebase successfully created the user, we add the user to our database
+            addUser(fname,lname,email);
+        }).catch(function(error) {
             // Handling Errors for user sign-up
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -81,9 +75,10 @@ window.onload = function() {
         });
     });
 
+    // when users change state (i.e. logout/login), send them to the dashboard/homepage
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-            console.log(firebase.auth().currentUser.uid);
+            //console.log(firebase.auth().currentUser.uid);
             window.location = "./home/index.html";
         }
     });

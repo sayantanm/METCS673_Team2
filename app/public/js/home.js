@@ -109,4 +109,11 @@ window.onload = function() {
             table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
         }
 
+        // event listener for the logout option
+        document.getElementById("li_logout").addEventListener("click", function() {
+            firebase.auth().signOut();
+            window.location = "../index.html";
+        });
+
+    console.log("user:" + firebase.User);
 }
