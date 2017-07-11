@@ -112,10 +112,10 @@ var ReactApp = function (_React$Component) {
       }
 
       // After material design initializes, we save the reference
-      self.p1.addEventListener('mdl-componentupgraded', function () {
-        self.p1_material_object = this.MaterialProgress;
-        self.p1_material_object.setProgress(self.state.progress);
-      });
+      //self.p1.addEventListener('mdl-componentupgraded', function() {
+      //self.p1_material_object = this.MaterialProgress;
+      //self.p1_material_object.setProgress(self.state.progress);
+      //});
     }
   }, {
     key: "componentDidUpdate",
@@ -603,6 +603,7 @@ var ProjectForm = function (_React$Component4) {
         return console.log('closed');
       });
 
+      console.log("this.btn", this.btn);
       this.btn.addEventListener('click', function () {
         return picker.open();
       });
@@ -611,12 +612,10 @@ var ProjectForm = function (_React$Component4) {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
       window.componentHandler.upgradeDom();
-      console.log("prevProps: ", prevProps);
     }
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
-      console.log("nextProps ", nextProps);
       if (this.props.project != nextProps.project) {
         var state = {};
         state.values = nextProps.project ? nextProps.project : null;
@@ -636,7 +635,6 @@ var ProjectForm = function (_React$Component4) {
       var submitHandler = function submitHandler(e) {
         e.preventDefault();
         if (Object.keys(self.state.errors) == 0) {
-          console.log(self.state);
           self.props.saveProjectHandler(self.state.values, self.state.firebase_key);
         } else {
           var text = Object.values(self.state.errors).join(" ");

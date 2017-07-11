@@ -93,10 +93,10 @@ class ReactApp extends React.Component {
     }
 
     // After material design initializes, we save the reference
-    self.p1.addEventListener('mdl-componentupgraded', function() {
-        self.p1_material_object = this.MaterialProgress;
-        self.p1_material_object.setProgress(self.state.progress);
-    });
+    //self.p1.addEventListener('mdl-componentupgraded', function() {
+       //self.p1_material_object = this.MaterialProgress;
+        //self.p1_material_object.setProgress(self.state.progress);
+    //});
 
   }
 
@@ -347,16 +347,15 @@ class ProjectForm extends React.Component {
     .on('open', () => console.log('opened'))
     .on('close', () => console.log('closed'));
 
+    console.log("this.btn", this.btn);
     this.btn.addEventListener('click', () => picker.open()); 
   }
 
   componentDidUpdate(prevProps, prevState){
     window.componentHandler.upgradeDom();
-    console.log("prevProps: ", prevProps);
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("nextProps ", nextProps);
     if (this.props.project != nextProps.project) {
       var state = {};
       state.values = nextProps.project ? nextProps.project: null;
@@ -374,7 +373,6 @@ class ProjectForm extends React.Component {
     var submitHandler = function(e){
       e.preventDefault();
       if (Object.keys(self.state.errors) == 0){
-        console.log(self.state);
         self.props.saveProjectHandler(self.state.values, self.state.firebase_key);
       }else{
         var text = Object.values(self.state.errors).join(" ");
