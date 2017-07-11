@@ -168,3 +168,18 @@ footer {
   background-size: cover;
 }
 
+div.custom-card-wide {
+  width: calc(50% - 16px);
+}
+
+div#div_login img {
+  margin-top: 6px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block; 
+}
+
+div#div_login_button {
+  float: right;
+  text-align: right;
+}
