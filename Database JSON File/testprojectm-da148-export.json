@@ -1,0 +1,401 @@
+{
+  "app" : {
+    "projects" : {
+      "-KnlSC5sZ57dTjwa9MiX" : {
+        "admins" : "NULL",
+        "end_date" : "July 28th",
+        "members" : "NULL",
+        "name" : "MainProject",
+        "start_date" : "June 27th"
+      },
+      "-KnlSR0HBrJ9ku5mpHO8" : {
+        "admins" : "NULL",
+        "end_date" : "Aug 8th, 2017",
+        "members" : "NULL",
+        "name" : "Secondary Project",
+        "start_date" : "June 27th, 2017"
+      },
+      "-KnlSRi3RtiJza-lH0S2" : {
+        "admins" : "NULL",
+        "end_date" : "Aug 8th, 2017",
+        "members" : "NULL",
+        "name" : "Secondary Project",
+        "start_date" : "June 27th, 2017"
+      },
+      "-KoiPysXTrRVEuOfCFFk" : {
+        "admins" : "NULL",
+        "desc" : "This is a test",
+        "end_date" : "08/01/2017",
+        "members" : "NULL",
+        "name" : "Test 123",
+        "start_date" : "07/01/2017",
+        "status" : "In Progress"
+      }
+    },
+    "stories" : {
+      "-KoiQ3Lqbv7UN8JorkkJ" : {
+        "name" : "Chapter 1",
+        "project_key" : "-KoiPysXTrRVEuOfCFFk",
+        "status" : "Not Started"
+      }
+    }
+  },
+  "fcmTokens" : {
+    "ewlIbdWR4xg:APA91bG-61o-C5KJJgGX9qyiXsygtGZrEAbkKpUGn8M4JV7tWdC-p_CcK8L56ZEimVxFYFlwMAlsGp5AVB4A5PS30regbUaAVdcuhFpo-2Em7HWmGbKZQXjz-XafumjsZQ_9DUNZj-s5" : "kHdkf4apeaUAXR0cK8baDhnjJSa2",
+    "f8cYgz18_Fw:APA91bEKKmppPp-Xd854H21IG9fe3cEINB1MY_EOJwf3-2e5TX2hEBEVajrGqqhF64dBBR_sh2LBj1tFny2H-MXXpOTdWDf4Z48pIJCoJcS36trPpI2ElNek7IlhR-ohw4SVJWyH9LQZ" : "0ABC2rSOkQSZ86l2ud12klJjsJd2",
+    "fOoNRfCYxU4:APA91bGHHN3JRp74lLsmsCQ-EyIeGNvQox2v-uWy-lzFToO5TiRDkECbz594y2YFBqiBugvr2y1o7gixo71xve5leXlX5Yn8E1ky43fYmZAvtcQSf1n6nLLxn3sZc2YfdffPzOQfhSg8" : "0ABC2rSOkQSZ86l2ud12klJjsJd2",
+    "filFYD-OWzo:APA91bHiZB6sa3hbbOjhcrWBbUzSWvE8fWu0QSnVTw3D2EXApVOjnzKK3p3X-ORCLfY4wYWbMVa1lZ-P-hlsr-pwF_NDAXluO-x80j8rQa51R-Or9SYWViObg8Mm4qTtXQDqbH_g6b6e" : "a1elIVfGR7QZ1zQbZd74SRfzRsE3"
+  },
+  "issues" : {
+    "-KoWoJQrsMa53fe4heT2" : {
+      "assigned_to" : "",
+      "description" : "",
+      "due_by" : "",
+      "issue_type" : "Task",
+      "project_name" : "",
+      "status" : "In Progress",
+      "summary" : ""
+    }
+  },
+  "messages" : {
+    "-KmOEN0jO8xpaaUxy9TR" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "hello"
+    },
+    "-KmOEOCHRugrXtWAgQ2p" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "how are you?"
+    },
+    "-KmOEq7QXJD2qTU-FGWm" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Hello"
+    },
+    "-KmOKVVBprfmtATEDVHm" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Working... "
+    },
+    "-KmfdfyqO-toSvM-RF29" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Can you chat?"
+    },
+    "-KmfdgyEez6-qz6saFrp" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Yes, I can "
+    },
+    "-KmhrfE-lnWqEENjZErp" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "So"
+    },
+    "-KmiMjUOU01XHV103zkv" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "We are able to chat"
+    },
+    "-KmiNXqGdtvcbLfkJ3mG" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Yeahhhhhh"
+    },
+    "-Kmm2kUUqaY1RUZXYr9e" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Hello there? "
+    },
+    "-Kmm2m_xpq02okT7XCot" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Hello there! "
+    },
+    "-Kmm2o2CPRwZnEO04x3U" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Can it scroll?"
+    },
+    "-Kmm2oUC40xINSgmF80B" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Yes"
+    },
+    "-Kmm2qgxcWW3MKb6Oo6x" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "how many messages can we write?"
+    },
+    "-Kmm2rJhSdF_bqiImcF5" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "many "
+    },
+    "-Kmm2rkwI0KAfKigo8gg" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "plenty"
+    },
+    "-KmvVF07WaAv6tWoEl0k" : {
+      "name" : "Ronald Czik",
+      "photoUrl" : "https://lh5.googleusercontent.com/-txqXXbRNnA8/AAAAAAAAAAI/AAAAAAAAABY/e8G4HXaosEM/photo.jpg",
+      "text" : "Looks good guys."
+    },
+    "-KnCjUHjcG74y6xZHkH-" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Thank you. "
+    },
+    "-KnCxinpYZEXZtUKYtiw" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Good job :-)"
+    },
+    "-KnCxpGc8CUTNKZPChe_" : {
+      "imageUrl" : "gs://metcs673-acac6.appspot.com/SrMxNI4BSoUF0TYIydLGp2x9wJ02/-KnCxpGc8CUTNKZPChe_/rbasdeo.jpg",
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+    },
+    "-KnCxtMaWD22-3W2dADq" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "The good ole days"
+    },
+    "-KnGFMKMLBFfuYJs1Jok" : {
+      "imageUrl" : "gs://metcs673-acac6.appspot.com/SrMxNI4BSoUF0TYIydLGp2x9wJ02/-KnGFMKMLBFfuYJs1Jok/Screen Shot 2017-06-22 at 3.22.51 PM.png",
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+    },
+    "-KnGFQC8S79_OpScQI8D" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Hello World"
+    },
+    "-KnGFTYSRx2sypFWnCun" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "This works"
+    },
+    "-KnGFkx4VTiVa0fs6oyT" : {
+      "imageUrl" : "gs://metcs673-acac6.appspot.com/SrMxNI4BSoUF0TYIydLGp2x9wJ02/-KnGFkx4VTiVa0fs6oyT/Screen Shot 2017-06-22 at 3.25.03 PM.png",
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+    },
+    "-KnGFw_tz_4j217FQpIK" : {
+      "imageUrl" : "gs://metcs673-acac6.appspot.com/SrMxNI4BSoUF0TYIydLGp2x9wJ02/-KnGFw_tz_4j217FQpIK/Screen Shot 2017-06-22 at 3.25.45 PM.png",
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+    },
+    "-KnGGUiuATsdLWkmFg3Z" : {
+      "imageUrl" : "gs://metcs673-acac6.appspot.com/SrMxNI4BSoUF0TYIydLGp2x9wJ02/-KnGGUiuATsdLWkmFg3Z/Screen Shot 2017-06-22 at 3.27.18 PM.png",
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+    },
+    "-KnGGXCm018wl29LGR6g" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Old dashboard"
+    },
+    "-KnGGYW0X9ff8XUQHBKz" : {
+      "imageUrl" : "gs://metcs673-acac6.appspot.com/SrMxNI4BSoUF0TYIydLGp2x9wJ02/-KnGGYW0X9ff8XUQHBKz/Screen Shot 2017-06-22 at 3.28.00 PM.png",
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+    },
+    "-KnGG_n7Q1-mugfnGwZW" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "new dashboard"
+    },
+    "-KnGem03MxvjXqQW2fD8" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Sayantan, if you see this before our presentation, can you re-deploy the code from git to our firebase app?  I just pushed some styling changes to the dashboard"
+    },
+    "-KnGemOsBorZywB27HNK" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "thanks."
+    },
+    "-KnHJ8cynbqN1eHnpdXO" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Hello World"
+    },
+    "-KnHJBaM4bgYhQA_Tllb" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "hello"
+    },
+    "-KnHJDmx_S5gwiBELaSo" : {
+      "name" : "Rishee Basdeo",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "Hello"
+    },
+    "-KnHLucZVtBr6Q7ogFHY" : {
+      "name" : "Chun Kuen Ho",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "hello"
+    },
+    "-KnI7GqtxTGn1dy-lUS9" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "@Rishee I pushed out the latest git to firebase, so your changes should be reflected there now. "
+    },
+    "-KnK2z2vGllqsQmkMhwE" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "foo"
+    },
+    "-KnKFk2c5hT2BIKpYjoD" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Hello checking if the chat app is working?"
+    },
+    "-KnKFmBLAy17uD6E7sQE" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "I meant is it still working?"
+    },
+    "-KnMa4ihgffwlOWABFUT" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Still working>"
+    },
+    "-KnMa6k2PN6Kkg5gGez9" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Still working?"
+    },
+    "-KnMa7HQGFydYeZ-lvl7" : {
+      "name" : "Sayantan Mukherjee",
+      "photoUrl" : "https://lh3.googleusercontent.com/-21Ey6hz_Z7A/AAAAAAAAAAI/AAAAAAAAAAA/Bv7GuGdSfsU/photo.jpg",
+      "text" : "Yes"
+    },
+    "-KnPNGPOyAyM8HzG4oo9" : {
+      "name" : "Chris Henson",
+      "photoUrl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+      "text" : "We should get a way to have these time stamped.  Otherwise, you have no idea how old the previous messages are"
+    }
+  },
+  "other_test" : {
+    "chat" : "This should already be populated",
+    "projects" : {
+      "project1" : {
+        "admins" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "members" : {
+          "hensonc" : true,
+          "jsmith68" : true
+        },
+        "name" : "Web App",
+        "projectEndDate" : "8/3/17",
+        "projectID" : 119867665,
+        "projectStartDate" : "5/26/2017",
+        "status" : "In Progress"
+      },
+      "project2" : {
+        "admins" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "members" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "name" : "Another Project",
+        "projectEndDate" : "8/3/2017",
+        "projectID" : 1165,
+        "projectStartDate" : "5/26/2017",
+        "status" : "Not Started"
+      },
+      "project3" : {
+        "admins" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "members" : {
+          "hensonc" : true,
+          "jsmith68" : true
+        },
+        "name" : "Some Other App",
+        "projectEndDate" : "8/3/2017",
+        "projectID" : 65,
+        "projectStartDate" : "5/26/2017",
+        "status" : "Complete"
+      },
+      "project4" : {
+        "admins" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "members" : {
+          "hensonc" : true,
+          "jsmith68" : true
+        },
+        "name" : "Something Else",
+        "projectEndDate" : "8/3/2017",
+        "projectID" : 11111,
+        "projectStartDate" : "5/26/2017",
+        "status" : "In Progress"
+      },
+      "project5" : {
+        "admins" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "members" : {
+          "hensonc" : true,
+          "jsmith68" : false
+        },
+        "name" : "Side Project",
+        "projectEndDate" : "8/3/2017",
+        "projectID" : 777777,
+        "projectStartDate" : "5/26/2017",
+        "status" : "In Progress"
+      }
+    },
+    "tasks" : "NULL",
+    "users" : {
+      "hensonc" : {
+        "email" : "hensonc@bu.edu",
+        "name" : "Chris Henson",
+        "projects" : {
+          "project1" : true,
+          "project2" : true,
+          "project3" : true,
+          "project4" : true,
+          "project5" : true
+        },
+        "userID" : 107,
+        "userIcon" : "NULL"
+      },
+      "jsmith68" : {
+        "email" : "jsmith68@fake.com",
+        "name" : "John Smith",
+        "projects" : {
+          "project1" : true,
+          "project2" : false,
+          "project3" : true,
+          "project4" : true,
+          "project5" : false
+        },
+        "userID" : 33333,
+        "userIcon" : "NULL"
+      }
+    }
+  },
+  "test_table" : {
+    "-KnVjBTMOJD2vVCmIdnl" : {
+      "test_id" : "aabb",
+      "test_message" : "This is a test message"
+    },
+    "-KnVtu9NrVgwzelYIeV6" : {
+      "test_id" : "aabb",
+      "test_message" : "This is a test message"
+    }
+  }
+}

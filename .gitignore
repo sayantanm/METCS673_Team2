@@ -1,3 +1,7 @@
 app/.firebaserc
 app/package-lock.json
 app/node_modules
+
+app/firebase-debug 10.45.44 AM.log
+
+*.log

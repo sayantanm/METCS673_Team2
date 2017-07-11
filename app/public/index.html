@@ -1,10 +1,14 @@
 <!doctype html>
 <!--
+  Material Design Lite
   Copyright 2015 Google Inc. All rights reserved.
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
+
       https://www.apache.org/licenses/LICENSE-2.0
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,127 +16,147 @@
   limitations under the License
 -->
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Learn how to use the Firebase platform on the Web">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-
-  <!-- Disable tap highlight on IE -->
-  <meta name="msapplication-tap-highlight" content="no">
-
-  <!-- Web Application Manifest -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Add to homescreen for Chrome on Android -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Friendly Chat">
-  <meta name="theme-color" content="#303F9F">
-
-  <!-- Add to homescreen for Safari on iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Friendly Chat">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
-
-  <!-- Tile icon for Win8 -->
-  <meta name="msapplication-TileColor" content="#3372DF">
-  <meta name="msapplication-navbutton-color" content="#303F9F">
-
-  <!-- Material Design Lite -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-
-  <!-- App Styling -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-  <link rel="stylesheet" href="styles/main.css">
-
-    <!-- these JS and CSS files are needed by the dashboard - Rishee -->
-  <link rel="stylesheet" href="css/dashboard.css" type="text/css">
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="js/dashboard.js"></script>
-</head>
-<body>
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-
-  <!-- Header section containing logo -->
-  <header class="mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
-    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-      <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-        <span class="mdl-layout-title"> <h3><i class="material-icons">dashboard</i> METCS 673 Dashboard</h3> </span>
-      </div>
-    </div>
-  </header>
-
-  <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
-        <header class="demo-drawer-header">
-	      <div class="demo-avatar-dropdown">
-			  <div id="user-container">
-				<div hidden id="user-pic"></div>
-				<div hidden id="user-name"></div>
-				<button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-				  Sign-out
-				</button>
-				<button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-				  <i class="material-icons">account_circle</i>Sign-in with Google
-				</button>
-			  </div>
-		  </div>
-        </header>
-	
-        <nav style="margin-top:50%;" class="demo-navigation mdl-navigation mdl-color--blue-grey-900">
-          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-          <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
-          <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
-          <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
-          <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
-          <div class="mdl-layout-spacer"></div>
-          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
-        </nav>
-      </div>
-
-
-  <main class="mdl-layout__content mdl-color--grey-100">
-    <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
-      <main class="mdl-layout__content mdl-color--grey-100">
-        <div id="container">
-          <div id="div-header" class="flex-wrapper">
-              <div id="div-header-projects" class="mdl-shadow--2dp flex-wrapper flex-two flex-header">
-                  <div id="div-header-projects-green" class="background-green flex-three">Green: 3</div>
-                  <div id="div-header-projects-yellow" class="background-yellow flex-three">Yellow: 1</div>
-                  <div id="div-header-projects-red" class="background-red flex-three">Red: 1</div>
-              </div>
-              <div id="div-header-issues" class="mdl-shadow--2dp flex-wrapper flex-two flex-header">
-                  <div id="div-header-issues-critical" class="flex-four">Epic: 1</div>
-                  <div id="div-header-issues-high" class="flex-four">Story: 1</div>
-                  <div id="div-header-issues-medium" class="flex-four">Tasks: 2</div>
-                  <div id="div-header-issues-low" class="flex-four">Bugs: 2</div>
-              </div>
-
-          </div>
-          <div id="div-chart" class="flex-wrapper">
-              <div id="div-chart-projects" class="mdl-shadow--2dp flex-two flex-chart"></div>
-              <div id="div-chart-issues" class="mdl-shadow--2dp flex-two flex-chart"></div>
-          </div>
-          <div id="div-content" class="flex-wrapper">
-              <div id="div-content-projects" class="mdl-shadow--2dp flex-two flex-body"></div>
-              <div id="div-content-issues" class="mdl-shadow--2dp flex-two flex-body"></div>
-          </div>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="A portfolio template that uses Material Design Lite.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <title>MET 673 Team 2 Landing Page</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.grey-pink.min.css" />
+        <link rel="stylesheet" href="css/landingpage.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+        <script src="js/landingpage.js"></script>
+    </head>
+    <body>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
+                <div class="mdl-layout__header-row portfolio-logo-row">
+                    <span class="mdl-layout__title">
+                        <div id="div_login" class="portfolio-logo"></div>
+                        <span class="mdl-layout__title">CS 673 -Team 2- Software Engineering</span>
+                    </span>
+                </div>
+                <div id="div_login_button">
+                    <a href="#div_auth" name="div_auth">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                        Login / Join
+                    </button>
+                    </a>
+                    <br>&nbsp;
+                </div>
+            </header>
+            <main class="mdl-layout__content">
+                <div class="mdl-grid portfolio-max-width">
+                    <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                        <div class="mdl-card__media">
+                            <img class="article-image" src=" images/plan.png" border="0" alt="">
+                        </div>
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Plan</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            The project requirement management tool will allow the project manager and the team define and store requirements of a software project through user stories. Further this tool will allow the team to define tasks and their timelines and will help with scheduling of subtasks. 
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                        <div class="mdl-card__media">
+                            <img class="article-image" src=" images/chat.png" border="0" alt="">
+                        </div>
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Chat</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            The Project Communication tool will allow a team working with a project to communicate and collaborate among themselves.
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                        <div class="mdl-card__media">
+                            <img class="article-image" src=" images/track.png" border="0" alt="">
+                        </div>
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Track</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                        The issue management tool allows the system to have the ability to manage various tasks within a project.
+                        </div>
+                    </div>
+                </div>
+                <div id="div_auth" class="mdl-grid portfolio-max-width">
+                    <div id="div_login" class="mdl-cell mdl-card custom-card-wide mdl-shadow--4dp portfolio-card">
+                        <div class="mdl-card__mmedia">
+                            <img src=" images/cas-padlock-icon.png" border="0" alt="">
+                        </div>
+                        <div class="mdl-card__title">
+                            <h1 class="mdl-card__title-text">Login</h1>
+                        </div>
+                        <div class="mdl-card__title">
+                            <form action="#">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="input_login_email_address">
+                                    <label class="mdl-textfield__label" for="input_login_email_address">Email Address</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="password" id="input_login_password">
+                                    <label class="mdl-textfield__label" for="input_login_password">Password</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            <button id="button_login" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                    <div id="div_join" class="mdl-cell mdl-card custom-card-wide mdl-shadow--4dp portfolio-card">
+                        <div class="mdl-card__title">
+                            <h1 class="mdl-card__title-text">Join Us</h1>
+                        </div>
+                        <div class="mdl-card__title">
+                            <form action="#">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="input_join_first_name">
+                                    <label class="mdl-textfield__label" for="input_join_first_name">First Name</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="input_join_last_name">
+                                    <label class="mdl-textfield__label" for="input_join_last_name">Last Name</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="text" id="input_join_email_address">
+                                    <label class="mdl-textfield__label" for="input_join_email_address">Email Address</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="password" id="input_join_password">
+                                    <label class="mdl-textfield__label" for="input_join_password">Password</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <input class="mdl-textfield__input" type="password" id="input_join_confirm_password">
+                                    <label class="mdl-textfield__label" for="input_join_confirm_password">Confirm Password</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            <button id="button_join" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <footer class="mdl-mini-footer">
+                    <div class="mdl-mini-footer__left-section">
+                        <div class="mmdl-logo">MET 673 Software Engineering</div>
+                    </div>
+                    <div class="mdl-mini-footer__right-section">
+                        <ul class="mdl-mini-footer__link-list">
+                            <li><a href="#"></a></li>
+                        </ul>
+                    </div>
+                </footer>
+            </main>
         </div>
-      </main>
-    </div>
-  </main>
-</div>
-
-<!-- Import and configure the Firebase SDK -->
-<!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
-<!-- If you do not want to serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
-<script src="/__/firebase/3.8.0/firebase.js"></script>
-<script src="/__/firebase/init.js"></script>
-
-<script src="scripts/main.js"></script>
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </body>
+
 </html>
