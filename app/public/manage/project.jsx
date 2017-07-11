@@ -342,7 +342,8 @@ class ProjectForm extends React.Component {
   componentDidMount(){
     window.componentHandler.upgradeDom();
 
-    var picker = new MaterialDatetimePicker()    
+    var picker = new MaterialDatetimePicker({
+     container: this.picker_container})
     .on('submit', (val) => console.log(`data: ${val}`))
     .on('open', () => console.log('opened'))
     .on('close', () => console.log('closed'));
@@ -400,8 +401,10 @@ class ProjectForm extends React.Component {
           <input className="mdl-textfield__input" type="text" id="start_date" name="start_date" 
             value={this.state.values ? this.state.values.start_date : ""} onChange={self.changeHandler}
           />
-          <a className="c-btn c-datepicker-btn" ref={(ref)=>self.btn = ref}>Open Picker</a>
-
+          <div ref={(ref)=>this.picker_container = ref}>
+            <a className="c-btn c-datepicker-btn" ref={(ref)=>self.btn = ref}>Open Picker</a>
+          </div>
+      
           <label className="mdl-textfield__label" htmlFor="start_date">Start Date ...</label>
           {this.state.errors.start_date ? (
             <span className="mdl-textfield__error">{this.state.errors.start_date}</span>
