@@ -29,18 +29,18 @@ $(document).ready ( function()
     });
 
 
-    var projects = firebase.database().ref('app/projects') ; 
+   var projects_display = $('<select class="mdl-textfield__input" id=project_list ></select>') ;
+    var projects = firebase.database().ref('app/projects') ;
     projects.once('value', function(snapshot) {
-            var projects_display = $('<select id=project_list></select>') ; 
-        snapshot.forEach(function(childSnapshot) {
-            var childKey = childSnapshot.key; 
-            var childData = childSnapshot.val(); 
-				projects_display.append ('<option>' + childData.name + '</option>' ) ; 
-         });
-        // $('#project_list').chosen() ; 
-        $('#projects_container').append ( projects_display ) ; 
+            snapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                    projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="' + childKey + '" ><b>' + childData.name + '</b></option>' ) ;
+             });
+        $('#projects_container').append ( projects_display ) ;
     });
 
+  
     $('#issue_create_submit').click( function() 
     {
         var issue_status= $('#istatus_input').val() ; 
