@@ -1,3 +1,4 @@
+
 <!doctype html>
 <!--
   Copyright 2015 Google Inc. All rights reserved.
@@ -48,17 +49,24 @@
   <!-- App Styling -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
   <link rel="stylesheet" href="styles/main.css">
+ <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+
 </head>
 <body>
 <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 
   <!-- Header section containing logo -->
   <header class="mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
-    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+      <!-- <div class="mdl-layout__header-row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-desktop"> --> 
       <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-        <span class="mdl-layout-title"> <h3><i class="material-icons">chat_bubble_outline</i> METCS 673 Chat Tool</h3> </span>
+        <span class="mdl-layout-title"> <h3>
+            <div id=projects_container class="mdl-textfield mdl-js-textfield">
+            </div>
+            <i class="material-icons">chat_bubble_outline</i> METCS 673 Chat Tool</h3> </span>
       </div>
-    </div>
   </header>
 
   <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
@@ -130,7 +138,20 @@
 <!-- If you do not want to serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
 <script src="/__/firebase/3.8.0/firebase.js"></script>
 <script src="/__/firebase/init.js"></script>
-
+<script>
+var projects_display = $('<select class="mdl-textfield__input" id=project_list ></select>') ;
+    projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="-first" ><b>General Lounge</b></option>' ) ;
+    var projects = firebase.database().ref('app/projects') ;
+    projects.once('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                    projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="' + childKey + '" ><b>' + childData.name + '</b></option>' ) ;
+             });
+        $('#projects_container').append ( projects_display ) ;
+    });
+</script>
 <script src="scripts/main.js"></script>
 </body>
 </html>
+
