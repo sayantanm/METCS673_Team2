@@ -83,34 +83,51 @@ $(document).ready(function(){
     var key = hashFinder(selected);
 
     if (authorized(key, adminUid)){
+      //None of this works correctly...
       var userKey = userHashFinder(userSel);
+      //console.log(userKey);
+      //console.log("userKey.nKey " + userKey.nKey);
       var addingKey = userKey.nKey;
-      var addingUid = getUid(userSel, addingKey);
+      //console.log(addingKey);
+      //var addingUid;
+      console.log('users/' + addingKey);
+      var userDB = firebase.database().ref('users/' + addingKey);
+      //userDB.once('value', function(snapshot){
+      //      userUid = snapshot.val().uid;
+      //});
 
-      var project = firebase.database().ref('app/projects/' + key + '/members');
-      project.once('value', function(snapshot){
-        snapshot.forEach(function(childSnapshot){
+      //alert (addingUid);
+      //console.log("addingUid " + addingUid);
+      //var alreadyAdded = false;
+      //var project = firebase.database().ref('app/projects/' + key + '/members');
+      //project.once('value', function(snapshot){
+       //snapshot.forEach(function(childSnapshot){
             //checks against duplicate entries:
-            if (addingUid == childSnapshot.val().uid){
-              alert("This user is already a member of the project selected");
-              return
-            }
-        });
-      });
+            //if (addingUid == childSnapshot.val().uid){
+            //  alert("This user is already a member of the project selected");
+              //alreadyAdded = true;
+            //}
+      //  });
+      //});
+
       //Use this for making Admins:.....
       //var confirm = confirm("Please confirm that you wish to add this user as an admininstrator:");
       //if (confirm == true){
+      //if(alreadyAdded == false){
+      var project = firebase.database().ref('/app/projects/' + key + '/members');
         var mem = project.push();
         mem.set({
           'name' : userSel ,
-          'uid' : addingUid
+        //  'uid' : addingUid
         });
         addAlert(userSel);
         location.reload(true);
     //  }
+        return;
+    }
     //    alert("No changes made");
     //    return;
-    }
+
     else {
       alert ("You are not authorized to make changes to this project");
       return;
@@ -221,15 +238,15 @@ $(document).ready(function(){
     }
   }*/
 
-  function getUid(userName, key){
-    var uid = "";
+  //function getUid(userName, key){
+  //  var uid = "";
 
-    var users = firebase.database().ref('users/' + key);
-    users.once('value', function(snapshot){
-          uid = snapshot.val().uid;
-    });
-    return uid;
-  }
+  //  var users = firebase.database().ref('users/' + key);
+  //  users.once('value', function(snapshot){
+  //        uid = snapshot.val().uid;
+  //  });
+  //  return uid;
+  //}
 
   //function addToProject(name, email, projName){
   //  var key = hashFinder(projName);
