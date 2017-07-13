@@ -1,35 +1,29 @@
 window.onload = function() {
     // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCuDASMhIQI5n8B70CLYajlViOBbaDei9c",
-        authDomain: "team2-dev.firebaseapp.com",
-        databaseURL: "https://team2-dev.firebaseio.com",
-        projectId: "team2-dev",
-        storageBucket: "team2-dev.appspot.com",
-        messagingSenderId: "1025264149124"
+    var config = {        
+        apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
+        authDomain: "metcs673-acac6.firebaseapp.com",
+        databaseURL: "https://metcs673-acac6.firebaseio.com/",
+        storageBucket: "metcs673-acac6.appspot.com"
     };
     var myApp = firebase.initializeApp(config);
 
     // add users to the database
-    function addUser(firstName, lastName, emailAddress) {
+    function addUser(fullname, emailAddress) {
         var newUserKey = myApp.database().ref('users/' + firebase.auth().currentUser.uid);
         newUserKey.set({
-            first_name: firstName,
-            last_name: lastName,
-            email_address: emailAddress
+            name: fullname,
+            email: emailAddress
         });
-        console.log("user added.");
+        setTimeout(function() {
+            window.location = "./home/index.html";  
+        }, 4000); 
     };
 
-    // login event handler
+    // email address/password sign-in -  event handler
     document.getElementById("button_login").addEventListener("click", function() {
         var email = document.getElementById("input_login_email_address").value;
         var password = document.getElementById("input_login_password").value;
-
-        if (password < 7) {
-            alert("Your password must be greater than 6 characters long");
-            return;
-        }
 
         firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
             // handling errors for authentication
@@ -39,7 +33,36 @@ window.onload = function() {
         });
     });
 
-    // join even handler
+    // google sign-in - event handler
+    document.getElementById("img_google_logo").addEventListener("click", function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+        provider.addScope('email');
+        provider.addScope('https://www.googleapis.com/auth/plus.me');
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+            var userEmail = result.user.email;
+            var userName = result.additionalUserInfo.profile.name;
+            var userId = result.user.uid;
+
+            myApp.database().ref('users').child(userId).once('value', function(snapshot) {
+                if (snapshot.val() === null) {
+                    addUser(userName,userEmail);
+                }
+                else {
+                    window.location = "./home/index.html"; 
+                }
+            }); 
+        }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("Error: " + errorCode);
+            console.log("Error Message: " + errorMessage);
+            // ...
+        });
+    });
+
+    // join - even handler
     document.getElementById("button_join").addEventListener("click", function() {
         var fname = document.getElementById("input_join_first_name").value;
         var lname = document.getElementById("input_join_last_name").value;
@@ -59,27 +82,27 @@ window.onload = function() {
         }
 
         firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
-            // if firebase successfully created the user, we add the user to our database
-            addUser(fname,lname,email);
+            addUser(fname + ' ' + lname,email);
         }).catch(function(error) {
             // Handling Errors for user sign-up
             var errorCode = error.code;
             var errorMessage = error.message;
-            
-            if (errorCode == 'auth/weak-password') {
-                alert('The password is too weak.');
-            }
-            else {
-                alert(errorMessage);
-            }
+
+            alert(errorMessage);
         });
     });
 
-    // when users change state (i.e. logout/login), send them to the dashboard/homepage
+    // when a users signs-in, send them to the dashboard/homepage
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-            //console.log(firebase.auth().currentUser.uid);
-            window.location = "./home/index.html";
+            myApp.database().ref('users').child(user.uid).once('value', function(snapshot) {
+                if (snapshot.val() === null) {
+                    addUser(fname + ' ' + lname,email);
+                }
+                setTimeout(function() {
+                    window.location = "./home/index.html";  
+                }, 5000);  
+            });
         }
     });
 };

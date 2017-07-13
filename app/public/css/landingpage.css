@@ -183,3 +183,22 @@ div#div_login_button {
   float: right;
   text-align: right;
 }
+
+div#div_login_label {
+  height: 43px;
+}
+
+div#div_google_logo {
+  height: 137px;
+  width: 100%;
+}
+
+img#img_google_logo:hover {
+  cursor: pointer;
+}
+
+div#div_login_separator {
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+}
