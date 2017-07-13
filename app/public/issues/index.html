@@ -64,8 +64,6 @@
 	  crossorigin="anonymous"></script>
      <script defer src="/js/jquery-te-1.4.0.min.js"></script>
 	 <link rel="stylesheet" href="/css/jquery-te-1.4.0.css"> 
-     <script src='chosen/chosen.jquery.min.js'></script>
-     <link rel="stylesheet" href="chosen/chosen.min.css">
 	<script defer src="/js/issues.js"</script> 
 	
 	<script defer src="http://underscorejs.org/underscore-min.js"></script>
@@ -135,19 +133,19 @@
       </header>
       <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
         <header class="demo-drawer-header">
-          <img src="/images/user.jpg" class="demo-avatar">
           <div class="demo-avatar-dropdown">
-            <span>hello@example.com</span>
-            <div class="mdl-layout-spacer"></div>
-            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-              <i class="material-icons" role="presentation">arrow_drop_down</i>
-              <span class="visuallyhidden">Accounts</span>
-            </button>
-            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
-              <li class="mdl-menu__item">hello@example.com</li>
-              <li class="mdl-menu__item">info@example.com</li>
-              <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
-            </ul>
+	        <div id="user-container">
+                <div style='display:none;' hidden id="user-pic"></div>  
+                <br>
+                <div hidden id="user-name" style="line-height:15px;font-size:21px;"></div>
+                <br>
+                <button style='margin-left:21%;margin-top:-12%;position:absolute;' hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                  Sign-out
+                </button>
+                <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                  <i class="material-icons">account_circle</i>Sign-in with Google
+                </button>
+              </div>
           </div>
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-900">
@@ -161,6 +159,7 @@
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
 		
+        <input type=hidden id='current_issue'></input> ; 
 		<!-- Always shows a header, even in smaller screens. -->
 			<div style="margin-left:5%;" class="mdl-layout__header-row">
 			  <!-- Navigation. We hide it in small screens. -->
@@ -183,11 +182,11 @@
 			  </nav>
 			</div>
             <div style="margin-left:9%;">  
-                <h3 style="margin-top:0%;" class="mdl-color-text--grey-500"> Issue 1 -- Open issue for a task</h3>
+                <h3 style="margin-top:0%;" class="mdl-color-text--grey-500"> <span id=issue_summary>Issue 1 -- Open issue for a task</span> </h3>
             </div>
 				<br>
 			<div style="margin-top:1%;" class="page-content">
-				<div style="padding-left:1%;float:left;">
+				<div style="padding-left:1%;float:left;" id=issue_list>
 					<div style="min-height:30px;width:120px;" class="demo-card-square mdl-card mdl-shadow--2dp">
 						 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
 							Issue 1
@@ -228,11 +227,11 @@
 				<div style="float:left;padding-left:1%;margin-top:-30px">
                     <div style="width:100%;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
 					    <div class="mdl-card__title mdl-color-text--grey mdl-card--expand">
-							<textarea class=editor style="min-height:330px;" name=issue_content >The contents of the issue are described here</textarea>
+							<textarea class=editor style="min-height:330px;" id=issue_content >The contents of the issue are described here</textarea>
 						</div>
 						<div class="mdl-card__actions mdl-card--border">
-							 <a class="mdl-button mdl-button--colored mdl-color-text--grey mdl-js-button mdl-js-ripple-effect">
-								Submit Comment
+							 <a class="update-desc-button mdl-button mdl-button--colored mdl-color-text--grey mdl-js-button mdl-js-ripple-effect">
+								Update Description
 							 </a>
 						</div>
                     </div>
@@ -240,11 +239,11 @@
 					<hr></hr>
 					<div style="width:100%;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
                         <div class="mdl-card__title mdl-color-text--grey mdl-card--expand">
-							<textarea class=editor name=comments >comments...</textarea>
+							<textarea class=editor id=comments >comments...</textarea>
 						</div>
 						<div class="mdl-card__actions mdl-card--border">
-                             <a class="mdl-button mdl-button--colored mdl-color-text--grey mdl-js-button mdl-js-ripple-effect">
-                                Submit Comment
+                             <a class="update-comments-button mdl-button mdl-button--colored mdl-color-text--grey mdl-js-button mdl-js-ripple-effect">
+                                Update Comment
                              </a>
                         </div>
                     </div>
@@ -256,7 +255,7 @@
 		
 			<div style="margin-right:21%;float:right;">
 				<div class="demo-card-event mdl-card mdl-color-text--white mdl-color--blue-grey-300 mdl-shadow--2dp">
-				  <div class="mdl-card__title mdl-color-text--white mdl-card--expand">
+				  <div id='issue-due-by' class="mdl-card__title mdl-color-text--white mdl-card--expand">
 					<h4>
 					  Issue Due By:<br>
 					  Jun 26, 2017<br>
@@ -275,7 +274,7 @@
 				<br>
 			
 				<div class="demo-card-event mdl-card mdl-color-text--white mdl-color--blue-grey-300 mdl-shadow--2dp">
-					<div class="mdl-card__title mdl-color-text--white mdl-card--expand">
+					<div id='issue-assigned-to' class="mdl-card__title mdl-color-text--white mdl-card--expand">
                     <h4>
                       Issue Assigned To:<br>
                       Sayantan Mukherjee<br>
@@ -297,13 +296,13 @@
 				<div class="mdl-dialog__content">
 				  <p>
                     <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input" type="text" id="sample1">
-                        <label class="mdl-textfield__label" for="sample1">Enter User Name</label>
+                        <input class="mdl-textfield__input" type="text" id="reassign">
+                        <label class="mdl-textfield__label" for="reassign">Enter User</label>
                       </div>
 				  </p>
 				</div>
 				<div class="mdl-dialog__actions">
-				  <button type="button" class="mdl-button">Submit</button>
+				  <button type="button" id=reassign_issue_button class="mdl-button">Submit</button>
 				  <button type="button" class="mdl-button close">Cancel</button>
 				</div>
 			  </dialog>
@@ -319,10 +318,26 @@
                         </select>
                         <br> 
                         <select class="mdl-textfield__input" id=istatus_input>
+                            <option>New</option>
+                            <option>On Hold</option>
                             <option>In Progress</option>
                             <option>Open</option>
                             <option>Resolved</option>
                             <option>Closed</option>
+                        </select>
+                        <br> 
+                        <select class="mdl-textfield__input" id=iseverity_input>
+                            <option>Critical</option>
+                            <option>Major</option>
+                            <option>Minor</option>
+                            <option>Trivial</option>
+                        </select> 
+                        <br> 
+                        <select class="mdl-textfield__input" id=ipriority_input>
+                            <option>Immediate</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
                         </select>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield">
@@ -333,10 +348,6 @@
                         <input class="mdl-textfield__input" type=text id=due_input>
                         <label class="mdl-textfield__label" for="due_input">Due By</label>
                     </div>
-                    <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input" type="text" id="pname_input">
-                        <label class="mdl-textfield__label" for="pname_input">Project Name</label>
-                      </div>
 					 <div class="mdl-textfield mdl-js-textfield">
 						<textarea class="mdl-textfield__input" type="text" rows= "3" id="summary_input" ></textarea>
 						<label class="mdl-textfield__label" for="summary_input">Summary</label>
