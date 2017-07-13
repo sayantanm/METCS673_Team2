@@ -14,7 +14,6 @@ $(document).ready(function(){
   //Triggers the change in the members list when a project is selected:
   document.getElementById("projects_container").addEventListener("change", showMembers);
 
-
   //This section populates the existing users dropdown menu:
   var users = firebase.database().ref('users');
 
@@ -49,12 +48,13 @@ $(document).ready(function(){
         memberName = childSnapshot.val().name;
         //put in button to delete and make admin here...
         memberRows = ('<tr><td></td><td class="mdl-data-table__cell--non-numeric team">' +
-          memberName + '</td><td class="mdl-data-table__cell--non-numeric team" >' +
-          '</td></tr>');
+          memberName + '</td><td class="mdl-data-table__cell--non-numeric team">'+
+          '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Make Admin</button></td></tr>');
         $('#memberList').append(memberRows).html();
       });
     });
   }
+
 
   //Dicates the actions for when the 'add' button is clicked:
   addButton.onclick = function() {
@@ -73,42 +73,90 @@ $(document).ready(function(){
     //Actions if adding a new user (if any user selected in existing user field
     //any items written into text field will be ignored):
     if(userSel == "Existing Users"){
-      var name =  document.getElementById("name").value;
-      //name input validation:
-      if (name == ""){
-        alert("Please enter a name");
-        return;
-      }
-      //I'm not checking to see if there are only characters, as the user could want to use some sort of
-      //usernames for their naming convention--only length is checked here:
-      if (name.length > 20){
-        alert("Name must not be greater than 20 characters. Please try again.");
-        return;
-      }
-
-      //email input validation:
-      var email = document.getElementById("email").value;
-      if (email == ""){
-        alert("Please enter an email address");
-        return;
-      }
-      var pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$");
-      var validation = pattern.test(email);
-      if (!validation){
-        alert("Please enter a valid email address");
-        return;
-      }
-
-      newUser(name, email, selected);
-      location.reload(true);
+      alert("Please select a member to add");
       return;
     }
 
+    //Verifying the current user is authorized as an Admin to add people to project:
+    var admin = firebase.auth().currentUser;
+    var adminUid = admin.uid;
+    var key = hashFinder(selected);
+
+    if (authorized(key, adminUid)){
+      var userKey = userHashFinder(userSel);
+      var addingKey = userKey.nKey;
+      var addingUid = getUid(userSel, addingKey);
+
+      var project = firebase.database().ref('app/projects/' + key + '/members');
+      project.once('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            //checks against duplicate entries:
+            if (addingUid == childSnapshot.val().uid){
+              alert("This user is already a member of the project selected");
+              return
+            }
+        });
+      });
+      //Use this for making Admins:.....
+      //var confirm = confirm("Please confirm that you wish to add this user as an admininstrator:");
+      //if (confirm == true){
+        var mem = project.push();
+        mem.set({
+          'name' : userSel ,
+          'uid' : addingUid
+        });
+        addAlert(userSel);
+        location.reload(true);
+    //  }
+    //    alert("No changes made");
+    //    return;
+    }
+    else {
+      alert ("You are not authorized to make changes to this project");
+      return;
+    }
+
+
+      //var name =  document.getElementById("name").value;
+      //name input validation:
+      //if (name == ""){
+        //alert("Please enter a name");
+      //  return;
+    //  }
+      //I'm not checking to see if there are only characters, as the user could want to use some sort of
+      //usernames for their naming convention--only length is checked here:
+    //  if (name.length > 20){
+      //  alert("Name must not be greater than 20 characters. Please try again.");
+      //  return;
+    //  }
+
+      //email input validation:
+      //var email = document.getElementById("email").value;
+      //if (email == ""){
+      //  alert("Please enter an email address");
+      //  return;
+      //}
+      //var pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$");
+      //var validation = pattern.test(email);
+      //if (!validation){
+      //  alert("Please enter a valid email address");
+      //  return;
+      //}
+
+      //newUser(name, email, selected);
+    //  location.reload(true);
+    //  return;
+    //}
+
     //This will add an existing member to the project:
-    var email = getEmail(userSel);
-    addToProject(userSel, email, selected);
-    location.reload(true);
+    //var temp = userHashFinder(String(userSel));
+    //alert(temp);
+    //var email = temp.nKey;
+    //alert (email);
+    //addToProject(userSel, email, selected);
+
   }
+
 
   function hashFinder(projName){
     var key = "";
@@ -124,17 +172,81 @@ $(document).ready(function(){
   }
 
 
-  function addToProject(name, email, projName){
-    var key = hashFinder(projName);
-
-    var project = firebase.database().ref('app/projects/' + key + '/members');
-    var mem = project.push();
-    mem.set({
-      'name' : name ,
-      'email' : email
+  function authorized(key, uid){
+    var auth = false;
+    var project = firebase.database().ref('app/projects/' + key + '/admins');
+    project.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+          if (uid == childSnapshot.val().uid){
+            auth = true;
+          }
+      });
     });
-    addAlert(name);
+    return auth;
   }
+
+/*
+  adminBtn.onclick() = function(){
+    alert("hello world");
+    var project = document.getElementById("projects_container");
+    var selected = project.options[project.selectedIndex].value;
+
+    var user = firebase.auth().currentUser;
+    var uid = user.uid;
+    var key = hashFinder(selected);
+
+    if (authorized(key, uid)){
+      var admin = firebase.database().ref('app/projects/' + key + '/admins');
+      admin.once('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            //checks against duplicate entries:
+            if (uid == childSnapshot.val().uid){
+              alert("This user is already an admin of the project selected");
+              return
+            }
+        });
+      });
+      var userUid = getUid();//*********insert some function that actually works here******
+      var mem = admin.push();
+      mem.set({
+
+        'uid' : userUid
+      });
+      addAlert(name);
+      location.reload(true);
+    }
+    else {
+      alert ("You are not authorized to make changes to this project");
+      return;
+    }
+  }*/
+
+  function getUid(userName, key){
+    var uid = "";
+
+    var users = firebase.database().ref('users/' + key);
+    users.once('value', function(snapshot){
+          uid = snapshot.val().uid;
+    });
+    return uid;
+  }
+
+  //function addToProject(name, email, projName){
+  //  var key = hashFinder(projName);
+
+    //var project = firebase.database().ref('app/projects/' + key + '/members');
+  //  project.once('value', function(snapshot){
+    //  snapshot.forEach(function(childSnapshot){
+
+    //  });
+  //  });
+  //  var mem = project.push();
+  //  mem.set({
+  //    'name' : name ,
+  //    'email' : email
+  //  });
+  //  addAlert(name);
+  //}
 
 
   function addAlert(name){
@@ -142,40 +254,52 @@ $(document).ready(function(){
   }
 
 
-  function newUser(name, email, selected){
+  //function newUser(name, email, selected){
     //checks to see if user already registered:
-    if (getEmail(name) == email){
-      alert(name + " is an existing user.  Select them from the dropdown menu above.");
-      return;
+    //var temp = getEmail(name);
+    //var emailCheck = temp.nKey;
+    //if (emailCheck == email){
+    //  alert(name + " is an existing user.  Select them from the dropdown menu above.");
+    //  return;
+    //}
+
+  //  var mref = firebase.database().ref('users') ;
+  //  var iref = mref.push() ;
+  //  iref.set({
+  //    'name' : name ,
+  //    'email' : email
+  //  });
+  //  addToProject(name, email, selected);
+  //}
+
+  function userHashFinder(name){
+      var key = "";
+      var c = 0 ;
+      var keyFinder = firebase.database().ref('users');
+      var oK  = keyFinder.once('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+          if (childSnapshot.val().name == name){
+            oK.nKey = childSnapshot.key;
+            c+=1;
+          }
+        });
+      });
+      return (oK);
     }
 
-    var mref = firebase.database().ref('users') ;
-    var iref = mref.push() ;
-    iref.set({
-      'name' : name ,
-      'email' : email
-    });
-    addToProject(name, email, selected);
-  }
 
+  //function getEmail(name){
+  //    var temp = userHashFinder(name);
+  //    var key = temp.nKey;
+  //    var userDB = firebase.database().ref('users/' + key);
+  //    var ok  = userDB.once('value', function(snapshot){
+  //      console.log(snapshot.val().email);
+  //      ok.email = snapshot.val().email;
+//
 
-  function getEmail(name){
-    var key = "";
-    var keyFinder = firebase.database().ref('users');
-    keyFinder.once('value', function(snapshot){
-      snapshot.forEach(function(childSnapshot){
-        if (childSnapshot.val().name == name){
-          key = childSnapshot.key;
-        }
-      });
-    });
-    var userEmail;
-    var users = firebase.database().ref('users/' + key);
-    users.once('value', function(snapshot){
-      userEmail = snapshot.val().email;
-    });
-    return userEmail;
-  }
-
+  //    });
+      //console.log(ok.nKey);
+    //  return (ok);
+  //  }
 
 });

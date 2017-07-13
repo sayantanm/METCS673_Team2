@@ -105,7 +105,7 @@
             </div>
           </header>
           <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+            <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
             <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
             <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
             <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
@@ -117,7 +117,7 @@
         <main class="mdl-layout__content mdl-color--grey-100">
 
           <div class = "mdl-grid grid">
-      <div class="demo-card-square mdl-card mdl-shadow--16dp addMember">
+      <div class="demo-card-square mdl-card mdl-shadow--1dp addMember">
         <div class="mdl-cell mdl-cell--12-col">
           <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">Add A Team Member to Your Project</h2>
@@ -134,7 +134,14 @@
           </div>
           <br>
           <br>
-          <div><h5>Or add a new member to this project:</h5></div>
+          <div class="mdl-card__actions">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored addButton" id="addButton">
+              Add
+            </button>
+          </div>
+          <br>
+          <br>
+          <div><h5>Or Invite A Member To Sign Up:</h5></div>
 
           <div>
             <h5><center>Name:
@@ -156,43 +163,41 @@
             </h5>
           </div>
           <br>
-          <!--<div>
-            <h5><center>Role:
-              <div class = "mdl-card__actions mdl-textfield mdl-js-textfield input">
-                <form action="#">
-                  <input class="mdl-textfield__input" type="text" id="role">
-                </form>
-              </div></center>
-            </h5>
-          </div>-->
-          <br>
-          <br>
           <div class="mdl-card__actions">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored addButton" id = "addButton">
-              Add
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored addButton" id = "inviteButton">
+              Invite
             </button>
           </div>
+          <br>
+          <br>
         </div>
       </div>
 
       <div class="mdl-layout-spacer"></div>
 
       <div>
-        <div class="demo-card-square mdl-card mdl-shadow--16dp gridDispTeam">
+        <div class="demo-card-square mdl-card mdl-shadow--1dp gridDispTeam">
           <div class="mdl-cell mdl-cell--12-col">
             <div class="mdl-card__title">
               <h2 class="mdl-card__title-text">Current Project Team Members</h2>
             </div>
-            <table class="mdl-data-table mdl-js-data-table table" id ='table'>
+            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable table" id ='table'>
               <thead>
                 <tr>
-                  <th class="mdl-data-table__cell--non-numeric team"></th>
+
                   <th class="mdl-data-table__cell--non-numeric team"><span id = "hdrName">Name</span></th>
                   <th class="mdl-data-table__cell--non-numeric team"></th>
                 </tr>
               </thead>
               <tbody id=memberList></tbody>
             </table>
+            <br>
+
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn" id = "rmvBtn">
+              Remove Selected From Project
+            </button>
+            <br>
+            <br>
           </div>
         </div>
       </div>
