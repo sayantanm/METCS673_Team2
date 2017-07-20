@@ -297,7 +297,7 @@ class ProjectForm extends React.Component {
     var picker = new MaterialDatetimePicker({
      container: this.picker_container})
      .on('submit', (val) => {
-      value = val.format("DD/MM/YYYY");
+      value = val.format("MM/DD/YYYY");
       console.log("date value: ", value);
       this.setState({'values': Object.assign({}, this.state.values, {'start_date': value})
       });
