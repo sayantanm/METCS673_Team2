@@ -371,6 +371,9 @@ class ProjectForm extends React.Component {
         <div className="mdl-textfield mdl-js-textfield">
           <input className="mdl-textfield__input" type="text" id="end_date" name="end_date" 
           value={this.state.values ? this.state.values.end_date : ""} onChange={self.changeHandler}/>
+          <div ref={(ref)=>this.picker_container = ref}>
+            <a className="c-btn c-datepicker-btn" ref={(ref)=>self.btn = ref}>Open Picker</a>
+          </div>
           <label className="mdl-textfield__label" htmlFor="end_date">End Date ...</label>
           {this.state.errors.end_date ? (
             <span className="mdl-textfield__error">{this.state.errors.end_date}</span>

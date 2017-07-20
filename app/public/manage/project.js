@@ -626,7 +626,7 @@ var ProjectForm = function (_React$Component2) {
 
       var picker = new MaterialDatetimePicker({
         container: this.picker_container }).on('submit', function (val) {
-        value = val.format("DD/MM/YYYY");
+        value = val.format("MM/DD/YYYY");
         console.log("date value: ", value);
         _this3.setState({ 'values': Object.assign({}, _this3.state.values, { 'start_date': value })
         });
@@ -679,8 +679,8 @@ var ProjectForm = function (_React$Component2) {
         {
           onSubmit: submitHandler,
 
-          ref: function ref(_ref3) {
-            return _this4.formRef = _ref3;
+          ref: function ref(_ref5) {
+            return _this4.formRef = _ref5;
           }
         },
         React.createElement(
@@ -734,6 +734,19 @@ var ProjectForm = function (_React$Component2) {
           { className: "mdl-textfield mdl-js-textfield" },
           React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date",
             value: this.state.values ? this.state.values.end_date : "", onChange: self.changeHandler }),
+          React.createElement(
+            "div",
+            { ref: function ref(_ref4) {
+                return _this4.picker_container = _ref4;
+              } },
+            React.createElement(
+              "a",
+              { className: "c-btn c-datepicker-btn", ref: function ref(_ref3) {
+                  return self.btn = _ref3;
+                } },
+              "Open Picker"
+            )
+          ),
           React.createElement(
             "label",
             { className: "mdl-textfield__label", htmlFor: "end_date" },
