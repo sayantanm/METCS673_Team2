@@ -55,8 +55,18 @@ var ReactApp = function (_React$Component) {
       console.log(updates);
 
       this.db.ref().update(updates);
-
       this.setState({ 'edit_project': false });
+      this.loadProjects();
+    }
+  }, {
+    key: "deleteProject",
+    value: function deleteProject(index) {
+      var firebase_key = this.state.projects[index].firebase_key;
+      var deletes = {};
+      deletes['/app/projects/' + firebase_key] = null;
+      console.log(deletes);
+
+      this.db.ref().update(deletes);
       this.loadProjects();
     }
   }, {
@@ -85,7 +95,8 @@ var ReactApp = function (_React$Component) {
         });
 
         this.setState({
-          projects: items
+          projects: items,
+          project_idx: null
         });
       }.bind(this));
     }
@@ -181,6 +192,9 @@ var ReactApp = function (_React$Component) {
             var editProjectHandler = function editProjectHandler() {
               self.setState({ edit_project: true, project_idx: index });
             };
+            var deleteProjectHandler = function deleteProjectHandler() {
+              self.deleteProject(index);
+            };
             return React.createElement(
               "tr",
               { key: item.firebase_key },
@@ -224,7 +238,9 @@ var ReactApp = function (_React$Component) {
                 "\xA0",
                 React.createElement(
                   "button",
-                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" },
+                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                    onClick: deleteProjectHandler
+                  },
                   "Delete"
                 ),
                 React.createElement(
@@ -460,7 +476,7 @@ var SideBar = function (_React$Component3) {
           { className: "demo-navigation mdl-navigation mdl-color--blue-grey-800" },
           React.createElement(
             "a",
-            { className: "mdl-navigation__link", href: "/home" },
+            { className: "mdl-navigation__link", href: "" },
             React.createElement(
               "i",
               { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
@@ -500,7 +516,7 @@ var SideBar = function (_React$Component3) {
           ),
           React.createElement(
             "a",
-            { className: "mdl-navigation__link", href: "/admin" },
+            { className: "mdl-navigation__link", href: "" },
             React.createElement(
               "i",
               { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },

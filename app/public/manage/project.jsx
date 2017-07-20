@@ -35,10 +35,19 @@ class ReactApp extends React.Component {
     var updates = {};
     updates['/app/projects/' + firebase_key] = project;
     console.log(updates);
- 
-    this.db.ref().update(updates);
 
+    this.db.ref().update(updates);
     this.setState({'edit_project': false});
+    this.loadProjects();
+  }
+
+  deleteProject(index) {
+    var firebase_key = this.state.projects[index].firebase_key;
+    var deletes = {};
+    deletes['/app/projects/' + firebase_key] = null;
+    console.log(deletes);
+
+    this.db.ref().update(deletes);
     this.loadProjects();
   }
 
@@ -66,7 +75,8 @@ class ReactApp extends React.Component {
       });
 
       this.setState({
-        projects: items
+        projects: items,
+        project_idx: null
       });
      }.bind(this));
   }
@@ -133,6 +143,9 @@ class ReactApp extends React.Component {
             var editProjectHandler = function(){
               self.setState({ edit_project: true , project_idx: index});
             }
+            var deleteProjectHandler = function() {
+              self.deleteProject(index);
+            }
             return (
               <tr key={item.firebase_key}>
                 <td className="mdl-data-table__cell--non-numeric">
@@ -148,7 +161,9 @@ class ReactApp extends React.Component {
                   >
                   View</button>
                   &nbsp;
-                  <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                  <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                  onClick={deleteProjectHandler}
+                  >
                   Delete
                   </button>
                   <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
