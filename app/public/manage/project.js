@@ -518,7 +518,7 @@ var ReactApp = function (_React$Component) {
             { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
             React.createElement(
               "div",
-              { className: "mdl-cell mdl-cell--4-col" },
+              { className: "mdl-cell mdl-cell--8-col" },
               React.createElement(
                 "button",
                 {
@@ -527,7 +527,7 @@ var ReactApp = function (_React$Component) {
                 },
                 "List Projects"
               ),
-              "\xA0",
+              "\xA0 \xA0",
               React.createElement(
                 "button",
                 {

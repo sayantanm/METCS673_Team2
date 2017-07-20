@@ -199,14 +199,14 @@ class ReactApp extends React.Component {
         <SideBar user_email= { this.state.user_email } />
         <main className="mdl-layout__content mdl-color--grey-100">
           <div className="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-            <div className="mdl-cell mdl-cell--4-col">
+            <div className="mdl-cell mdl-cell--8-col">
               <button
                 className="mdl-button mdl-js-button mdl-button--raised"
                 onClick={showProjectsHandler}
               >
                 List Projects
               </button>
-              &nbsp;
+              &nbsp; &nbsp;
               <button
                 className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
                 onClick={showAddFormHandler}
