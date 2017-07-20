@@ -8,6 +8,242 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var TopBar = function (_React$Component) {
+  _inherits(TopBar, _React$Component);
+
+  function TopBar() {
+    _classCallCheck(this, TopBar);
+
+    return _possibleConstructorReturn(this, (TopBar.__proto__ || Object.getPrototypeOf(TopBar)).apply(this, arguments));
+  }
+
+  _createClass(TopBar, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "header",
+        { className: "demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600" },
+        React.createElement(
+          "div",
+          { className: "mdl-layout__header-row" },
+          React.createElement(
+            "span",
+            { className: "mdl-layout-title" },
+            "Project Management Tool"
+          ),
+          React.createElement("div", { className: "mdl-layout-spacer" }),
+          React.createElement(
+            "div",
+            { className: "mdl-textfield mdl-js-textfield mdl-textfield--expandable" },
+            React.createElement(
+              "label",
+              { className: "mdl-button mdl-js-button mdl-button--icon", htmlFor: "search" },
+              React.createElement(
+                "i",
+                { className: "material-icons" },
+                "search"
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "mdl-textfield__expandable-holder" },
+              React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "search" }),
+              React.createElement(
+                "label",
+                { className: "mdl-textfield__label", htmlFor: "search" },
+                "Enter your query..."
+              )
+            )
+          ),
+          React.createElement(
+            "button",
+            { className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon", id: "hdrbtn" },
+            React.createElement(
+              "i",
+              { className: "material-icons" },
+              "more_vert"
+            )
+          ),
+          React.createElement(
+            "ul",
+            { className: "mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right", htmlFor: "hdrbtn" },
+            React.createElement(
+              "li",
+              { className: "mdl-menu__item" },
+              "About"
+            ),
+            React.createElement(
+              "li",
+              { className: "mdl-menu__item" },
+              "Contact"
+            ),
+            React.createElement(
+              "li",
+              { className: "mdl-menu__item" },
+              "Legal information"
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return TopBar;
+}(React.Component);
+
+var SideBar = function (_React$Component2) {
+  _inherits(SideBar, _React$Component2);
+
+  function SideBar() {
+    _classCallCheck(this, SideBar);
+
+    return _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).apply(this, arguments));
+  }
+
+  _createClass(SideBar, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        { className: "demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" },
+        React.createElement(
+          "header",
+          { className: "demo-drawer-header" },
+          React.createElement("img", { src: "/images/user.jpg", className: "demo-avatar" }),
+          React.createElement(
+            "div",
+            { className: "demo-avatar-dropdown" },
+            React.createElement(
+              "span",
+              null,
+              this.props.user_email
+            ),
+            React.createElement("div", { className: "mdl-layout-spacer" }),
+            React.createElement(
+              "button",
+              { id: "accbtn", className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" },
+              React.createElement(
+                "i",
+                { className: "material-icons", role: "presentation" },
+                "arrow_drop_down"
+              ),
+              React.createElement(
+                "span",
+                { className: "visuallyhidden" },
+                "Accounts"
+              )
+            ),
+            React.createElement(
+              "ul",
+              { className: "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect", htmlFor: "accbtn" },
+              React.createElement(
+                "li",
+                { className: "mdl-menu__item" },
+                "hello@example.com"
+              ),
+              React.createElement(
+                "li",
+                { className: "mdl-menu__item" },
+                "info@example.com"
+              ),
+              React.createElement(
+                "li",
+                { className: "mdl-menu__item" },
+                React.createElement(
+                  "i",
+                  { className: "material-icons" },
+                  "add"
+                ),
+                "Add another account..."
+              )
+            )
+          )
+        ),
+        React.createElement(
+          "nav",
+          { className: "demo-navigation mdl-navigation mdl-color--blue-grey-800" },
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "home"
+            ),
+            "Home"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "/manage" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "inbox"
+            ),
+            "Projects"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "/chat" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "chat"
+            ),
+            "Chat"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "/issues" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "inbox"
+            ),
+            "Issues"
+          ),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "people"
+            ),
+            "Admin"
+          ),
+          React.createElement("div", { className: "mdl-layout-spacer" }),
+          React.createElement(
+            "a",
+            { className: "mdl-navigation__link", href: "" },
+            React.createElement(
+              "i",
+              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
+              "help_outline"
+            ),
+            React.createElement(
+              "span",
+              { className: "visuallyhidden" },
+              "Help"
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return SideBar;
+}(React.Component);
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var ReactApp = function (_React$Component) {
   _inherits(ReactApp, _React$Component);
 
@@ -320,252 +556,25 @@ var ReactApp = function (_React$Component) {
   return ReactApp;
 }(React.Component);
 
-var TopBar = function (_React$Component2) {
-  _inherits(TopBar, _React$Component2);
-
-  function TopBar() {
-    _classCallCheck(this, TopBar);
-
-    return _possibleConstructorReturn(this, (TopBar.__proto__ || Object.getPrototypeOf(TopBar)).apply(this, arguments));
-  }
-
-  _createClass(TopBar, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "header",
-        { className: "demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600" },
-        React.createElement(
-          "div",
-          { className: "mdl-layout__header-row" },
-          React.createElement(
-            "span",
-            { className: "mdl-layout-title" },
-            "Project Management Tool"
-          ),
-          React.createElement("div", { className: "mdl-layout-spacer" }),
-          React.createElement(
-            "div",
-            { className: "mdl-textfield mdl-js-textfield mdl-textfield--expandable" },
-            React.createElement(
-              "label",
-              { className: "mdl-button mdl-js-button mdl-button--icon", htmlFor: "search" },
-              React.createElement(
-                "i",
-                { className: "material-icons" },
-                "search"
-              )
-            ),
-            React.createElement(
-              "div",
-              { className: "mdl-textfield__expandable-holder" },
-              React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "search" }),
-              React.createElement(
-                "label",
-                { className: "mdl-textfield__label", htmlFor: "search" },
-                "Enter your query..."
-              )
-            )
-          ),
-          React.createElement(
-            "button",
-            { className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon", id: "hdrbtn" },
-            React.createElement(
-              "i",
-              { className: "material-icons" },
-              "more_vert"
-            )
-          ),
-          React.createElement(
-            "ul",
-            { className: "mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right", htmlFor: "hdrbtn" },
-            React.createElement(
-              "li",
-              { className: "mdl-menu__item" },
-              "About"
-            ),
-            React.createElement(
-              "li",
-              { className: "mdl-menu__item" },
-              "Contact"
-            ),
-            React.createElement(
-              "li",
-              { className: "mdl-menu__item" },
-              "Legal information"
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return TopBar;
-}(React.Component);
-
-var SideBar = function (_React$Component3) {
-  _inherits(SideBar, _React$Component3);
-
-  function SideBar() {
-    _classCallCheck(this, SideBar);
-
-    return _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).apply(this, arguments));
-  }
-
-  _createClass(SideBar, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "div",
-        { className: "demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" },
-        React.createElement(
-          "header",
-          { className: "demo-drawer-header" },
-          React.createElement("img", { src: "/images/user.jpg", className: "demo-avatar" }),
-          React.createElement(
-            "div",
-            { className: "demo-avatar-dropdown" },
-            React.createElement(
-              "span",
-              null,
-              this.props.user_email
-            ),
-            React.createElement("div", { className: "mdl-layout-spacer" }),
-            React.createElement(
-              "button",
-              { id: "accbtn", className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" },
-              React.createElement(
-                "i",
-                { className: "material-icons", role: "presentation" },
-                "arrow_drop_down"
-              ),
-              React.createElement(
-                "span",
-                { className: "visuallyhidden" },
-                "Accounts"
-              )
-            ),
-            React.createElement(
-              "ul",
-              { className: "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect", htmlFor: "accbtn" },
-              React.createElement(
-                "li",
-                { className: "mdl-menu__item" },
-                "hello@example.com"
-              ),
-              React.createElement(
-                "li",
-                { className: "mdl-menu__item" },
-                "info@example.com"
-              ),
-              React.createElement(
-                "li",
-                { className: "mdl-menu__item" },
-                React.createElement(
-                  "i",
-                  { className: "material-icons" },
-                  "add"
-                ),
-                "Add another account..."
-              )
-            )
-          )
-        ),
-        React.createElement(
-          "nav",
-          { className: "demo-navigation mdl-navigation mdl-color--blue-grey-800" },
-          React.createElement(
-            "a",
-            { className: "mdl-navigation__link", href: "" },
-            React.createElement(
-              "i",
-              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-              "home"
-            ),
-            "Home"
-          ),
-          React.createElement(
-            "a",
-            { className: "mdl-navigation__link", href: "/manage" },
-            React.createElement(
-              "i",
-              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-              "inbox"
-            ),
-            "Projects"
-          ),
-          React.createElement(
-            "a",
-            { className: "mdl-navigation__link", href: "/chat" },
-            React.createElement(
-              "i",
-              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-              "chat"
-            ),
-            "Chat"
-          ),
-          React.createElement(
-            "a",
-            { className: "mdl-navigation__link", href: "/issues" },
-            React.createElement(
-              "i",
-              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-              "inbox"
-            ),
-            "Issues"
-          ),
-          React.createElement(
-            "a",
-            { className: "mdl-navigation__link", href: "" },
-            React.createElement(
-              "i",
-              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-              "people"
-            ),
-            "Admin"
-          ),
-          React.createElement("div", { className: "mdl-layout-spacer" }),
-          React.createElement(
-            "a",
-            { className: "mdl-navigation__link", href: "" },
-            React.createElement(
-              "i",
-              { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
-              "help_outline"
-            ),
-            React.createElement(
-              "span",
-              { className: "visuallyhidden" },
-              "Help"
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return SideBar;
-}(React.Component);
-
-var ProjectForm = function (_React$Component4) {
-  _inherits(ProjectForm, _React$Component4);
+var ProjectForm = function (_React$Component2) {
+  _inherits(ProjectForm, _React$Component2);
 
   function ProjectForm(props) {
     _classCallCheck(this, ProjectForm);
 
-    var _this4 = _possibleConstructorReturn(this, (ProjectForm.__proto__ || Object.getPrototypeOf(ProjectForm)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (ProjectForm.__proto__ || Object.getPrototypeOf(ProjectForm)).call(this, props));
 
-    _this4.state = {
+    _this2.state = {
       errors: {},
       values: null,
       firebase_key: null
     };
 
-    _this4.state.values = props.project ? props.project : null;
-    _this4.state.firebase_key = props.project ? props.project.firebase_key : null;
+    _this2.state.values = props.project ? props.project : null;
+    _this2.state.firebase_key = props.project ? props.project.firebase_key : null;
     // This is to allow it to work as callback from other context
-    _this4.changeHandler = _this4.changeHandler.bind(_this4);
-    return _this4;
+    _this2.changeHandler = _this2.changeHandler.bind(_this2);
+    return _this2;
   }
 
   _createClass(ProjectForm, [{
@@ -644,7 +653,7 @@ var ProjectForm = function (_React$Component4) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this3 = this;
 
       var self = this;
       {/* Form Submit Handler */}
@@ -665,7 +674,7 @@ var ProjectForm = function (_React$Component4) {
           onSubmit: submitHandler,
 
           ref: function ref(_ref3) {
-            return _this5.formRef = _ref3;
+            return _this3.formRef = _ref3;
           }
         },
         React.createElement(
@@ -693,7 +702,7 @@ var ProjectForm = function (_React$Component4) {
           React.createElement(
             "div",
             { ref: function ref(_ref2) {
-                return _this5.picker_container = _ref2;
+                return _this3.picker_container = _ref2;
               } },
             React.createElement(
               "a",
