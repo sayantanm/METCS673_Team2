@@ -618,18 +618,24 @@ var ProjectForm = function (_React$Component2) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this3 = this;
+
+      var value = null;
+
       window.componentHandler.upgradeDom();
 
       var picker = new MaterialDatetimePicker({
         container: this.picker_container }).on('submit', function (val) {
-        return console.log("data: " + val);
+        value = val.format("DD/MM/YYYY");
+        console.log("date value: ", value);
+        _this3.setState({ 'values': Object.assign({}, _this3.state.values, { 'start_date': value })
+        });
       }).on('open', function () {
         return console.log('opened');
       }).on('close', function () {
         return console.log('closed');
       });
 
-      console.log("this.btn", this.btn);
       this.btn.addEventListener('click', function () {
         return picker.open();
       });
@@ -653,7 +659,7 @@ var ProjectForm = function (_React$Component2) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var self = this;
       {/* Form Submit Handler */}
@@ -674,7 +680,7 @@ var ProjectForm = function (_React$Component2) {
           onSubmit: submitHandler,
 
           ref: function ref(_ref3) {
-            return _this3.formRef = _ref3;
+            return _this4.formRef = _ref3;
           }
         },
         React.createElement(
@@ -702,7 +708,7 @@ var ProjectForm = function (_React$Component2) {
           React.createElement(
             "div",
             { ref: function ref(_ref2) {
-                return _this3.picker_container = _ref2;
+                return _this4.picker_container = _ref2;
               } },
             React.createElement(
               "a",

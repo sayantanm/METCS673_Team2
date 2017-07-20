@@ -290,15 +290,22 @@ class ProjectForm extends React.Component {
 
 
   componentDidMount(){
+    var value = null;
+
     window.componentHandler.upgradeDom();
 
     var picker = new MaterialDatetimePicker({
      container: this.picker_container})
-    .on('submit', (val) => console.log(`data: ${val}`))
+     .on('submit', (val) => {
+      value = val.format("DD/MM/YYYY");
+      console.log("date value: ", value);
+      this.setState({'values': Object.assign({}, this.state.values, {'start_date': value})
+      });
+     })
+
     .on('open', () => console.log('opened'))
     .on('close', () => console.log('closed'));
 
-    console.log("this.btn", this.btn);
     this.btn.addEventListener('click', () => picker.open()); 
   }
 
