@@ -135,6 +135,7 @@ main, #messages-card {
   background: linear-gradient(white, #f9f9f9);
   justify-content: space-between;
 }
+/* 
 #user-container {
   position: absolute;
   display: flex;
@@ -163,6 +164,7 @@ main, #messages-card {
   padding-right: 10px;
   padding-left: 20px;
 }
+*/ 
 #image-form #submitImage {
   width: auto;
   padding: 0 6px 0 1px;
