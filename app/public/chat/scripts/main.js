@@ -275,8 +275,8 @@ FriendlyChat.resetMaterialTextfield = function(element) {
 FriendlyChat.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
-      '<div class="message"></div>' +
       '<div class="name"></div>' +
+      '<div class="message"></div>' +
       '<div class="timesent"></div>' + 
     '</div>';
 

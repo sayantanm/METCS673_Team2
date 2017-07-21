@@ -15,7 +15,11 @@
  */
 
 html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+ /* font-family: 'Roboto', 'Helvetica', sans-serif; */ 
+  font-family: "Helvetica Neue",Helvetica,"Segoe UI",Tahoma,Arial,sans-serif;
+    font-variant-ligatures: common-ligatures;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
 }
 main, #messages-card {
   height: 100%;
@@ -74,12 +78,13 @@ main, #messages-card {
   opacity: 1;
 }
 .message-container .pic {
-  background-image: url('/images/profile_placeholder.png');
+  background-image: url('/images/profile_placeholder.png');  
   background-repeat: no-repeat;
   width: 30px;
   height: 30px;
   background-size: 30px;
   border-radius: 20px;
+  display:none ; 
 }
 .message-container .spacing {
   display: table-cell;
@@ -87,16 +92,18 @@ main, #messages-card {
 }
 .message-container .message {
   display: table-cell;
-  font-size: 20px ; 
-  width: calc(100% - 40px);
-  padding: 5px 0 5px 10px;
+  font-size: 17px ; 
+  width: 100%;
+  padding-left: 41px ; 
+  /* padding: 5px 0 5px 10px; */ 
 }
 .message-container .name {
   display: inline-block;
-  width: 100%;
-  padding-left: 40px;
-  color: #bbb;
+  color: #000000;
+  padding-left: 41px;
+  width: calc(100% - 40px);
   font-style: italic;
+  font-weight: bold ; 
   font-size: 12px;
   box-sizing: border-box;
 }
