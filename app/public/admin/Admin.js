@@ -1,7 +1,6 @@
 $(document).ready(function(){
-  var projects = firebase.database().ref('app/projects');
-
   //Populates the project list drop down menu:
+  var projects = firebase.database().ref('app/projects');
   projects.on('value', function(snapshot) {
     var projects_display = ('<option id=choose selected>Please select a project</option>') ;
     snapshot.forEach(function(childSnapshot) {
@@ -11,12 +10,13 @@ $(document).ready(function(){
     $('#projects_container').html(projects_display);
   });
 
+
   //Triggers the change in the members list when a project is selected:
   document.getElementById("projects_container").addEventListener("change", showMembers);
 
+
   //This section populates the existing users dropdown menu:
   var users = firebase.database().ref('users');
-
   users.once('value', function(snapshot){
     var member_display = ('<option id=choose2 >Existing Users</option>') ;
     snapshot.forEach(function(childSnapshot) {
@@ -27,12 +27,33 @@ $(document).ready(function(){
   });
 
 
+//creates a user name/uid table:
+//*****Prob want to restructure this as an alert on add/change*****//
+  var candidateName, key;
+  var userTable = {};
+  users.once('value')
+  .then(function(snapshot){
+    snapshot.forEach(function(childSnapshot){
+      candidateName = childSnapshot.val().name;
+      key = childSnapshot.key;
+      userTable[key] = candidateName;
+    });
+  });
+
+
   //Populates the 'Current project team members' table to the right:
   function showMembers(){
     //clears previous lists that might be on screen:
-    var memberRows = "";
-    $('#table tbody tr').remove();
+    $('#memberList').empty();
+    $('tr').remove();
+    $('#rmvBtn').empty();
+    $(":checkbox");
 
+    var memberTable = "<table class='mdl-data-table mdl-js-data-table table mytable'>" +
+    "<thead><tr><th type ='checkbox' class='team'></th><th class='mdl-data-table__cell--non-numeric team'><span id ='hdrName'>Name</span></th>"+
+     "<th class='mdl-data-table__cell--non-numeric team'></th></tr></thead><tbody>";
+
+    var memberRows = "";
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
 
@@ -45,23 +66,30 @@ $(document).ready(function(){
 
     selectProj.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
-        memberName = childSnapshot.val().name;
+        memberUID = childSnapshot.val().uid;
+        memberName = userTable[memberUID];
+
         //put in button to delete and make admin here...
-        memberRows = ('<tr><td></td><td class="mdl-data-table__cell--non-numeric team">' +
-          memberName + '</td><td class="mdl-data-table__cell--non-numeric team">'+
-          '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Make Admin</button></td></tr>');
-        $('#memberList').append(memberRows).html();
+        memberRows  += ("<tr><td class = 'team'><input type='checkbox' class='checker'></input></td><td class='mdl-data-table__cell--non-numeric team'><nameArea>" +
+          memberName + "</nameArea></td><td class='mdl-data-table__cell--non-numeric team'>"+
+          "<button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>Make Admin</button></td></tr></tbody>");
+
       });
+      memberTable += memberRows;
+      $('#memberList').append(memberTable).html();
     });
+
+    $('#rmvBtn').append("<button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn' "+
+    "id = 'rmvBtn'>Remove Selected From Project</button>")
   }
 
 
   //Dicates the actions for when the 'add' button is clicked:
-  addButton.onclick = function() {
+  addButton.onclick = function(list) {
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
 
-    //checks to make sure a project was actually selected:
+    //check to make sure a project was actually selected:
     if(selected == "Please select a project"){
       alert("Please select a project first");
       return;
@@ -69,9 +97,17 @@ $(document).ready(function(){
 
     var user = document.getElementById("existingUsers");
     var userSel = user.options[user.selectedIndex].value;
+    var userUID;
+    for (key in userTable){
+      if (userTable[key] == userSel){
+        userUID = key;
+        console.log("Found userUID");
+      }
+    }
 
-    //Actions if adding a new user (if any user selected in existing user field
-    //any items written into text field will be ignored):
+    console.log("userUID: " + userUID);
+
+    //Check to make sure  a user has been picked:
     if(userSel == "Existing Users"){
       alert("Please select a member to add");
       return;
@@ -83,50 +119,32 @@ $(document).ready(function(){
     var key = hashFinder(selected);
 
     if (authorized(key, adminUid)){
-      //None of this works correctly...
-      var userKey = userHashFinder(userSel);
-      //console.log(userKey);
-      //console.log("userKey.nKey " + userKey.nKey);
-      var addingKey = userKey.nKey;
-      //console.log(addingKey);
-      //var addingUid;
-      console.log('users/' + addingKey);
-      var userDB = firebase.database().ref('users/' + addingKey);
-      //userDB.once('value', function(snapshot){
-      //      userUid = snapshot.val().uid;
-      //});
 
-      //alert (addingUid);
-      //console.log("addingUid " + addingUid);
-      //var alreadyAdded = false;
-      //var project = firebase.database().ref('app/projects/' + key + '/members');
-      //project.once('value', function(snapshot){
-       //snapshot.forEach(function(childSnapshot){
+      var project = firebase.database().ref('app/projects/' + key + '/members');
+      project.once('value', function(snapshot){
+       snapshot.forEach(function(childSnapshot){
             //checks against duplicate entries:
-            //if (addingUid == childSnapshot.val().uid){
-            //  alert("This user is already a member of the project selected");
-              //alreadyAdded = true;
-            //}
-      //  });
-      //});
+            if (userUID == childSnapshot.val().uid){
+              alert("This user is already a member of the project selected");
+              return;
+            }
+        });
+      });
 
       //Use this for making Admins:.....
       //var confirm = confirm("Please confirm that you wish to add this user as an admininstrator:");
       //if (confirm == true){
-      //if(alreadyAdded == false){
-      var project = firebase.database().ref('/app/projects/' + key + '/members');
-        var mem = project.push();
-        mem.set({
-          'name' : userSel ,
-        //  'uid' : addingUid
-        });
-        addAlert(userSel);
-        location.reload(true);
-    //  }
-        return;
+      //  if(alreadyAdded == false){
+        //var set = user.then(function(keyfinder){
+      var mem = project.push();
+      mem.set({
+        'uid' : userUID
+      });
+
+      addAlert(userSel);
+      location.reload(true);
+      return;
     }
-    //    alert("No changes made");
-    //    return;
 
     else {
       alert ("You are not authorized to make changes to this project");
@@ -171,6 +189,23 @@ $(document).ready(function(){
     //var email = temp.nKey;
     //alert (email);
     //addToProject(userSel, email, selected);
+
+  }
+
+  rmvBtn.onclick = function(){
+    //var checkedValue = $('#table').find('td[type="checkbox"]:checked')
+    var checkedNames = [];
+    $('.mytable').find('tr').each(function () {
+        var row = $(this);
+        var name = row.find('nameArea');
+        if (row.find('input[type="checkbox"]').is(':checked')){
+          checkedNames.push(row.find('td:eq(1)').text());
+        }
+    });
+    console.log(checkedNames);
+    //alert(checkedNames);
+    var project = document.getElementById("projects_container");
+    var selected = project.options[project.selectedIndex].value;
 
   }
 
@@ -238,85 +273,79 @@ $(document).ready(function(){
     }
   }*/
 
-  //function getUid(userName, key){
-  //  var uid = "";
-
-  //  var users = firebase.database().ref('users/' + key);
-  //  users.once('value', function(snapshot){
-  //        uid = snapshot.val().uid;
-  //  });
-  //  return uid;
-  //}
-
-  //function addToProject(name, email, projName){
-  //  var key = hashFinder(projName);
-
-    //var project = firebase.database().ref('app/projects/' + key + '/members');
-  //  project.once('value', function(snapshot){
-    //  snapshot.forEach(function(childSnapshot){
-
-    //  });
-  //  });
-  //  var mem = project.push();
-  //  mem.set({
-  //    'name' : name ,
-  //    'email' : email
-  //  });
-  //  addAlert(name);
-  //}
-
 
   function addAlert(name){
     alert(name + " added successfully");
   }
 
 
-  //function newUser(name, email, selected){
-    //checks to see if user already registered:
-    //var temp = getEmail(name);
-    //var emailCheck = temp.nKey;
-    //if (emailCheck == email){
-    //  alert(name + " is an existing user.  Select them from the dropdown menu above.");
-    //  return;
-    //}
+  function getUID(name){
+    var db = firebase.database().ref("users");
+    return (db.once('value').then(userHashFinder(name)));
+  }
 
-  //  var mref = firebase.database().ref('users') ;
-  //  var iref = mref.push() ;
-  //  iref.set({
-  //    'name' : name ,
-  //    'email' : email
-  //  });
-  //  addToProject(name, email, selected);
-  //}
 
   function userHashFinder(name){
+    //var def = $.Deferred();
+    var candidateName, key;
+    var table = {};
+    var keyFinder = firebase.database().ref('users');
+    keyFinder.once('value')
+    .then(function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        //if (childSnapshot.val().name == this.name){
+        candidateName = childSnapshot.val().name;
+        if (candidateName == name){
+          key = childSnapshot.key;
+          return key;
+        }
+        //console.log("candidateName: " + candidateName);
+        //key = childSnapshot.key;
+        //console.log("Key: " + key);
+        //table[key] = candidateName;
+        //console.log("table[key]: " + table[key]);
+          //return keyfinder;
+          //def.resolve(key);
+          //console.log("child key: " + childSnapshot.key);
+          //console.log("key: " + def.key);
+        //}
+      })
+    })
+    /*.then(function(table){
+      for (var key in table){
+        if (table.hasOwnProperty(key)){
+          if (table[key] == name){
+            console.log("key: " + key);
+            console.log("table[key]:" + table[key])
+            return key;
+          }
+        }
+      };
+      //console.error("Something went wrong");
+      //console.log("key: ": + key);
+      //return key;
+    });*/
+
+    //console.log("Key before return: " + key);
+    //return key;
+    //console.log("def: " + def);
+    //console.log("def.key: " + def.key);
+    //return ok;
+  }
+
+  /*function userHashFinder(name){
       var key = "";
-      var c = 0 ;
+
       var keyFinder = firebase.database().ref('users');
       var oK  = keyFinder.once('value', function(snapshot){
         snapshot.forEach(function(childSnapshot){
           if (childSnapshot.val().name == name){
             oK.nKey = childSnapshot.key;
-            c+=1;
           }
         });
       });
+      console.log("oK: " + oK);
+      console.log("oK.nKey: " + oK.nKey);
       return (oK);
-    }
-
-
-  //function getEmail(name){
-  //    var temp = userHashFinder(name);
-  //    var key = temp.nKey;
-  //    var userDB = firebase.database().ref('users/' + key);
-  //    var ok  = userDB.once('value', function(snapshot){
-  //      console.log(snapshot.val().email);
-  //      ok.email = snapshot.val().email;
-//
-
-  //    });
-      //console.log(ok.nKey);
-    //  return (ok);
-  //  }
-
+    }*/
 });

@@ -181,21 +181,13 @@
             <div class="mdl-card__title">
               <h2 class="mdl-card__title-text">Current Project Team Members</h2>
             </div>
-            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable table" id ='table'>
-              <thead>
-                <tr>
+              <div id=memberList><center>("Please select a project)")</center></div>
 
-                  <th class="mdl-data-table__cell--non-numeric team"><span id = "hdrName">Name</span></th>
-                  <th class="mdl-data-table__cell--non-numeric team"></th>
-                </tr>
-              </thead>
-              <tbody id=memberList></tbody>
-            </table>
             <br>
-
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn" id = "rmvBtn">
+            <div id=rmvBtn></div>
+            <!--<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn" id = "rmvBtn">
               Remove Selected From Project
-            </button>
+            </button>-->
             <br>
             <br>
           </div>
@@ -209,18 +201,33 @@
 
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <script>
-        var config = {
-          apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
-          authDomain: "metcs673-acac6.firebaseapp.com",
-          databaseURL: "https://metcs673-acac6.firebaseio.com/",
-          storageBucket: "metcs673-acac6.appspot.com"
-        };
-        var issue_app = firebase.initializeApp(config);
-
-        var database = firebase.database();
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
+        authDomain: "metcs673-acac6.firebaseapp.com",
+        databaseURL: "https://metcs673-acac6.firebaseio.com",
+        projectId: "metcs673-acac6",
+        storageBucket: "metcs673-acac6.appspot.com",
+        messagingSenderId: "967664299479"
+      };
+      firebase.initializeApp(config);
     </script>
-    
+
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAaEihh7sON8YXuNd7P2xN0lioT5iWRBW0",
+        authDomain: "testprojectm-da148.firebaseapp.com",
+        databaseURL: "https://testprojectm-da148.firebaseio.com",
+        projectId: "testprojectm-da148",
+        storageBucket: "testprojectm-da148.appspot.com",
+        messagingSenderId: "535984017067"
+      };
+      firebase.initializeApp(config);
+      var database = firebase.database();
+    </script>-->
     <script>var database = firebase.database();</script>
   </body>
 </html>
