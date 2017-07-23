@@ -15,6 +15,7 @@ function userHandler ()
             document.getElementById('user-name').setAttribute('hidden', 'true');
             document.getElementById('sign-out').setAttribute('hidden', 'true');
             document.getElementById('sign-in').removeAttribute('hidden');
+            window.location.href = '/index.html' ; 
         }
     } ) ; 
 }
