@@ -1,20 +1,26 @@
 /* 
  * Author: Sayantan Mukherjee 
- * Description: For this to work, you'll need a <input type=hidden> field with id "projects_json" in your page.
+ * Description: For this to work, you'll need a <input type=hidden> field with id "projects_json" in your page and "project_acls".
  */
 var common = { 
     
+    // 
+    // Get ALL projects from firebase, convert it into a json string, store it in a hidden input of the page. 
+    //
     getAllProjects : function () 
     {
         var projectsRef = firebase.database().ref('app/projects'); 
         var projects  ; 
         var fui = projectsRef.once ( 'value' ).then ( function ( snapshot ) 
             { 
-                $('#projects_json').val( JSON.stringify ( snapshot.val() ) ) ; // Will need to do something sophisticated for this later
-            } ); 
+                $('#projects_json').val( JSON.stringify ( snapshot.val() ) ) ; //Do I need to do something sophisticated for this later?
+            }); 
     } ,
     
-    user_project_map : function () 
+    // 
+    // Get a "map" of projects->users and users->projects based on who is member of what.
+    //
+    userProjectMap : function () 
     {
         var project_users = {} ; 
         var user_projects = {} ; 

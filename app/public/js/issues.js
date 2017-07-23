@@ -26,7 +26,7 @@ $(document).ready ( function()
     var fbAuth = firebase.auth() ; 
     fbAuth.onAuthStateChanged ( function ( user ) 
     {
-        common.user_project_map() ; 
+        common.userProjectMap() ; 
         $('.editor').jqte() ; 
         var dialog = document.querySelector('#first_dialog');
         var showDialogButton = document.querySelector('#issue_assign');
