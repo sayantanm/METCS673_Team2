@@ -4,6 +4,7 @@ class ReactApp extends React.Component {
     super(props);
     this.state = {
       user_email: 'hello@example.com',
+      uid: null,
       projects: [],
       project_idx: null,
       progress: 44,
@@ -23,6 +24,9 @@ class ReactApp extends React.Component {
 
   addProjectHandler(project) {
     console.log("Add new ", project);
+    project['admins'] = [this.state.uid];
+    project['members'] = [this.state.uid];
+    
     var result = this.firebaseProjects.push(project);
     console.log("result: ", result);
 
@@ -83,24 +87,27 @@ class ReactApp extends React.Component {
 
   componentDidMount(){
     var self = this;
-    var user = self.props.firebase.auth().currentUser;
 
-    if (user != null) {
-      user.providerData.forEach(function (profile) {
-        console.log("Sign-in provider: "+profile.providerId);
-        console.log("  Provider-specific UID: "+profile.uid);
-        console.log("  Name: "+profile.displayName);
-        console.log("  Email: "+profile.email);
-        console.log("  Photo URL: "+profile.photoURL);
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        console.log("user ", user);
 
-        self.setState({
-          user_email: profile.email
-        })
-      });
-    }else{
-      console.log('no user :(');
+        user.providerData.forEach(function (profile) {
+          console.log("Sign-in provider: "+profile.providerId);
+          console.log("  Provider-specific UID: "+profile.uid);
+          console.log("  Name: "+profile.displayName);
+          console.log("  Email: "+profile.email);
+          console.log("  Photo URL: "+profile.photoURL);
 
-    }
+          self.setState({
+            user_email: profile.email, uid: user.uid
+          })
+        });
+      }else{
+        console.log('no user :(');
+      }
+    });
+
 
     // After material design initializes, we save the reference
     //self.p1.addEventListener('mdl-componentupgraded', function() {

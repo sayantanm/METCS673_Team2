@@ -234,7 +234,7 @@ var SideBar = function (_React$Component2) {
 
   return SideBar;
 }(React.Component);
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -254,6 +254,7 @@ var ReactApp = function (_React$Component) {
 
     _this.state = {
       user_email: 'hello@example.com',
+      uid: null,
       projects: [],
       project_idx: null,
       progress: 44,
@@ -273,9 +274,12 @@ var ReactApp = function (_React$Component) {
   }
 
   _createClass(ReactApp, [{
-    key: "addProjectHandler",
+    key: 'addProjectHandler',
     value: function addProjectHandler(project) {
       console.log("Add new ", project);
+      project['admins'] = [this.state.uid];
+      project['members'] = [this.state.uid];
+
       var result = this.firebaseProjects.push(project);
       console.log("result: ", result);
 
@@ -283,7 +287,7 @@ var ReactApp = function (_React$Component) {
       this.loadProjects();
     }
   }, {
-    key: "updateProjectHandler",
+    key: 'updateProjectHandler',
     value: function updateProjectHandler(project, firebase_key) {
       console.log("Updating: ", project);
       var updates = {};
@@ -295,7 +299,7 @@ var ReactApp = function (_React$Component) {
       this.loadProjects();
     }
   }, {
-    key: "deleteProject",
+    key: 'deleteProject',
     value: function deleteProject(index) {
       var firebase_key = this.state.projects[index].firebase_key;
       var deletes = {};
@@ -306,7 +310,7 @@ var ReactApp = function (_React$Component) {
       this.loadProjects();
     }
   }, {
-    key: "componentWillMount",
+    key: 'componentWillMount',
     value: function componentWillMount() {
       // Based on this SO answer, I dediced to sign in anonymously:
       this.props.firebase.auth().signInAnonymously().catch(function (error) {
@@ -320,7 +324,7 @@ var ReactApp = function (_React$Component) {
       this.loadProjects();
     }
   }, {
-    key: "loadProjects",
+    key: 'loadProjects',
     value: function loadProjects() {
       this.firebaseProjects.on('value', function (dataSnapshot) {
         var items = [];
@@ -337,26 +341,29 @@ var ReactApp = function (_React$Component) {
       }.bind(this));
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var self = this;
-      var user = self.props.firebase.auth().currentUser;
 
-      if (user != null) {
-        user.providerData.forEach(function (profile) {
-          console.log("Sign-in provider: " + profile.providerId);
-          console.log("  Provider-specific UID: " + profile.uid);
-          console.log("  Name: " + profile.displayName);
-          console.log("  Email: " + profile.email);
-          console.log("  Photo URL: " + profile.photoURL);
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user != null) {
+          console.log("user ", user);
 
-          self.setState({
-            user_email: profile.email
+          user.providerData.forEach(function (profile) {
+            console.log("Sign-in provider: " + profile.providerId);
+            console.log("  Provider-specific UID: " + profile.uid);
+            console.log("  Name: " + profile.displayName);
+            console.log("  Email: " + profile.email);
+            console.log("  Photo URL: " + profile.photoURL);
+
+            self.setState({
+              user_email: profile.email, uid: user.uid
+            });
           });
-        });
-      } else {
-        console.log('no user :(');
-      }
+        } else {
+          console.log('no user :(');
+        }
+      });
 
       // After material design initializes, we save the reference
       //self.p1.addEventListener('mdl-componentupgraded', function() {
@@ -365,7 +372,7 @@ var ReactApp = function (_React$Component) {
       //});
     }
   }, {
-    key: "componentDidUpdate",
+    key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
       var self = this;
       if (self.p1_material_object) {
@@ -373,53 +380,53 @@ var ReactApp = function (_React$Component) {
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var self = this;
 
       var projects_table = React.createElement(
-        "table",
-        { className: "mdl-data-table mdl-js-data-table mdl-shadow--2dp" },
+        'table',
+        { className: 'mdl-data-table mdl-js-data-table mdl-shadow--2dp' },
         React.createElement(
-          "thead",
+          'thead',
           null,
           React.createElement(
-            "tr",
+            'tr',
             null,
             React.createElement(
-              "th",
-              { className: "mdl-data-table__cell--non-numeric" },
-              "Project"
+              'th',
+              { className: 'mdl-data-table__cell--non-numeric' },
+              'Project'
             ),
             React.createElement(
-              "th",
+              'th',
               null,
-              "Start Date"
+              'Start Date'
             ),
             React.createElement(
-              "th",
+              'th',
               null,
-              "End Date"
+              'End Date'
             ),
             React.createElement(
-              "th",
+              'th',
               null,
-              "Status"
+              'Status'
             ),
             React.createElement(
-              "th",
+              'th',
               null,
-              "Description"
+              'Description'
             ),
             React.createElement(
-              "th",
+              'th',
               null,
-              "Actions"
+              'Actions'
             )
           )
         ),
         React.createElement(
-          "tbody",
+          'tbody',
           null,
           self.state.projects.map(function (item, index) {
             var viewProjectHandler = function viewProjectHandler() {
@@ -432,59 +439,59 @@ var ReactApp = function (_React$Component) {
               self.deleteProject(index);
             };
             return React.createElement(
-              "tr",
+              'tr',
               { key: item.firebase_key },
               React.createElement(
-                "td",
-                { className: "mdl-data-table__cell--non-numeric" },
+                'td',
+                { className: 'mdl-data-table__cell--non-numeric' },
                 item.name,
-                " ",
+                ' ',
                 self.state.project_idx === index ? "<--" : null
               ),
               React.createElement(
-                "td",
+                'td',
                 null,
                 item.start_date
               ),
               React.createElement(
-                "td",
+                'td',
                 null,
                 item.end_date
               ),
               React.createElement(
-                "td",
+                'td',
                 null,
                 item.status
               ),
               React.createElement(
-                "td",
+                'td',
                 null,
                 item.desc
               ),
               React.createElement(
-                "td",
+                'td',
                 null,
                 React.createElement(
-                  "button",
-                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                  'button',
+                  { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
                     onClick: viewProjectHandler
                   },
-                  "View"
+                  'View'
                 ),
-                "\xA0",
+                '\xA0',
                 React.createElement(
-                  "button",
-                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                  'button',
+                  { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
                     onClick: deleteProjectHandler
                   },
-                  "Delete"
+                  'Delete'
                 ),
                 React.createElement(
-                  "button",
-                  { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                  'button',
+                  { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
                     onClick: editProjectHandler
                   },
-                  "Edit"
+                  'Edit'
                 )
               )
             );
@@ -506,46 +513,46 @@ var ReactApp = function (_React$Component) {
       }
 
       return React.createElement(
-        "div",
-        { className: "demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header" },
+        'div',
+        { className: 'demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header' },
         React.createElement(TopBar, null),
         React.createElement(SideBar, { user_email: this.state.user_email }),
         React.createElement(
-          "main",
-          { className: "mdl-layout__content mdl-color--grey-100" },
+          'main',
+          { className: 'mdl-layout__content mdl-color--grey-100' },
           React.createElement(
-            "div",
-            { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
+            'div',
+            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
             React.createElement(
-              "div",
-              { className: "mdl-cell mdl-cell--8-col" },
+              'div',
+              { className: 'mdl-cell mdl-cell--8-col' },
               React.createElement(
-                "button",
+                'button',
                 {
-                  className: "mdl-button mdl-js-button mdl-button--raised",
+                  className: 'mdl-button mdl-js-button mdl-button--raised',
                   onClick: showProjectsHandler
                 },
-                "List Projects"
+                'List Projects'
               ),
-              "\xA0 \xA0",
+              '\xA0 \xA0',
               React.createElement(
-                "button",
+                'button',
                 {
-                  className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect",
+                  className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
                   onClick: showAddFormHandler
                 },
-                "Add Project"
+                'Add Project'
               )
             )
           ),
           React.createElement(
-            "div",
-            { className: "demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" },
+            'div',
+            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
             this.state.add_project ? React.createElement(ProjectForm, { saveProjectHandler: self.addProjectHandler }) : this.state.edit_project ? React.createElement(ProjectForm, { saveProjectHandler: self.updateProjectHandler, project: project }) : projects_table,
             project && self.state.view_project ? React.createElement(UserStories, { project: project, db: self.db }) : React.createElement(
-              "p",
+              'p',
               null,
-              "View Project to see stories."
+              'View Project to see stories.'
             )
           )
         )
@@ -578,7 +585,7 @@ var ProjectForm = function (_React$Component2) {
   }
 
   _createClass(ProjectForm, [{
-    key: "changeHandler",
+    key: 'changeHandler',
     value: function changeHandler(e) {
       var form = this.formRef;
       var values = {};
@@ -616,7 +623,7 @@ var ProjectForm = function (_React$Component2) {
       });
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var _this3 = this;
 
@@ -641,12 +648,12 @@ var ProjectForm = function (_React$Component2) {
       });
     }
   }, {
-    key: "componentDidUpdate",
+    key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
       window.componentHandler.upgradeDom();
     }
   }, {
-    key: "componentWillReceiveProps",
+    key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.project != nextProps.project) {
         var state = {};
@@ -657,7 +664,7 @@ var ProjectForm = function (_React$Component2) {
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this4 = this;
 
@@ -675,7 +682,7 @@ var ProjectForm = function (_React$Component2) {
       };
 
       return React.createElement(
-        "form",
+        'form',
         {
           onSubmit: submitHandler,
 
@@ -684,134 +691,134 @@ var ProjectForm = function (_React$Component2) {
           }
         },
         React.createElement(
-          "div",
-          { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "name", name: "name",
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'name', name: 'name',
             value: this.state.values ? this.state.values.name : "", onChange: self.changeHandler }),
           React.createElement(
-            "label",
-            { className: "mdl-textfield__label", htmlFor: "name" },
-            "Project Name ..."
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'name' },
+            'Project Name ...'
           ),
           this.state.errors.name ? React.createElement(
-            "span",
-            { className: "mdl-textfield__error" },
+            'span',
+            { className: 'mdl-textfield__error' },
             this.state.errors.name
           ) : null
         ),
         React.createElement(
-          "div",
-          { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "start_date", name: "start_date",
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'start_date', name: 'start_date',
             value: this.state.values ? this.state.values.start_date : "", onChange: self.changeHandler
           }),
           React.createElement(
-            "div",
+            'div',
             { ref: function ref(_ref2) {
                 return _this4.picker_container = _ref2;
               } },
             React.createElement(
-              "a",
-              { className: "c-btn c-datepicker-btn", ref: function ref(_ref) {
+              'a',
+              { className: 'c-btn c-datepicker-btn', ref: function ref(_ref) {
                   return self.btn = _ref;
                 } },
-              "Open Picker"
+              'Open Picker'
             )
           ),
           React.createElement(
-            "label",
-            { className: "mdl-textfield__label", htmlFor: "start_date" },
-            "Start Date ..."
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'start_date' },
+            'Start Date ...'
           ),
           this.state.errors.start_date ? React.createElement(
-            "span",
-            { className: "mdl-textfield__error" },
+            'span',
+            { className: 'mdl-textfield__error' },
             this.state.errors.start_date
           ) : null
         ),
         React.createElement(
-          "div",
-          { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "end_date", name: "end_date",
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'end_date', name: 'end_date',
             value: this.state.values ? this.state.values.end_date : "", onChange: self.changeHandler }),
           React.createElement(
-            "div",
+            'div',
             { ref: function ref(_ref4) {
                 return _this4.picker_container = _ref4;
               } },
             React.createElement(
-              "a",
-              { className: "c-btn c-datepicker-btn", ref: function ref(_ref3) {
+              'a',
+              { className: 'c-btn c-datepicker-btn', ref: function ref(_ref3) {
                   return self.btn = _ref3;
                 } },
-              "Open Picker"
+              'Open Picker'
             )
           ),
           React.createElement(
-            "label",
-            { className: "mdl-textfield__label", htmlFor: "end_date" },
-            "End Date ..."
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'end_date' },
+            'End Date ...'
           ),
           this.state.errors.end_date ? React.createElement(
-            "span",
-            { className: "mdl-textfield__error" },
+            'span',
+            { className: 'mdl-textfield__error' },
             this.state.errors.end_date
           ) : null
         ),
         React.createElement(
-          "div",
-          { className: "mdl-selectfield mdl-js-selectfield" },
+          'div',
+          { className: 'mdl-selectfield mdl-js-selectfield' },
           React.createElement(
-            "label",
-            { className: "mdl-selectfield__label", htmlFor: "status" },
-            "Status"
+            'label',
+            { className: 'mdl-selectfield__label', htmlFor: 'status' },
+            'Status'
           ),
           React.createElement(
-            "select",
-            { className: "mdl-selectfield__select", id: "status", name: "status",
+            'select',
+            { className: 'mdl-selectfield__select', id: 'status', name: 'status',
               value: this.state.values ? this.state.values.status : "", onChange: self.changeHandler },
-            React.createElement("option", { value: "" }),
+            React.createElement('option', { value: '' }),
             React.createElement(
-              "option",
-              { value: "Not Started" },
-              "Not Started"
+              'option',
+              { value: 'Not Started' },
+              'Not Started'
             ),
             React.createElement(
-              "option",
-              { value: "In Progress" },
-              "In Progress"
+              'option',
+              { value: 'In Progress' },
+              'In Progress'
             ),
             React.createElement(
-              "option",
-              { value: "Completed" },
-              "Completed"
+              'option',
+              { value: 'Completed' },
+              'Completed'
             )
           )
         ),
         React.createElement(
-          "div",
-          { className: "mdl-textfield mdl-js-textfield" },
-          React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "desc", name: "desc",
+          'div',
+          { className: 'mdl-textfield mdl-js-textfield' },
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'desc', name: 'desc',
             value: this.state.values ? this.state.values.desc : "", onChange: self.changeHandler }),
           React.createElement(
-            "label",
-            { className: "mdl-textfield__label", htmlFor: "desc" },
-            "Description"
+            'label',
+            { className: 'mdl-textfield__label', htmlFor: 'desc' },
+            'Description'
           ),
           this.state.errors.desc ? React.createElement(
-            "span",
-            { className: "mdl-textfield__error" },
+            'span',
+            { className: 'mdl-textfield__error' },
             this.state.errors.desc
           ) : null
         ),
-        React.createElement("br", null),
+        React.createElement('br', null),
         React.createElement(
-          "button",
+          'button',
           {
-            type: "submit",
-            className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+            type: 'submit',
+            className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'
           },
-          "Save"
+          'Save'
         )
       );
     }

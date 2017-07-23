@@ -112,6 +112,16 @@
 
         try {
           let app = firebase.app();
+          /*var config = {
+            apiKey: "AIzaSyDiEBFfQjrtqDthb22TBzwIx1oVSXsd1Yk",
+            authDomain: "met673-team2.firebaseapp.com",
+            databaseURL: "https://met673-team2.firebaseio.com",
+            projectId: "met673-team2",
+            storageBucket: "met673-team2.appspot.com",
+            messagingSenderId: "235469013265"
+          };*/
+          //var app = firebase.initializeApp(config);
+
           let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
           document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
           ReactDOM.render(
