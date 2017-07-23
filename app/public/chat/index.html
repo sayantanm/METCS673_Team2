@@ -146,23 +146,45 @@
   </main>
 </div>
 
+ <!-- Hidden stuff needed to get things working - Sayantan Mukherjee -->
+<input type=hidden id='projects_json'></input>
+<input type=hidden id='project_acls'></input>
+
+
 <!-- Import and configure the Firebase SDK -->
 <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
 <!-- If you do not want to serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
 <script src="/__/firebase/3.8.0/firebase.js"></script>
 <script src="/__/firebase/init.js"></script>
+<script src="/js/common.js"></script>
 <script>
-var projects_display = $('<select class="mdl-textfield__input" id=project_list ></select>') ;
-    projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="-first" ><b>General Lounge</b></option>' ) ;
-    var projects = firebase.database().ref('app/projects') ;
-    projects.once('value', function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                var childKey = childSnapshot.key;
-                var childData = childSnapshot.val();
-                    projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="' + childKey + '" ><b>' + childData.name + '</b></option>' ) ;
-             });
-        $('#projects_container').append ( projects_display ) ;
-    });
+ var fbAuth = firebase.auth() ;
+     fbAuth.onAuthStateChanged ( function ( user )
+    {
+        common.userProjectMap() ;
+        // Load project ACLs as defined by admin of the project
+        $('#project_acls').on ( 'DOMSubtreeModified' , function ()
+        {
+            var pACLs = JSON.parse ( $('#project_acls').val() ) ;
+            var user_projects = {} ; 
+            $.each ( pACLs.up[user.uid] , function ( i , v ) { user_projects[v] = 1 } ) ; 
+
+			var projects_display = $('<select class="mdl-textfield__input" id=project_list ></select>') ;
+				projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="-first" ><b>General Lounge</b></option>' ) ;
+				var projects = firebase.database().ref('app/projects') ;
+				projects.once('value', function(snapshot) {
+						snapshot.forEach(function(childSnapshot) {
+							var childKey = childSnapshot.key;
+							var childData = childSnapshot.val();
+								if ( user_projects [ childKey ] ) 
+								{
+									projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="' + childKey + '" ><b>' + childData.name + '</b></option>' ) ;
+								}
+						 });
+					$('#projects_container').append ( projects_display ) ;
+				});
+		} ); 
+	} ) ; 
 </script>
 <script src="scripts/main.js"></script>
 
