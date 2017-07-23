@@ -65,7 +65,8 @@
 	  crossorigin="anonymous"></script>
      <script defer src="/js/jquery-te-1.4.0.min.js"></script>
 	 <link rel="stylesheet" href="/css/jquery-te-1.4.0.css"> 
-	<script defer src="/js/issues.js"</script> 
+	<script defer src="/js/common.js"></script> 
+	<script defer src="/js/issues.js"></script> 
 	
 	<script defer src="http://underscorejs.org/underscore-min.js"></script>
 
@@ -160,7 +161,11 @@
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
 		
+        <!-- Hidden stuff needed to get things working - Sayantan Mukherjee --> 
         <input type=hidden id='current_issue'></input>
+        <input type=hidden id='projects_json'></input> 
+        <input type=hidden id='project_acls'></input> 
+
 		<!-- Always shows a header, even in smaller screens. -->
 			<div style="margin-left:5%;" class="mdl-layout__header-row">
 			  <!-- Navigation. We hide it in small screens. -->
