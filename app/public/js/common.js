@@ -32,7 +32,7 @@ var common = {
             $.each ( projects , function ( pi , pv ) { // pi = project index (key) pv = project value
                 // console.log ( pi ) ; 
                 // console.log ( pv.members ) ; 
-                $.each( pv.members , function ( mI , mV ) 
+                $.each( pv.members , function ( mI , mV )  // mI = members Index , mV = members Value 
                 {   
                     if ( project_users.hasOwnProperty ( pi ) ) 
                     {  
