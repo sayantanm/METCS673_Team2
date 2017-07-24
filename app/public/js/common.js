@@ -1,6 +1,9 @@
 /* 
  * Author: Sayantan Mukherjee 
  * Description: For this to work, you'll need a <input type=hidden> field with id "projects_json" in your page and "project_acls".
+ *              And you'll have to wait for an event "DOMSubtreeModified" on the IDs (projects_json and project_acls) to get 
+ *              values from it ( using say $('#projects_json').val() ) ; 
+ *              Read more about https://developer.mozilla.org/en-US/docs/Web/Events/DOMSubtreeModified
  */
 var common = { 
     
