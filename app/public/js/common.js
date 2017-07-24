@@ -4,6 +4,7 @@
  *              And you'll have to wait for an event "DOMSubtreeModified" on the IDs (projects_json and project_acls) to get 
  *              values from it ( using say $('#projects_json').val() ) ; 
  *              Read more about https://developer.mozilla.org/en-US/docs/Web/Events/DOMSubtreeModified
+ *              IMPORTANT!! Do not update any DOMSubtree while listening on DOMSubtreeModified event. 
  */
 var common = { 
     
