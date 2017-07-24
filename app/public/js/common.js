@@ -34,24 +34,34 @@ var common = {
                 // console.log ( pv.members ) ; 
                 $.each( pv.members , function ( mI , mV )  // mI = members Index , mV = members Value 
                 {   
+                    var member_uid ; 
+                    if ( mV.hasOwnProperty ( 'uid' ) ) 
+                    {
+                        member_uid = mV.uid ; 
+                    } 
+                    else 
+                    {
+                        member_uid = mV ; 
+                    } 
+
                     if ( project_users.hasOwnProperty ( pi ) ) 
                     {  
-                        project_users[pi].push ( mV.uid ) ; 
+                        project_users[pi].push ( member_uid ) ; 
                     } 
                     else 
                     {
                         project_users[pi] = []  ; 
-                        project_users[pi].push ( mV ) ; 
+                        project_users[pi].push ( member_uid ) ; 
                     }
 
-                    if ( user_projects.hasOwnProperty ( mV.uid ) ) 
+                    if ( user_projects.hasOwnProperty ( member_uid ) ) 
                     {
-                        user_projects[mV.uid].push ( pi ) ; 
+                        user_projects[member_uid].push ( pi ) ; 
                     } 
                     else 
                     {
-                        user_projects[mV.uid] = [] ; 
-                        user_projects[mV.uid].push ( pi ) ; 
+                        user_projects[member_uid] = [] ; 
+                        user_projects[member_uid].push ( pi ) ; 
                     }
                 }) ; 
             } ) ; 
