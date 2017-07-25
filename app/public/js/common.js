@@ -38,6 +38,7 @@ var common = {
                 // console.log ( pv.members ) ; 
                 $.each( pv.members , function ( mI , mV )  // mI = members Index , mV = members Value 
                 {   
+                    if ( mV == null ) { return ; }  
                     var member_uid ; 
                     if ( mV.hasOwnProperty ( 'uid' ) ) 
                     {
