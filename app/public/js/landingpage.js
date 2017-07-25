@@ -1,23 +1,33 @@
 window.onload = function() {
-    // Initialize Firebase
-    var config = {        
-        apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
-        authDomain: "metcs673-acac6.firebaseapp.com",
-        databaseURL: "https://metcs673-acac6.firebaseio.com/",
-        storageBucket: "metcs673-acac6.appspot.com"
-    };
-    var myApp = firebase.initializeApp(config);
+    // I'm using this to keep track of all the promises I need resolved before I 
+    var promises = [];
+
+    // Initialize Firebase if it isn't already initialized
+    if (!firebase.apps.length) {
+        var config = {               
+            apiKey: "AIzaSyCuDASMhIQI5n8B70CLYajlViOBbaDei9c",
+            authDomain: "team2-dev.firebaseapp.com",
+            databaseURL: "https://team2-dev.firebaseio.com",
+            projectId: "team2-dev",
+            storageBucket: "team2-dev.appspot.com",
+            messagingSenderId: "1025264149124"
+        };
+        firebase.initializeApp(config);
+    }
 
     // add users to the database
     function addUser(fullname, emailAddress) {
-        var newUserKey = myApp.database().ref('users/' + firebase.auth().currentUser.uid);
-        newUserKey.set({
+        // i'm referencing currentUser twice, so I might as well create a reference to it
+        var user = firebase.auth().currentUser;
+        promises.push(user.updateProfile({
+            displayName: fullname,
+            photoURL: "./images/avatar.jpg"
+        }));
+        
+        promises.push(firebase.database().ref('users/' + user.uid).set({
             name: fullname,
             email: emailAddress
-        });
-        setTimeout(function() {
-            window.location = "./home/index.html";  
-        }, 4000); 
+        }));
     };
 
     // email address/password sign-in -  event handler
@@ -25,12 +35,12 @@ window.onload = function() {
         var email = document.getElementById("input_login_email_address").value;
         var password = document.getElementById("input_login_password").value;
 
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        promises.push(firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
             // handling errors for authentication
             var errorCode = error.code;
             var errorMessage = error.message;
             alert(errorMessage);
-        });
+        }));
     });
 
     // google sign-in - event handler
@@ -39,27 +49,23 @@ window.onload = function() {
         provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
         provider.addScope('email');
         provider.addScope('https://www.googleapis.com/auth/plus.me');
-        firebase.auth().signInWithPopup(provider).then(function(result) {
+        promises.push(firebase.auth().signInWithPopup(provider).then(function(result) {
             var userEmail = result.user.email;
             var userName = result.additionalUserInfo.profile.name;
             var userId = result.user.uid;
 
-            myApp.database().ref('users').child(userId).once('value', function(snapshot) {
+            promises.push(firebase.database().ref('users').child(userId).once('value', function(snapshot) {
                 if (snapshot.val() === null) {
                     addUser(userName,userEmail);
                 }
-                else {
-                    window.location = "./home/index.html"; 
-                }
-            }); 
+            })); 
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log("Error: " + errorCode);
             console.log("Error Message: " + errorMessage);
-            // ...
-        });
+        }));
     });
 
     // join - even handler
@@ -81,7 +87,7 @@ window.onload = function() {
             return;
         }
 
-        firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+        promises.push(firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
             addUser(fname + ' ' + lname,email);
         }).catch(function(error) {
             // Handling Errors for user sign-up
@@ -89,20 +95,23 @@ window.onload = function() {
             var errorMessage = error.message;
 
             alert(errorMessage);
-        });
+        }));
     });
 
     // when a users signs-in, send them to the dashboard/homepage
     firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            myApp.database().ref('users').child(user.uid).once('value', function(snapshot) {
-                if (snapshot.val() === null) {
-                    addUser(fname + ' ' + lname,email);
-                }
-                setTimeout(function() {
-                    window.location = "./home/index.html";  
-                }, 5000);  
-            });
-        }
+        // this first promise check makes sure my google auth finishes.
+        Promise.all(promises).then(function() {
+            if (user) {
+                promises.push(firebase.database().ref('users').child(user.uid).once('value', function(snapshot) {
+                    if (snapshot.val() === null) {
+                        addUser(fname + ' ' + lname,email);
+                    }
+                }));
+                Promise.all(promises).then(function() {
+                    window.location = "./home/index.html"; 
+                });
+            }
+        });
     });
 };

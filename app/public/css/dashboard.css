@@ -10,22 +10,18 @@ div#div-header {
     width: 100%;
 }
 
-div#div-chart {
-    height: 300px;
-    width: 100%;
-}
-
-div#div-content {
-    width: 100%;
+div#div-donut {
+    height: 200px;
 }
 
 div.flex-wrapper {
     display: inline-flex;
     justify-content: flex-start;
+    width: 100%;
 }
 
 div.flex-two {
-    background: #fff;
+    display: inline-flex;
     margin: 5px 5px 5px 5px;
     width: 50%;
 }
@@ -35,45 +31,25 @@ div.flex-three {
     background: #ddd;
     color: #555;
     display: flex;
-    font-size: 20pt;
+    flex-direction: column;
     justify-content: center;
-    height: 90px;
+    height: 75px;
     margin: 5px 5px 5px 5px;
     width: 33%;
 }
 
 div.flex-four {
-    align-items: center;
-    background: #ddd;
-    color: #333;
-    display: flex;
-    font-size: 20pt;
-    height: 90px;
-    justify-content: center;
-    margin: 5px 5px 5px 5px;
-    width: 25%;
+
 }
 
 div.flex-header {
     height: 100px;
 }
 
-div.flex-chart {
-    height: 290px;
-}
-
 div.flex-body {
     height: 300px;
 }
 
-div.background-green {
-    background-color: lightgreen;
-}
-
-div.background-yellow {
-    background-color: yellow;
-}
-
-div.background-red {
-    background-color: lightcoral;
+div.header-font {
+    font-size: 25pt;
 }
