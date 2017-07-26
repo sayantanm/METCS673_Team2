@@ -28,7 +28,7 @@ $(document).ready(function(){
   });
 
 
-//creates a user name/uid table:
+  //creates a user name/uid table:
   var candidateName, key, email;
   var userTable = {};
   users.once('value', function(snapshot){
@@ -190,7 +190,7 @@ $(document).ready(function(){
       //newUser(name, email, selected);
   }
 
-rmvBtn.onclick = function(){
+  rmvBtn.onclick = function(){
     var checkedNames = [];
     $('.mytable').find('tr').each(function () {
         var row = $(this);
@@ -199,49 +199,65 @@ rmvBtn.onclick = function(){
           checkedNames.push(row.find('td:eq(1)').text());
         }
     });
-    var userUID = [];
-    var project = document.getElementById("projects_container");
-    var selected = project.options[project.selectedIndex].value;
+    var userUIDremove = [];
+    var projectSel = document.getElementById("projects_container");
+    var selected = projectSel.options[projectSel.selectedIndex].value;
     for (var i in checkedNames){
       for (k in userTable){
         if (userTable[k] == checkedNames[i]){
-          userUID.push(k);
+          console.log(userTable[k]);
+          userUIDremove.push(k);
           break;
         }
       }
     };
     var key = hashFinder(selected);
+    var admin = firebase.auth().currentUser;
+    var adminUid = admin.uid;
     var project = firebase.database().ref('app/projects/' + key +'/members');
-    for (j in userUID){
+
+    if (authorized(key, adminUid)){
+      for (j in userUIDremove){
+        var memSet = [];
+        project.once('value', function(snapshot){
+          snapshot.forEach(function(childSnapshot){
+            if (userUIDremove[j] == childSnapshot.val()){
+              childSnapshot.ref.remove();
+              alert(checkedNames[j] + " removed from " + selected);
+
+              //checks if an admin (will be on the authorized list) and removes them from it:
+              if (authorized(key, userUIDremove[j])){
+                removeAdmin(userUIDremove[j], key);
+                alert(checkedNames[j] + " also removed as admininstrator");
+              }
+            }
+          });
+        });
+      }
+
+      //resets the indexing of the member list:
       var memSet = [];
       project.once('value', function(snapshot){
-        snapshot.forEach(function(childSnapshot){
-          if (userUID[j] == childSnapshot.val()){
-            childSnapshot.ref.remove();
-            alert(checkedNames[j] + " removed from " + selected);
-          }
-        });
+        memSet = (snapshot.val());
+        if (memSet.length == 1){
+          snapshot.forEach(function(childSnapshot){
+            memSet = [];
+            memSet[0] = childSnapshot.val();
+            project.set(memSet);
+          });
+          return true;
+        }
+        memSet = memSet.filter(val => val);
+        project.set(memSet);
       });
+
+      location.reload(true);
+      return;
     }
-
-    //resets the indexing of the member list:
-    var memSet = [];
-    project.once('value', function(snapshot){
-      memSet = (snapshot.val());
-      if (memSet.hasOwnProperty.length == 1){
-        snapshot.forEach(function(childSnapshot){
-          memSet = [];
-          memSet[0] = childSnapshot.val();
-          project.set(memSet);
-        });
-        return true;
-      }
-      memSet = memSet.filter(val => val);
-      project.set(memSet);
-    });
-
-    location.reload(true);
-    return;
+    else{
+      alert ("You are not authorized to make changes to this project");
+      return;
+    }
   }
 
 
@@ -287,7 +303,7 @@ rmvBtn.onclick = function(){
   }
 
 
-function adminAdd(btnID){
+  function adminAdd(btnID){
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
     var adminAdd = "";
@@ -297,14 +313,11 @@ function adminAdd(btnID){
       //if (row.find('td:eq(2)') == btnID.data.id){
       var button = row.find('button')
       if (button.attr('id') == btnID.data.id){
-        console.log(row.find('nameArea').text());
-      //  var name = row.find('nameArea');
         adminAdd = row.find('nameArea').text();
       }
 
     });
 
-    console.log("adminAdd: " + adminAdd);
     var adminCheck = firebase.auth().currentUser;
     var adminCheckUid = adminCheck.uid;
     var key = hashFinder(selected);
@@ -356,9 +369,38 @@ function adminAdd(btnID){
     }
   }
 
+  function removeAdmin(uid, key){
+    //must also reindex after removal
+    var projAdmin = firebase.database().ref('app/projects/' + key +'/admins');
+    projAdmin.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+          //checks against duplicate entries:
+          if (uid == childSnapshot.val()){
+            childSnapshot.ref.remove();
+            return;
+          }
+      });
+    });
+    //resets the indexing of the member list:
+    var memSet = [];
+    projAdmin.once('value', function(snapshot){
+      memSet = (snapshot.val());
+      if (memSet.length == 1){
+        snapshot.forEach(function(childSnapshot){
+          memSet = [];
+          memSet[0] = childSnapshot.val();
+          projAdmin.set(memSet);
+        });
+        return true;
+      }
+      memSet = memSet.filter(val => val);
+      projAdmin.set(memSet);
+    });
+    return;
+  }
+
 
   function addAlert(name){
     alert(name + " added successfully");
   }
-
 });
