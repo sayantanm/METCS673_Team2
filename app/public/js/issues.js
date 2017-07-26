@@ -20,6 +20,46 @@ function userHandler ()
     } ) ; 
 }
 
+// A function to display the first issue within a project 
+function firstIssueDisplay ( issues_ref ) 
+{
+	console.log ( issues_ref.key ) ; 
+	/* Get the first issue of the project */
+	issues_ref.orderByKey().limitToFirst(1).once('value').then( function ( first_issue )
+	{
+		$('#issue_body').show() ;
+		$('#issue_cards').show() ; 
+		var issueObj = first_issue.val() ;
+		$.each(issueObj,function( key , val )
+		{
+
+            $('#current_issue').val( key ); 
+			var issue = val ;
+			console.log ( issue ) ;
+            issueDisplay ( issue ) ; 
+		} ) ;
+	} ) ;
+}
+
+
+/* 
+ * Generic function to display issues 
+ */ 
+
+function issueDisplay ( issue ) 
+{
+    $('#issue_num_display').empty().append( 'ISSUE-' + issue.issue_num  ) ; 
+    $('#issue_status_display').empty().append( 'Status: ' + issue.status ) ; 
+    $('#issue_severity_display').empty().append( 'Severity: ' + issue.severity  ) ; 
+    $('#issue_priority_display').empty().append( 'Priority: ' + issue.priority  ) ; 
+    $('#issue_type_display').empty().append( 'Type: ' + issue.issue_type  ) ; 
+
+    $('#issue_content').jqteVal( issue.description ) ;
+    $('#comments').jqteVal( issue.comments ) ;
+    $('#issue_summary').text( issue.summary ) ;
+    $('#issue-due-by').empty().append('<h4> Issue Due By<br>' + issue.due_by + '</h4>' ) ;
+    $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + issue.assigned_to + '</h4>' ) ;
+}
 
 
 $(document).ready ( function() 
@@ -93,9 +133,19 @@ $(document).ready ( function()
             });
         } ) ; 
         
+        /* 
+         * When a project list is selected or on a page is first arrived at. 
+         */ 
         $('#projects_container').on ( 'DOMSubtreeModified' , function () { 
+
+            // Populate the list of issues. 
             $('#issue_list').find('div.demo-card-square').remove() ; 
+            $('#issue_list').show() ; 
             var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ; 
+                
+				firstIssueDisplay ( issues_ref ) ; 
+
+                // Poplate the list of issues buttons 
                 issues_ref.once ( 'value').then( function(snapshot) {
                     snapshot.forEach(function(childSnapshot) {
                         var childKey = childSnapshot.key;
@@ -108,10 +158,12 @@ $(document).ready ( function()
                      } ) ; 
                 } ) ; 
 
+                // When a project is selected from the list... 
                 $('#project_list').on('change',function() 
                 {
                     $('#issue_list').find('div.demo-card-square').remove() ;
                     var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
+						firstIssueDisplay ( issues_ref ) ; 
                         issues_ref.once ( 'value').then( function(snapshot) {
                             snapshot.forEach(function(childSnapshot) {
                                 var childKey = childSnapshot.key;
@@ -127,19 +179,17 @@ $(document).ready ( function()
             } ) ; 
 
         
+         /* Trigger on issue list population and wait on an issue button to be clicked */ 
+
          $('#issue_list').on ( 'DOMSubtreeModified' , function () { 
             $('.issue-buttons').on('click',function(){ 
                 $('#current_issue').val( $(this).attr('id') ); 
-                console.log ( $('#project_list').val() + ' of ' + $('#current_issue').val() ) ; 
+                /// console.log ( $('#project_list').val() + ' of ' + $('#current_issue').val() ) ; 
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ; 
                     ref.once ( 'value' ).then( function(snapshot)
                     {
                         var issue = snapshot.val() ; 
-                        $('#issue_content').jqteVal( issue.description ) ; 
-                        $('#comments').jqteVal( issue.comments ) ; 
-                        $('#issue_summary').text( issue.summary ) ; 
-                        $('#issue-due-by').empty().append('<h4> Issue Due By<br>' + issue.due_by + '</h4>' ) ; 
-                        $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + issue.assigned_to + '</h4>' ) ; 
+                        issueDisplay ( issue ) ; 
                     } ) ; 
                 } ) ; 
 

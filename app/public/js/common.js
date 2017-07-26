@@ -38,6 +38,7 @@ var common = {
                 // console.log ( pv.members ) ; 
                 $.each( pv.members , function ( mI , mV )  // mI = members Index , mV = members Value 
                 {   
+                    if ( mV == null ) { return ; }  
                     var member_uid ; 
                     if ( mV.hasOwnProperty ( 'uid' ) ) 
                     {
@@ -70,6 +71,32 @@ var common = {
                 }) ; 
             } ) ; 
             $('#project_acls').val( JSON.stringify ( { pu : project_users , up: user_projects } ) ) ; 
+            
+            /* 
+             * Probably a good idea for this to be stored in firebase-db 
+             */ 
+            var pACLs = firebase.database().ref( 'project_acls' ) ; 
+                var sUp = {} ; 
+                var pPu = {} ; 
+                $.each ( project_users, function ( project , members ) 
+                {
+                    pPu[project] = {} ; 
+                    $.each ( members , function ( i , v ) 
+                    {
+                        pPu[project][v] = true ; 
+                    } ) ; 
+                } ) ; 
+
+                $.each ( user_projects , function ( user , projects ) 
+                {
+                    sUp[user] = {} ; 
+                    $.each ( projects , function ( i , v ) 
+                    {
+                        sUp[user][v] = true ; 
+                    } ) ; 
+                } ) ; 
+
+                pACLs.set ( { pu : pPu , up: sUp } ).then(function() { console.log ( 'Set Success' ) ; } ) ; 
         }) ; 
     }
 }

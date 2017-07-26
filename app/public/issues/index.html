@@ -188,11 +188,11 @@
 			  </nav>
 			</div>
             <div style="margin-left:9%;">  
-                <h3 style="margin-top:0%;" class="mdl-color-text--grey-500"> <span id=issue_summary>Issue 1 -- Open issue for a task</span> </h3>
+                <!-- <h3 style="margin-top:0%;" class="mdl-color-text--grey-500"> <span id=iissue_summary>Issue 1 -- Open issue for a task</span> </h3> --> 
             </div>
 				<br>
 			<div style="margin-top:1%;" class="page-content">
-				<div style="padding-left:1%;float:left;" id=issue_list>
+				<div style="padding-left:1%;float:left;display:none;" id=issue_list>
 					<div style="min-height:30px;width:120px;" class="demo-card-square mdl-card mdl-shadow--2dp">
 						 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
 							Issue 1
@@ -230,9 +230,21 @@
 					</div>
 				</div>
 			<div>
-				<div style="float:left;padding-left:1%;margin-top:-30px">
-                    <div style="width:100%;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
-					    <div class="mdl-card__title mdl-color-text--grey mdl-card--expand">
+				<div style="float:left;padding-left:1%;display:none;margin-left:2%;" id='issue_body'>
+                    <div style="width:900px;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
+                        <div class="mdl-card__title mdl-card--border">
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_summary style="font-size:49px;font-weight:600;font-style:italic;"></h2>
+                        </div>
+					    <div class="mdl-card__supporting-text mdl-color-text--grey mdl-card--expand">
+                            <table style="width:100%;margin-left:auto;margin-righ:auto;" >
+                              <tr>
+                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_num_display></button> </td>
+                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_status_display></button> </td>
+                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_severity_display></button> </td>
+                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_priority_display></button> </td>
+                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_type_display></button> </td>
+                              </tr>
+                            </table>
 							<textarea class=editor style="min-height:330px;" id=issue_content >The contents of the issue are described here</textarea>
 						</div>
 						<div class="mdl-card__actions mdl-card--border">
@@ -241,15 +253,18 @@
 							 </a>
 						</div>
                     </div>
-					<h4><i class='mdl-color-text--blue-grey-300'>Comments</i></h4>
 					<hr></hr>
-					<div style="width:100%;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
-                        <div class="mdl-card__title mdl-color-text--grey mdl-card--expand">
+					<div style="width:900px;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
+                        <div class="mdl-card__title mdl-card--border">
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_summary 
+                                style="font-size:40px;font-weight:600;font-style:italic;">Resolution</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text mdl-color-text--grey mdl-card--expand">
 							<textarea class=editor id=comments >comments...</textarea>
 						</div>
 						<div class="mdl-card__actions mdl-card--border">
                              <a class="update-comments-button mdl-button mdl-button--colored mdl-color-text--grey mdl-js-button mdl-js-ripple-effect">
-                                Update Comment
+                                Submit Resolution
                              </a>
                         </div>
                     </div>
@@ -259,7 +274,7 @@
 			</div>
 	       
 		
-			<div style="margin-right:21%;float:right;">
+			<div style="margin-right:1%;float:right;display:none;" id=issue_cards>
 				<div class="demo-card-event mdl-card mdl-color-text--white mdl-color--blue-grey-300 mdl-shadow--2dp">
 				  <div id='issue-due-by' class="mdl-card__title mdl-color-text--white mdl-card--expand">
 					<h4>
