@@ -202,3 +202,8 @@ div#div_login_separator {
   text-align: center;
   width: 100%;
 }
+
+div#div_login_error {
+  color: lightcoral;
+  line-height: 0px;
+}

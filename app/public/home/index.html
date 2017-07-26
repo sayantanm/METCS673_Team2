@@ -69,30 +69,30 @@
         <div class="mdl-layout__header-row">
               <div id="div-header" class="flex-wrapper">
                   <div id="div-header-projects" class="flex-wrapper flex-two flex-header">
-                      <div class="mdl-color-text--blue-grey-400 mdl-shadow--2dp flex-three">
-                        <div>Projects Completed</div>
-                        <div id="div-header-projects-completed"></div>
+                      <div class="header-projects mdl-shadow--2dp flex-three">
+                        <div>Projects: Completed</div>
+                        <div id="div-header-projects-completed" class="header-font"></div>
                       </div>
-                      <div class="mdl-color-text--blue-grey-400 mdl-shadow--2dp flex-three">
-                        <div>Projects In Progress</div>
-                        <div id="div-header-projects-inprogress"></div>
+                      <div class="header-projects mdl-shadow--2dp flex-three">
+                        <div>Projects: In Progress</div>
+                        <div id="div-header-projects-inprogress" class="header-font"></div>
                       </div>
-                      <div class="mdl-color-text--blue-grey-400 mdl-shadow--2dp flex-three">
-                        <div>Projects Not Started</div>
-                        <div id="div-header-projects-notstarted"></div>
+                      <div class="header-projects mdl-shadow--2dp flex-three">
+                        <div>Projects: Not Started</div>
+                        <div id="div-header-projects-notstarted" class="header-font"></div>
                       </div>
                   </div>
                   <div id="div-header-issues" class="flex-wrapper flex-two flex-header">
-                      <div class="mdl-color-text--blue-grey-400 mdl-shadow--2dp flex-three">
-                        <div>Tasks</div>
-                        <div id="div-header-issues-tasks"></div>
+                      <div class="header-issues mdl-shadow--2dp flex-three">
+                        <div>Issues: Tasks</div>
+                        <div id="div-header-issues-tasks" class="header-font"></div>
                       </div>
-                      <div class="mdl-color-text--blue-grey-400 mdl-shadow--2dp flex-three">
-                        <div>Bugs</div>
-                        <div id="div-header-issues-bugs"></div>
+                      <div class="header-issues mdl-shadow--2dp flex-three">
+                        <div>Issues: Bugs</div>
+                        <div id="div-header-issues-bugs" class="header-font"></div>
                       </div>
-                      <div id="div-header-issues-pastdue" class="mdl-color-text--blue-grey-400 mdl-shadow--2dp flex-three">
-                        <div>Issues Past Due</div>
+                      <div class="header-issues mdl-shadow--2dp flex-three">
+                        <div>Issues: Past Due</div>
                         <div id="div-header-issues-pastdue" class="header-font"></div>
                       </div>
                   </div>
@@ -131,22 +131,14 @@
           <main class="mdl-layout__content mdl-color--grey-100">
             <div id="container">
               <div class="flex-wrapper">
-                <div id="div-bar-projects" class="mdl-shadow--2dp flex-two flex-chart">
-
-                </div>
-                <div id="div-bar-issues" class="mdl-shadow--2dp flex-two flex-chart">
-
-                </div>
+                <div id="div-bar-projects" class="mdl-shadow--2dp flex-two flex-chart"></div>
+                <div id="div-bar-issues" class="mdl-shadow--2dp flex-two flex-chart"></div>
               </div>
               <div id="div-donut" class="flex-wrapper">
-                  <div class="flex-two">
-                    <div id="" class="mdl-shadow--2dp flex-two"></div>
-                    <div id="div-donut-project-status" class="mdl-shadow--2dp flex-two"></div>
-                  </div>
-                  <div class="flex-two">
-                    <div id="div-chart-issues-severity" class="mdl-shadow--2dp flex-two"></div>
-                    <div id="div-chart-issues-priority" class="mdl-shadow--2dp flex-two"></div>
-                  </div>
+                    <div id="div-bar-project-members" class="mdl-shadow--2dp flex-four fflex-two"></div>
+                    <div id="div-donut-project-status" class="mdl-shadow--2dp flex-four fflex-two"></div>
+                    <div id="div-chart-issues-severity" class="mdl-shadow--2dp flex-four fflex-two"></div>
+                    <div id="div-chart-issues-priority" class="mdl-shadow--2dp flex-four fflex-two"></div>
               </div>
               <div id="div-content" class="flex-wrapper">
                   <div id="div-content-projects" class="mdl-shadow--2dp flex-two flex-body"></div>

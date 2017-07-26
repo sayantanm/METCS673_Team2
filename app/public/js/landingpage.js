@@ -32,10 +32,23 @@ window.onload = function() {
 
     // email address/password sign-in -  event handler
     document.getElementById("button_login").addEventListener("click", function() {
+        document.getElementById('div_login_error').innerHTML = '';
         var email = document.getElementById("input_login_email_address").value;
         var password = document.getElementById("input_login_password").value;
 
-        promises.push(firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        promises.push(firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+            if (!firebase.auth().currentUser.emailVerified) {
+                document.getElementById('div_login_error').innerHTML = 'Verify your email before logging-in.  <a id="resend_verification" href="#">Resend</a> link.';
+                document.getElementById('div_login_error').addEventListener('click',function() {
+                    firebase.auth().currentUser.sendEmailVerification().then(function() {
+                        document.getElementById('div_login_error').innerHTML = 'Verification email sent.  <a id="resend_verification" href="#">Resend</a> link.';
+                    });
+                });
+            }
+            else {
+                window.location = "./home/index.html"; 
+            }
+        }).catch(function(error) {
             // handling errors for authentication
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -45,6 +58,7 @@ window.onload = function() {
 
     // google sign-in - event handler
     document.getElementById("img_google_logo").addEventListener("click", function() {
+        document.getElementById('div_login_error').innerHTML = '';
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
         provider.addScope('email');
@@ -70,6 +84,7 @@ window.onload = function() {
 
     // join - even handler
     document.getElementById("button_join").addEventListener("click", function() {
+        document.getElementById('div_login_error').innerHTML = '';
         var fname = document.getElementById("input_join_first_name").value;
         var lname = document.getElementById("input_join_last_name").value;
         var email = document.getElementById("input_join_email_address").value;
@@ -89,29 +104,64 @@ window.onload = function() {
 
         promises.push(firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
             addUser(fname + ' ' + lname,email);
+            resetJoinText;
+            promises.push(firebase.auth().currentUser.sendEmailVerification().then(function() {
+                document.getElementById('div_login_error').innerHTML = 'Check your email, verification is needed.  <a id="resend_verification" href="#">Resend</a> link.';
+            }));
         }).catch(function(error) {
-            // Handling Errors for user sign-up
-            var errorCode = error.code;
-            var errorMessage = error.message;
-
-            alert(errorMessage);
+            alert(error.message);
         }));
     });
 
-    // when a users signs-in, send them to the dashboard/homepage
+    // forgot password link
+    document.getElementById("forgot_password_link").addEventListener("click", function() {
+        var email = document.getElementById("input_login_email_address").value;
+        if (email) {
+            promises.push(firebase.auth().sendPasswordResetEmail(email).then(function() {
+                document.getElementById('div_login_error').innerHTML = "Email sent to " + email;
+            }));
+        }
+        else {
+            document.getElementById('div_login_error').innerHTML = "Please enter your email address";
+        }
+    });
+
+    function resetJoinText() {
+        document.getElementById("input_join_first_name").value = "";
+        document.getElementById("input_join_first_name").parentNode.classList.remove("is-dirty");
+        document.getElementById("input_join_last_name").value = "";
+        document.getElementById("input_join_last_name").parentNode.classList.remove("is-dirty");
+        document.getElementById("input_join_email_address").value = "";
+        document.getElementById("input_join_email_address").parentNode.classList.remove("is-dirty");
+        document.getElementById("input_join_password").value = "";
+        document.getElementById("input_join_password").parentNode.classList.remove("is-dirty");
+        document.getElementById("input_join_confirm_password").value = "";
+        document.getElementById("input_join_confirm_password").parentNode.classList.remove("is-dirty");
+    }
+    // reset button
+    document.getElementById("button_join_reset").addEventListener("click", function() {
+        resetJoinText;
+    });
+
+    // when a user signs-in, send them to the dashboard/homepage
     firebase.auth().onAuthStateChanged(function(user) {
-        // this first promise check makes sure my google auth finishes.
-        Promise.all(promises).then(function() {
-            if (user) {
-                promises.push(firebase.database().ref('users').child(user.uid).once('value', function(snapshot) {
-                    if (snapshot.val() === null) {
-                        addUser(fname + ' ' + lname,email);
-                    }
-                }));
-                Promise.all(promises).then(function() {
+        if (user) {
+            Promise.all(promises).then(function() {
+                if (firebase.auth().currentUser.emailVerified) {
+                    document.getElementById('div_login_error').innerHTML = '';
                     window.location = "./home/index.html"; 
-                });
-            }
-        });
+                }
+                else {
+                    document.getElementById('input_login_email_address').value = user.email;
+                    document.getElementById('input_login_email_address').parentNode.classList.add("is-dirty");
+                    document.getElementById('div_login_error').innerHTML = 'Verify your email before logging-in.  <a id="resend_verification" href="#">Resend</a> link.';
+                    document.getElementById('div_login_error').addEventListener('click',function() {
+                        firebase.auth().currentUser.sendEmailVerification().then(function() {
+                            document.getElementById('div_login_error').innerHTML = 'Verification email sent.  <a id="resend_verification" href="#">Resend</a> link.';
+                        });
+                    });
+                }
+            });
+        }
     });
 };

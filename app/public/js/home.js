@@ -36,12 +36,16 @@ window.onload = function() {
         // It's used to build the project issues stacked bar chart
         var projectNameMap = {};
 
+        // I'm using this to create a project 
+        var projectMembersCountTable = [];
+
         snapshot.forEach(function(childSnapshot) {
             var projectName = '';
             var projectStartDate ='';
             var projectEndDate = '';
             var projectStatus = '' ;
             var myProject = false;
+            var projectMembersCount = 0;
             childSnapshot.forEach(function(grandchildSnapshot) {
                 // since I'm looping through each project, I might as well gather the information I need in case the logged in user belongs to it.
                 // capture the project name
@@ -65,19 +69,21 @@ window.onload = function() {
                 // if the logged in user is member of the project, their uid will be listed here
                 else if (grandchildSnapshot.key === 'members') {
                     var value = grandchildSnapshot.val();
-                    for (var key in value) {
-                        for (var member in value[key]) {
-                            if (firebase.auth().currentUser.uid === value[key][member]) {
-                                // this tells the code below to push the project information captured above.
-                                myProject = true;
-
-                                // not sure whether or not I need this, but this gives me an array of projects the logged in user is a member of
-                                projectIDsArray.push(childSnapshot.key);
-                            }
+                    value.forEach(function(greatGrandChildSnapshot) {
+                        if (firebase.auth().currentUser.uid === greatGrandChildSnapshot) {
+                            // this tells the code below to push the project information captured above.
+                            myProject = true;
+                            
+                            // not sure whether or not I need this, but this gives me an array of projects the logged in user is a member of
+                            projectIDsArray.push(childSnapshot.key);
                         }
-                    }
+                        if (greatGrandChildSnapshot) {
+                            projectMembersCount++;
+                        }
+                    });
                 }
             });
+            // myProject is set to true when uid is found as a member of a project
             if (myProject) { 
                 // push data for the timeline
                 var tempTimelineArray = [];
@@ -106,6 +112,7 @@ window.onload = function() {
                 else if (projectStatus === 'Completed') {
                     projectStatusCounterC++;
                 }     
+                projectMembersCountTable.push([projectName,projectMembersCount]);
             }
         });
 
@@ -216,10 +223,44 @@ window.onload = function() {
                     legend: {
                         position: 'none'
                     },
-                    chartArea: {width: "87%"}
+                    chartArea: {width: "87%"},
+                    colors:['#1e88e5']
                 };
 
                 var chart = new google.visualization.ColumnChart(document.getElementById('div-bar-issues'));
+                chart.draw(data, options);
+            }
+
+            // Project members column chart (middle row 1st chart)
+            // don't attempt to draw the chart if the logged in user is not a member of any project
+            if (projectTableArray.length) {
+                google.charts.load('current', {packages: ['corechart', 'bar']});
+                google.charts.setOnLoadCallback(drawMemberColumnChart);
+            }
+            else {
+                document.getElementById('div-bar-project-members').innerHTML = "You do not have any assigned Issues";
+            }
+            function drawMemberColumnChart() {
+
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Issue Type');
+                data.addColumn('number', 'Number of Issues');
+
+                data.addRows(projectMembersCountTable);
+
+                var options = {
+                    title: 'Members per Project',
+                    vAxis: {
+                        title: '# of Team Members'
+                    },
+                    legend: {
+                        position: 'none'
+                    },
+                    colors:['#00897b'],
+                    chartArea: {width: "87%"}
+                };
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('div-bar-project-members'));
                 chart.draw(data, options);
             }
 
@@ -244,7 +285,8 @@ window.onload = function() {
                 var options = {
                     title: 'Issues Severity',
                     pieHole: 0.3,
-                    colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f']
+                    colors: ['#90caf9', '#42a5f5', '#1e88e5'],
+                    chartArea: {width: "87%"}
                 };
 
                 var chart = new google.visualization.PieChart(document.getElementById('div-chart-issues-severity'));
@@ -271,7 +313,9 @@ window.onload = function() {
 
                 var options = {
                     title: 'Issues Priority',
-                    pieHole: 0.4,
+                    pieHole: 0.3,
+                    colors: ['#90caf9', '#42a5f5', '#1e88e5', '#1565c0'],
+                    chartArea: {width: "87%"}
                 };
 
                 var chart = new google.visualization.PieChart(document.getElementById('div-chart-issues-priority'));
@@ -282,7 +326,7 @@ window.onload = function() {
             document.getElementById('div-header-issues-bugs').innerHTML += issueBugCount; 
             document.getElementById('div-header-issues-pastdue').innerHTML += issuePastDueCount; 
 
-            // the issues data table
+            // the issues data table (bottom right)
             // don't attempt to draw the table if the logged in user does not have any assigned issues
             if (issueTableArray.length) {
                 google.charts.load('current', {'packages':['table']});
@@ -304,12 +348,12 @@ window.onload = function() {
                 table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
             }
 
-            // the project-issues stacked bar chart
+            // the project-issues stacked bar chart (top left)
             var stackedBarChartArray = [];
             // build the data array
-            stackedBarChartArray.push(['Project', 'Tasks', 'Bugs']);
+            stackedBarChartArray.push(['Project', 'Tasks', 'Bugs',{role:'annotation'}]);
             for (var i=0; i<projectIDsArray.length; i++) {
-                stackedBarChartArray.push([projectNameMap[projectIDsArray[i]],projectTasks[projectIDsArray[i]],projectBugs[projectIDsArray[i]]]);
+                stackedBarChartArray.push([projectNameMap[projectIDsArray[i]],projectTasks[projectIDsArray[i]],projectBugs[projectIDsArray[i]],projectNameMap[projectIDsArray[i]]]);
             }
 
             // don't attempt to draw the chart if the logged in user is not a member of any project
@@ -324,18 +368,28 @@ window.onload = function() {
                 var data = google.visualization.arrayToDataTable(stackedBarChartArray);
 
                 var options = {
-                    legend: { position: 'top', maxLines: 3 },
+                    title: 'Project Issues',
+                    legend: { position: 'bottom', maxLines: 1 },
                     bar: { groupWidth: '75%' },
-                    isStacked: true
+                    colors:['#80cbc4','#26a69a'],
+                    chartArea: {left:17, width: "95%"},
+                    isStacked: 'percent',
+                    hAxis: {
+                    minValue: 0,
+                        ticks: [0, .25, .50, .75, 1]
+                    },
+                    vAxis: {
+                        textPosition: 'none'
+                    }
                 };
                 var chart = new google.visualization.BarChart(document.getElementById("div-bar-projects"));
                 chart.draw(data, options);
             }
         });
 
+        // the projects data table (bottom left)
         // don't attempt to draw the chart if the logged in user is not a member of any project
         if (projectTableArray.length) {
-            /*  Projects: Draw the Google Data Table  */
             google.charts.load('current', {'packages':['table']});
             google.charts.setOnLoadCallback(drawProjectsTable);
         }
@@ -357,7 +411,7 @@ window.onload = function() {
             table.draw(dataTable, {showRowNumber: false, width: '100%', height: '100%'});
         }
 
-        /*  Projects: Set the status counters  */
+        //  Projects: Set the status counters  
         document.getElementById('div-header-projects-completed').innerHTML += projectStatusCounterC;
         document.getElementById('div-header-projects-inprogress').innerHTML += projectStatusCounterIP;
         document.getElementById('div-header-projects-notstarted').innerHTML += projectStatusCounterNS;
@@ -381,7 +435,9 @@ window.onload = function() {
 
             var options = {
                 title: 'Project Status',
-                pieHole: 0
+                pieHole: 0,
+                colors: ['#80cbc4','#26a69a'],
+                chartArea: {width: "87%"}
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('div-donut-project-status'));
