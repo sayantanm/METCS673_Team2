@@ -12,12 +12,14 @@ div#div-header {
 
 div.flex-wrapper {
     display: inline-flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 100%;
 }
 
 div.flex-two {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     height: 200px;
     margin: 5px 5px 5px 5px;
     width: 50%;
@@ -47,6 +49,15 @@ div.flex-four {
     width: 25%;
 }
 
+div.flex-six {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    margin: 5px 5px 5px 5px;
+    width: 16%;
+}
+
 div.flex-header {
     height: 100px;
 }
@@ -68,4 +79,19 @@ div.header-projects {
 div.header-issues {
     background-color: #0288d1;
     color: #fff;
+}
+
+.project-table-header-tr {
+    background: #009688 !important;
+    color: #fff;
+}
+
+.issue-table-header-tr {
+    background: #03a9f4;
+    color: #fff;
+}
+
+/* override the gradient google puts on the column header of their chart */
+.gradient {
+    background-image: none !important;
 }

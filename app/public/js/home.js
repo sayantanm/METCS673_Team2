@@ -200,9 +200,6 @@ window.onload = function() {
                 google.charts.load('current', {packages: ['corechart', 'bar']});
                 google.charts.setOnLoadCallback(drawColumnChart);
             }
-            else {
-                document.getElementById('div-bar-issues').innerHTML = "You do not have any assigned Issues";
-            }
             function drawColumnChart() {
 
                 var data = new google.visualization.DataTable();
@@ -238,7 +235,7 @@ window.onload = function() {
                 google.charts.setOnLoadCallback(drawMemberColumnChart);
             }
             else {
-                document.getElementById('div-bar-project-members').innerHTML = "You do not have any assigned Issues";
+                document.getElementById('div-bar-project-members').innerHTML = "You are not a member of any Projects";
             }
             function drawMemberColumnChart() {
 
@@ -332,9 +329,6 @@ window.onload = function() {
                 google.charts.load('current', {'packages':['table']});
                 google.charts.setOnLoadCallback(drawIssuesTable);
             }
-            else {
-                document.getElementById('div-content-issues').innerHTML = "You do not have any assigned Issues";
-            }
             function drawIssuesTable() {
                 var data = new google.visualization.DataTable();
                 data.addColumn('number', 'Issue #');
@@ -345,7 +339,16 @@ window.onload = function() {
                 data.addRows(issueTableArray);
                 var table = new google.visualization.Table(document.getElementById('div-content-issues'));
 
-                table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+                var tableClassNames = {
+                    'headerRow':'issue-table-header-tr'
+                };
+
+                table.draw(data, {
+                    showRowNumber: false, 
+                    width: '100%', 
+                    height: '100%',
+                    cssClassNames: tableClassNames
+                });
             }
 
             // the project-issues stacked bar chart (top left)
@@ -360,9 +363,6 @@ window.onload = function() {
             if (projectIDsArray.length) {
                 google.charts.load("current", {packages:["corechart"]});
                 google.charts.setOnLoadCallback(drawStackedBarChart);
-            }
-            else {
-                document.getElementById("div-bar-projects").innerHTML = "You are not a member of any Projects";
             }
             function drawStackedBarChart() {
                 var data = google.visualization.arrayToDataTable(stackedBarChartArray);
@@ -393,9 +393,6 @@ window.onload = function() {
             google.charts.load('current', {'packages':['table']});
             google.charts.setOnLoadCallback(drawProjectsTable);
         }
-            else {
-                document.getElementById("div-content-projects").innerHTML = "You are not a member of any Projects";
-            }
         function drawProjectsTable() {
             var dataTable = new google.visualization.DataTable();      
             dataTable.addColumn('string', 'Project Name');
@@ -405,10 +402,17 @@ window.onload = function() {
             if (projectTableArray.length) {
                 dataTable.addRows(projectTableArray);
             }
-
+            var tableClassNames = {
+                'headerRow':'project-table-header-tr'
+            };
             var table = new google.visualization.Table(document.getElementById('div-content-projects'));
 
-            table.draw(dataTable, {showRowNumber: false, width: '100%', height: '100%'});
+            table.draw(dataTable, {
+                showRowNumber: false, 
+                width: '100%', 
+                height: '100%',
+                cssClassNames: tableClassNames
+            });
         }
 
         //  Projects: Set the status counters  
