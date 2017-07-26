@@ -63,23 +63,43 @@ $(document).ready(function(){
 
     var key = hashFinder(selected);
     var selectProj = firebase.database().ref('app/projects/' + key + '/members');
-
+    var count = 0;
+    //var newID = [];
     selectProj.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         memberUID = childSnapshot.val();
         memberName = userTable[memberUID];
 
-        memberRows  += ("<tr><td class = 'team'><input type='checkbox' class='checker'></input></td><td class='mdl-data-table__cell--non-numeric team'><nameArea>" +
-          memberName + "</nameArea></td><td class='mdl-data-table__cell--non-numeric team'>"+
-          "<button onclick='adminClick()' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' id='adminBtn'>Make Admin</button></td></tr></tbody>");
-
+        //newID.push("adminBtn" + count);
+        memberRows  += ("<tr id='row" + count +"'><td class = 'team'><input type='checkbox' class='checker'></input></td><td class='mdl-data-table__cell--non-numeric team'><nameArea>" +
+          memberName + "<td class='mdl-data-table__cell--non-numeric team'>"+
+          "<button class='dynamic-link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect adminBtn'>Make Admin</button></td>" +
+          "</nameArea></td></tr></tbody>");
+        count += 1;
       });
+      //console.log(memberRows);
       memberTable += memberRows;
+
       $('#memberList').append(memberTable).html();
+
+      $('.mytable').find('button').each(function (i) {
+        $(this).attr('id', 'admin_' + i);
+        //console.log(this.id);
+        $(this).on("click", {id: $(this).attr('id')}, adminAdd);
+      });
     });
 
     $('#rmvBtn').append("<button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn' "+
     "id = 'rmvBtn'>Remove Selected From Project</button>")
+
+
+
+
+    //for (i in 1:newID.length){
+
+    //  document.getElementById('adminBtn').addEventListener("click", adminAdd);
+  //  }
+    //document.getElementById("adminBtn").addEventListener("click", adminAdd);
   }
 
 
@@ -100,11 +120,8 @@ $(document).ready(function(){
     for (key in userTable){
       if (userTable[key] == userSel){
         userUID = key;
-        console.log("Found userUID");
       }
     }
-
-    console.log("userUID: " + userUID);
 
     //Check to make sure  a user has been picked:
     if(userSel == "Existing Users"){
@@ -120,12 +137,15 @@ $(document).ready(function(){
     if (authorized(key, adminUid)){
       var memSet = [];
       var project = firebase.database().ref('app/projects/' + key + '/members');
+
+      //checks to makes sure user isn't already a member:
       if (!dupEntry(key, userUID)){
         project.once('value', function(snapshot){
-          memSet = snapshot.val();
+          memSet = (snapshot.val());
           memSet.push(userUID);
+          memSet = memSet.filter(val => val);
+          project.set(memSet);
         });
-        project.set(memSet);
 
         addAlert(userSel);
         location.reload(true);
@@ -170,7 +190,7 @@ $(document).ready(function(){
       //newUser(name, email, selected);
   }
 
-  rmvBtn.onclick = function(){
+rmvBtn.onclick = function(){
     var checkedNames = [];
     $('.mytable').find('tr').each(function () {
         var row = $(this);
@@ -193,16 +213,33 @@ $(document).ready(function(){
     var key = hashFinder(selected);
     var project = firebase.database().ref('app/projects/' + key +'/members');
     for (j in userUID){
+      var memSet = [];
       project.once('value', function(snapshot){
         snapshot.forEach(function(childSnapshot){
           if (userUID[j] == childSnapshot.val()){
             childSnapshot.ref.remove();
             alert(checkedNames[j] + " removed from " + selected);
           }
-
         });
       });
     }
+
+    //resets the indexing of the member list:
+    var memSet = [];
+    project.once('value', function(snapshot){
+      memSet = (snapshot.val());
+      if (memSet.hasOwnProperty.length == 1){
+        snapshot.forEach(function(childSnapshot){
+          memSet = [];
+          memSet[0] = childSnapshot.val();
+          project.set(memSet);
+        });
+        return true;
+      }
+      memSet = memSet.filter(val => val);
+      project.set(memSet);
+    });
+
     location.reload(true);
     return;
   }
@@ -249,18 +286,27 @@ $(document).ready(function(){
     return duplicate;
   }
 
-  function adminClick(){
+
+function adminAdd(btnID){
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
     var adminAdd = "";
+    //console.log(btnID.data.id);
     $('.mytable').find('tr').each(function () {
       var row = $(this);
-      var name = row.find('nameArea');
-      adminAdd = row.find('td:eq(1)').text();
+      //if (row.find('td:eq(2)') == btnID.data.id){
+      var button = row.find('button')
+      if (button.attr('id') == btnID.data.id){
+        console.log(row.find('nameArea').text());
+      //  var name = row.find('nameArea');
+        adminAdd = row.find('nameArea').text();
+      }
+
     });
 
+    console.log("adminAdd: " + adminAdd);
     var adminCheck = firebase.auth().currentUser;
-    var adminCheckUid = user.uid;
+    var adminCheckUid = adminCheck.uid;
     var key = hashFinder(selected);
 
     if (authorized(key, adminCheckUid)){
@@ -273,29 +319,36 @@ $(document).ready(function(){
       }
 
       var projAdmin = firebase.database().ref('app/projects/' + key +'/admins');
+      var dup = false;
       projAdmin.once('value', function(snapshot){
         snapshot.forEach(function(childSnapshot){
             //checks against duplicate entries:
-            if (userUID == childSnapshot.val()){
+            if (uidToBeAdded == childSnapshot.val()){
               alert("This user is already an admin of the project selected");
-              return
+              dup = true;
+              return;
             }
         });
       });
+      if (dup == false){
+        if (confirm("Please confirm that you wish to add " + adminAdd + " as an admininstrator:")){
+          var adminSet = [];
+          projAdmin.once('value', function(snapshot){
+              adminSet = snapshot.val();
+              adminSet.push(uidToBeAdded);
+            });
+            projAdmin.set(adminSet);
 
-      var confirm = confirm("Please confirm that you wish to add " + adminAdd + " as an admininstrator:");
-      if (confirm == true){
-        var adminSet = [];
-        projAdmin.once('value', function(snapshot){
-            adminSet = snapshot.val();
-            adminSet.push(userUID);
-          });
-          projAdmin.set(adminSet);
-
-          alert(adminAdd + " added as administrator for " + selected);
-          location.reload(true);
+            alert(adminAdd + " added as administrator for " + selected);
+            location.reload(true);
+            return;
+        }
+        else{
+          alert("No changes made");
           return;
+        }
       }
+      return;
     }
     else {
       alert ("You are not authorized to make changes to this project");
