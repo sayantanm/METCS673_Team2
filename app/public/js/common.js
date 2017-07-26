@@ -83,7 +83,7 @@ var common = {
                     pPu[project] = {} ; 
                     $.each ( members , function ( i , v ) 
                     {
-                        pPu[project][v] = 1 ; 
+                        pPu[project][v] = true ; 
                     } ) ; 
                 } ) ; 
 
@@ -92,7 +92,7 @@ var common = {
                     sUp[user] = {} ; 
                     $.each ( projects , function ( i , v ) 
                     {
-                        sUp[user][v] = 1 ; 
+                        sUp[user][v] = true ; 
                     } ) ; 
                 } ) ; 
 
