@@ -51,11 +51,11 @@ class SideBar extends React.Component {
           </div>
         </header>
         <nav className="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a className="mdl-navigation__link" href=""><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+          <a className="mdl-navigation__link" href="/home/index.html"><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
           <a className="mdl-navigation__link" href="/manage"><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
           <a className="mdl-navigation__link" href="/chat"><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
           <a className="mdl-navigation__link" href="/issues"><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
-          <a className="mdl-navigation__link" href=""><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
+          <a className="mdl-navigation__link" href="/admin"><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
           <div className="mdl-layout-spacer"></div>
           <a className="mdl-navigation__link" href=""><i className="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span className="visuallyhidden">Help</span></a>
         </nav>

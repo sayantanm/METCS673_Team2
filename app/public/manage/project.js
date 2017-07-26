@@ -164,7 +164,7 @@ var SideBar = function (_React$Component2) {
           { className: "demo-navigation mdl-navigation mdl-color--blue-grey-800" },
           React.createElement(
             "a",
-            { className: "mdl-navigation__link", href: "" },
+            { className: "mdl-navigation__link", href: "/home/index.html" },
             React.createElement(
               "i",
               { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
@@ -204,7 +204,7 @@ var SideBar = function (_React$Component2) {
           ),
           React.createElement(
             "a",
-            { className: "mdl-navigation__link", href: "" },
+            { className: "mdl-navigation__link", href: "/admin" },
             React.createElement(
               "i",
               { className: "mdl-color-text--blue-grey-400 material-icons", role: "presentation" },
