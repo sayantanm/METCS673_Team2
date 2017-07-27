@@ -9,10 +9,9 @@
 
 .grid {
   padding-left: 50px;
-  padding-top: 100px;
+  padding-top: 50px;
   padding-right: 50px;
 }
-
 
 .gridDispTeam {
   border-style: solid;
@@ -29,7 +28,7 @@
   float: right;
   border-style: solid;
   border-color: black;
-  border-width: 2px;
+  border-width: 1px;
   margin-right: 20px;
 }
 
@@ -51,6 +50,8 @@
   border-style: solid;
   border-color: black;
   border-width: 3px;
+  padding-left: 50px;
+  padding-right: 0px;
 }
 
 .team {

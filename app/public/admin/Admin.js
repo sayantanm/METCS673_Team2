@@ -1,4 +1,10 @@
 $(document).ready(function(){
+  // event listener for the logout option
+  document.getElementById("li_logout").addEventListener("click", function() {
+      firebase.auth().signOut();
+      window.location = "../index.html";
+  });
+  
   //Populates the project list drop down menu:
   var projects = firebase.database().ref('app/projects');
   projects.on('value', function(snapshot) {
@@ -407,4 +413,13 @@ $(document).ready(function(){
   function addAlert(name){
     alert(name + " added successfully");
   }
+
+  firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+          document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
+      }
+      else {
+          console.log('Not logged in');
+      }
+  });
 });
