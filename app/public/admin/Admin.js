@@ -5,15 +5,19 @@ $(document).ready(function(){
     var projects_display = ('<option id=choose selected>Please select a project</option>') ;
     snapshot.forEach(function(childSnapshot) {
       var childData = childSnapshot.val().name;
-      projects_display = projects_display + ('<option>' + childData + '</option>');
+      var projKey = hashFinder(childData);
+      var userProfile = firebase.auth().currentUser;
+      var userID = userProfile.uid;
+      if (authorized(projKey, userID)){
+        projects_display = projects_display + ('<option>' + childData + '</option>');
+      }
+
     });
     $('#projects_container').html(projects_display);
   });
 
-
   //Triggers the change in the members list when a project is selected:
   document.getElementById("projects_container").addEventListener("change", showMembers);
-
 
   //This section populates the existing users dropdown menu:
   var users = firebase.database().ref('users');
@@ -27,7 +31,6 @@ $(document).ready(function(){
   $('#existingUsers').append(member_display).html();
   });
 
-
   //creates a user name/uid table:
   var candidateName, key, email;
   var userTable = {};
@@ -39,6 +42,7 @@ $(document).ready(function(){
       userTable[key] = candidateName + " (" + email + ")";
     });
   });
+
 
   //Populates the 'Current project team members' table to the right:
   function showMembers(){
@@ -208,7 +212,6 @@ $(document).ready(function(){
     for (var i in checkedNames){
       for (k in userTable){
         if (userTable[k] == checkedNames[i]){
-          console.log(userTable[k]);
           userUIDremove.push(k);
           break;
         }
@@ -310,17 +313,12 @@ $(document).ready(function(){
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
     var adminAdd;
-    //console.log(btnID.data.id);
     $('.mytable').find('tr').each(function () {
       var row = $(this);
       var button = row.find('button');
-      //console.log("Button enabled: " + !(button.prop('disabled')));
       if(!(button.prop('disabled'))){
-        console.log("button ID: " + btnID.data.id);
-        console.log("button id's match: " + button.attr('id'));
         if (button.attr('id') == btnID.data.id){
           adminAdd = row.find('nameArea').text();
-          console.log(adminAdd);
         }
       }
     });
@@ -377,7 +375,6 @@ $(document).ready(function(){
   }
 
   function removeAdmin(uid, key){
-    //must also reindex after removal
     var projAdmin = firebase.database().ref('app/projects/' + key +'/admins');
     projAdmin.once('value', function(snapshot){
       snapshot.forEach(function(childSnapshot){
