@@ -82,24 +82,31 @@ $(document).ready(function(){
 
       $('#memberList').append(memberTable).html();
 
-      $('.mytable').find('button').each(function (i) {
-        $(this).attr('id', 'admin_' + i);
-        //console.log(this.id);
-        $(this).on("click", {id: $(this).attr('id')}, adminAdd);
+      $('.mytable').find('tr').each(function (i) {
+        var row = $(this);
+        var button = row.find('button')
+        button.attr('id', 'admin_' + i);
+        var btnName = row.find('nameArea').text();
+        var btnUID = "";
+        for (var userKey in userTable){
+          if (userTable[userKey] == btnName){
+            btnUID = userKey;
+          }
+        }
+        //console.log(key);
+        //console.log(authorized(key, btnUID));
+        if (authorized(key, btnUID)){
+          button.prop('disabled', true);
+          button.html("Project Admin");
+
+        }
+
+        button.on("click", {id: $(this).attr('id')}, adminAdd);
       });
     });
 
     $('#rmvBtn').append("<button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn' "+
     "id = 'rmvBtn'>Remove Selected From Project</button>")
-
-
-
-
-    //for (i in 1:newID.length){
-
-    //  document.getElementById('adminBtn').addEventListener("click", adminAdd);
-  //  }
-    //document.getElementById("adminBtn").addEventListener("click", adminAdd);
   }
 
 
