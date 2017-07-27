@@ -40,7 +40,6 @@ $(document).ready(function(){
     });
   });
 
-
   //Populates the 'Current project team members' table to the right:
   function showMembers(){
     //clears previous lists that might be on screen:
@@ -71,7 +70,7 @@ $(document).ready(function(){
         memberName = userTable[memberUID];
 
         //newID.push("adminBtn" + count);
-        memberRows  += ("<tr id='row" + count +"'><td class = 'team'><input type='checkbox' class='checker'></input></td><td class='mdl-data-table__cell--non-numeric team'><nameArea>" +
+        memberRows  += ("<tr id='row" + count +" class='row'><td class = 'team'><input type='checkbox' class='checker'></input></td><td class='mdl-data-table__cell--non-numeric team'><nameArea>" +
           memberName + "<td class='mdl-data-table__cell--non-numeric team'>"+
           "<button class='dynamic-link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect adminBtn'>Make Admin</button></td>" +
           "</nameArea></td></tr></tbody>");
@@ -84,8 +83,8 @@ $(document).ready(function(){
 
       $('.mytable').find('tr').each(function (i) {
         var row = $(this);
-        var button = row.find('button')
-        button.attr('id', 'admin_' + i);
+        var button1 = row.find('button')
+        button1.attr('id', 'admin_' + i);
         var btnName = row.find('nameArea').text();
         var btnUID = "";
         for (var userKey in userTable){
@@ -93,15 +92,12 @@ $(document).ready(function(){
             btnUID = userKey;
           }
         }
-        //console.log(key);
-        //console.log(authorized(key, btnUID));
+
         if (authorized(key, btnUID)){
-          button.prop('disabled', true);
-          button.html("Project Admin");
-
+          button1.prop('disabled', true);
+          button1.html("Project Admin");
         }
-
-        button.on("click", {id: $(this).attr('id')}, adminAdd);
+        button1.on("click", {id: button1.attr('id')}, adminAdd);
       });
     });
 
@@ -313,16 +309,20 @@ $(document).ready(function(){
   function adminAdd(btnID){
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
-    var adminAdd = "";
+    var adminAdd;
     //console.log(btnID.data.id);
     $('.mytable').find('tr').each(function () {
       var row = $(this);
-      //if (row.find('td:eq(2)') == btnID.data.id){
-      var button = row.find('button')
-      if (button.attr('id') == btnID.data.id){
-        adminAdd = row.find('nameArea').text();
+      var button = row.find('button');
+      //console.log("Button enabled: " + !(button.prop('disabled')));
+      if(!(button.prop('disabled'))){
+        console.log("button ID: " + btnID.data.id);
+        console.log("button id's match: " + button.attr('id'));
+        if (button.attr('id') == btnID.data.id){
+          adminAdd = row.find('nameArea').text();
+          console.log(adminAdd);
+        }
       }
-
     });
 
     var adminCheck = firebase.auth().currentUser;
