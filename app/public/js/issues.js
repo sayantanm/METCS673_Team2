@@ -42,29 +42,35 @@ function firstIssueDisplay ( issues_ref )
 	} ) ;
 }
 
-
-function issueTree ( issues_ref ) 
+function projectName ( projectID ) 
 {
-	  issues_ref.once ( 'value').then( function(snapshot) {
+}
 
-		var tree = $('<ul></ul>' ) ;
-		var treeRoot = $('<li>Project Issues</li>');
-		var issueTree = $('<ul></ul>') ;
-			treeRoot.append ( issueTree ) ;
-			tree.append ( treeRoot ) ;
-		$('#issue_list').append ( tree ) ;
-		snapshot.forEach(function(childSnapshot) {
-			var childKey = childSnapshot.key;
-			var childData = childSnapshot.val();
-			issueTree.append (  '<li id="' + childKey +'" >Issue ' + childData.issue_num + '</li>' ) ;
-		 } ) ;
-	} ).then ( function ( )
-	{
-		 $('#issue_list').jstree().on('ready.jstree', function() 
-			{  
-				$("#issue_list").jstree("open_all");  
-			} ) ;
-	} ) ;
+function issueTree ( issues_ref , projectID ) 
+{
+    var pRef = firebase.database().ref ( 'app/projects/' + projectID ) ; 
+        pRef.once ( 'value' ).then ( function ( prSnapShot ) 
+        {
+            issues_ref.once ( 'value').then( function(snapshot) {
+                var tree = $('<ul></ul>' ) ;
+                var treeRoot = $('<li>' + prSnapShot.val().name + '</li>');
+                var issueTree = $('<ul></ul>') ;
+                    treeRoot.append ( issueTree ) ;
+                    tree.append ( treeRoot ) ;
+                $('#issue_list').append ( tree ) ;
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    issueTree.append (  '<li id="' + childKey +'" >Issue ' + childData.issue_num + '</li>' ) ;
+                 } ) ;
+            } ).then ( function ( )
+            {
+                 $('#issue_list').jstree().on('ready.jstree', function() 
+                    {  
+                        $("#issue_list").jstree("open_all");  
+                    } ) ;
+            } ) ;
+       } ) ; 
 }
 
 /* 
@@ -74,10 +80,12 @@ function issueTree ( issues_ref )
 function issueDisplay ( issue ) 
 {
     $('#issue_num_display').empty().append( 'ISSUE-' + issue.issue_num  ) ; 
-    $('#issue_status_display').empty().append( 'Status: ' + issue.status ) ; 
-    $('#issue_severity_display').empty().append( 'Severity: ' + issue.severity  ) ; 
-    $('#issue_priority_display').empty().append( 'Priority: ' + issue.priority  ) ; 
-    $('#issue_type_display').empty().append( 'Type: ' + issue.issue_type  ) ; 
+    $('#issue_assigned_to').empty().append ( issue.assigned_to ) ; 
+    $('#issue_due_display').empty().append ( issue.due_by ) ; 
+    $('#issue_status_display').empty().append( issue.status ) ; 
+    $('#issue_severity_display').empty().append( issue.severity  ) ; 
+    $('#issue_priority_display').empty().append( issue.priority  ) ; 
+    $('#issue_type_display').empty().append( issue.issue_type  ) ; 
 
     $('#issue_content').jqteVal( issue.description ) ;
     $('#comments').jqteVal( issue.comments ) ;
@@ -169,8 +177,8 @@ $(document).ready ( function()
             $.jstree.destroy() ; 
             var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ; 
                 
-				firstIssueDisplay ( issues_ref ) ; 
-			    issueTree( issues_ref ) ; 
+				firstIssueDisplay ( issues_ref , $('#project_list').val() ) ; 
+			    issueTree( issues_ref , $('#project_list').val() ) ; 
 
                 // When a project is selected from the list... 
                 $('#project_list').on('change',function() 
@@ -179,7 +187,7 @@ $(document).ready ( function()
 					$.jstree.destroy() ; 
                     var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
 						firstIssueDisplay ( issues_ref ) ; 
-						issueTree( issues_ref ) ; 
+						issueTree( issues_ref , $('#project_list').val() ) ; 
                 } ) ;
             } ) ; 
 

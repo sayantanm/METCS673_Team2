@@ -176,9 +176,11 @@
 
 		<!-- Always shows a header, even in smaller screens. -->
 			<div style="margin-left:5%;" class="mdl-layout__header-row">
-			  <!-- Navigation. We hide it in small screens. -->
 			  <nav class="mdl-navigation">
-				<button id="issue_assign" style="width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+				<button id="issue_create" style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+					Create 
+				</button>
+                <button id="issue_assign" style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					Assign
 				</button>
 				<button id="issue_start_progress" style="margin-left:1%;width:200px" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
@@ -190,34 +192,51 @@
 				<button id="issue_on_hold" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
 					On Hold 
 				</button>
-				<button id="issue_create" style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
-					Create 
-				</button>
 			  </nav>
 			</div>
             <div style="margin-left:9%;">  
-                <!-- <h3 style="margin-top:0%;" class="mdl-color-text--grey-500"> <span id=iissue_summary>Issue 1 -- Open issue for a task</span> </h3> --> 
             </div>
 				<br>
 			<div style="margin-top:1%;" class="page-content">
-				<div style="float:left;display:none;border-radius:5px;box-shadow:0 0 5px #ccc;margin-left:1%;width:9%;background:white;" id=issue_list>
+				<div style="float:left;display:none;border-radius:5px;box-shadow:0 0 5px #ccc;margin-left:1%;width:auto;background:white;" id=issue_list>
 				</div>
 			<div>
 				<div style="float:left;padding-left:1%;display:none;margin-left:2%;" id='issue_body'>
-                    <div style="width:900px;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
+                    <div style="width:1200px;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
                         <div class="mdl-card__title mdl-card--border">
-                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_summary style="font-size:49px;font-weight:600;font-style:italic;"></h2>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_num_display 
+                                style="font-size:36px;font-weight:600;font-style:italic;white-space:nowrap;"></h2>
+                            &nbsp; &nbsp; 
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" id=issue_assigned_to 
+                                style="font-size:20px;font-weight:200;font-style:italic;white-space:nowrap;"></h2>
+                            &nbsp; &nbsp; 
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" 
+                                style="font-size:20px;font-weight:600;font-style:italic;white-space:nowrap;"> Due : </h2>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" id=issue_due_display 
+                                style="margin-left:1%;font-size:20px;font-weight:200;font-style:italic;white-space:nowrap;"></h2>
+                            &nbsp; &nbsp; 
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" 
+                                style="font-size:20px;font-weight:600;font-style:italic;white-space:nowrap;"> Status : </h2>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" id=issue_status_display 
+                                style="margin-left:1%;font-size:20px;font-weight:200;font-style:italic;white-space:nowrap;"></h2>
+                            &nbsp; &nbsp; 
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" 
+                                style="font-size:20px;font-weight:600;font-style:italic;white-space:nowrap;"> Severity : </h2>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" id=issue_severity_display 
+                                style="margin-left:1%;font-size:20px;font-weight:200;font-style:italic;white-space:nowrap;"></h2>
+                            &nbsp; &nbsp; 
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" 
+                                style="font-size:20px;font-weight:600;font-style:italic;white-space:nowrap;"> Priority : </h2>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" id=issue_priority_display 
+                                style="margin-left:1%;font-size:20px;font-weight:200;font-style:italic;white-space:nowrap;"></h2>
+                            &nbsp; &nbsp; 
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" 
+                                style="font-size:20px;font-weight:600;font-style:italic;white-space:nowrap;"> Type : </h2>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-500" id=issue_type_display 
+                                style="margin-left:1%;font-size:20px;font-weight:200;font-style:italic;white-space:nowrap;"></h2>
                         </div>
 					    <div class="mdl-card__supporting-text mdl-color-text--grey mdl-card--expand">
-                            <table style="width:100%;margin-left:auto;margin-righ:auto;" >
-                              <tr>
-                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_num_display></button> </td>
-                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_status_display></button> </td>
-                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_severity_display></button> </td>
-                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_priority_display></button> </td>
-                                <td align=center> <button class="mdl-button mdl-js-button mdl-button--primary" style="width:90%;" id=issue_type_display></button> </td>
-                              </tr>
-                            </table>
+                            <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_summary style="font-size:36px;font-weight:400;font-style:italic;"></h2>
 							<textarea class=editor style="min-height:330px;" id=issue_content >The contents of the issue are described here</textarea>
 						</div>
 						<div class="mdl-card__actions mdl-card--border">
@@ -227,7 +246,7 @@
 						</div>
                     </div>
 					<hr></hr>
-					<div style="width:900px;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
+					<div style="width:1200px;" class='mdl-card mdl-color-text--white mdl-shadow--2dp'>
                         <div class="mdl-card__title mdl-card--border">
                             <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_summary 
                                 style="font-size:40px;font-weight:600;font-style:italic;">Resolution</h2>
@@ -247,44 +266,6 @@
 			</div>
 	       
 		
-			<div style="margin-right:1%;float:right;display:none;" id=issue_cards>
-				<div class="demo-card-event mdl-card mdl-color-text--white mdl-color--blue-grey-300 mdl-shadow--2dp">
-				  <div id='issue-due-by' class="mdl-card__title mdl-color-text--white mdl-card--expand">
-					<h4>
-					  Issue Due By:<br>
-					  Jun 26, 2017<br>
-					  7-11pm
-					</h4>
-				  </div>
-				  <div class="mdl-card__actions mdl-card--border">
-					<a class="mdl-button mdl-button--colored mdl-color-text--white mdl-js-button mdl-js-ripple-effect">
-					  Add to Calendar
-					</a>
-					<div class="mdl-layout-spacer"></div>
-					<i class="material-icons">event</i>
-				  </div>
-				</div>
-				
-				<br>
-			
-				<div class="demo-card-event mdl-card mdl-color-text--white mdl-color--blue-grey-300 mdl-shadow--2dp">
-					<div id='issue-assigned-to' class="mdl-card__title mdl-color-text--white mdl-card--expand">
-                    <h4>
-                      Issue Assigned To:<br>
-                      Sayantan Mukherjee<br>
-                    </h4>
-                   </div>
-				   <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-color-text--white mdl-js-button mdl-js-ripple-effect">
-                      Reassign / Close
-                    </a>
-                    <div class="mdl-layout-spacer"></div>
-                    <i class="material-icons">check_box</i>
-                  </div>
-			   </div>
-			</div>
-
-
 			  <dialog id='first_dialog' class="mdl-dialog">
 				<h4 class="mdl-dialog__title">Reassign to another user?</h4>
 				<div class="mdl-dialog__content">
