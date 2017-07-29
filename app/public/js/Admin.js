@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  // event listener for the logout option
+  // event listener for the logout option--returns user to landing page
   document.getElementById("li_logout").addEventListener("click", function() {
       firebase.auth().signOut();
       window.location = "../index.html";
@@ -73,20 +73,17 @@ $(document).ready(function(){
     var key = hashFinder(selected);
     var selectProj = firebase.database().ref('app/projects/' + key + '/members');
     var count = 0;
-    //var newID = [];
     selectProj.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         memberUID = childSnapshot.val();
         memberName = userTable[memberUID];
 
-        //newID.push("adminBtn" + count);
         memberRows  += ("<tr id='row" + count +" class='row'><td class = 'team'><input type='checkbox' class='checker'></input></td><td class='mdl-data-table__cell--non-numeric team'><nameArea>" +
           memberName + "<td class='mdl-data-table__cell--non-numeric team'>"+
           "<button class='dynamic-link mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect adminBtn'>Make Admin</button></td>" +
           "</nameArea></td></tr></tbody>");
         count += 1;
       });
-      //console.log(memberRows);
       memberTable += memberRows;
 
       $('#memberList').append(memberTable).html();
@@ -110,7 +107,6 @@ $(document).ready(function(){
         button1.on("click", {id: button1.attr('id')}, adminAdd);
       });
     });
-
     $('#rmvBtn').append("<button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored rmvBtn' "+
     "id = 'rmvBtn'>Remove Selected From Project</button>")
   }
@@ -172,37 +168,10 @@ $(document).ready(function(){
       alert ("You are not authorized to make changes to this project");
       return;
     }
-
-
-      //var name =  document.getElementById("name").value;
-      //name input validation:
-      //if (name == ""){
-        //alert("Please enter a name");
-      //  return;
-    //  }
-      //I'm not checking to see if there are only characters, as the user could want to use some sort of
-      //usernames for their naming convention--only length is checked here:
-    //  if (name.length > 20){
-      //  alert("Name must not be greater than 20 characters. Please try again.");
-      //  return;
-    //  }
-
-      //email input validation:
-      //var email = document.getElementById("email").value;
-      //if (email == ""){
-      //  alert("Please enter an email address");
-      //  return;
-      //}
-      //var pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$");
-      //var validation = pattern.test(email);
-      //if (!validation){
-      //  alert("Please enter a valid email address");
-      //  return;
-      //}
-
-      //newUser(name, email, selected);
   }
 
+
+  //Removes members from selected project:
   rmvBtn.onclick = function(){
     var checkedNames = [];
     $('.mytable').find('tr').each(function () {
@@ -273,6 +242,7 @@ $(document).ready(function(){
   }
 
 
+  //Returns the project UID for the project named:
   function hashFinder(projName){
     var key = "";
     var keyFinder = firebase.database().ref('app/projects');
@@ -287,6 +257,7 @@ $(document).ready(function(){
   }
 
 
+  //Determines if the user is an admin of the given project:
   function authorized(key, uid){
     var auth = false;
     var project = firebase.database().ref('app/projects/' + key + '/admins');
@@ -301,6 +272,7 @@ $(document).ready(function(){
   }
 
 
+  //Determines if the selected user is already a member of the project:
   function dupEntry(key, uid){
     var duplicate = false;
     var project = firebase.database().ref('app/projects/' + key + '/members');
@@ -315,6 +287,7 @@ $(document).ready(function(){
   }
 
 
+  //Function to add project member as an admin when "Make Admin" button clicked:
   function adminAdd(btnID){
     var project = document.getElementById("projects_container");
     var selected = project.options[project.selectedIndex].value;
@@ -380,6 +353,8 @@ $(document).ready(function(){
     }
   }
 
+
+  //Private function that will remove the user as an admin if another admin removes them as a member of the project:
   function removeAdmin(uid, key){
     var projAdmin = firebase.database().ref('app/projects/' + key +'/admins');
     projAdmin.once('value', function(snapshot){
@@ -410,11 +385,14 @@ $(document).ready(function(){
   }
 
 
+  //Function that sends an alert when a member is added:
   function addAlert(name){
     alert(name + " added successfully");
   }
 
-  firebase.auth().onAuthStateChanged(function(user) {
+
+  //Event listener that determines if the user is logged in properly:
+  firebase.auth().onAuthStateChanged(function(user){
       if (user) {
           document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
       }

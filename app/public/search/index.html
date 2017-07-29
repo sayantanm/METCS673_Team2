@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Add Members To Your Project</title>
+    <title>Search This Site</title>
 
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,16 +59,18 @@
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
         <div class="mdl-layout__header-row">
-          <h3>
+          <h3><center>
+          <i class="material-icons">filter_none</i>Search Results</center></h3></span>
 
-          <i class="material-icons">filter_none</i>Admin Page</h3></span>
-          <div class="mdl-layout-spacer"></div>
+        </div>
+        <div>
+          <center><h3><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="searchBack">Back</button></h3></center>
         </div>
       </header>
 
         <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
           <header class="demo-drawer-header">
-            <img src="../images/user.jpg" class="demo-avatar">
+            <img src="user.jpg" class="demo-avatar">
             <div class="demo-avatar-dropdown">
               <span id="span_email"></span>
               <div class="mdl-layout-spacer"></div>
@@ -114,83 +116,50 @@
         </div>
 
         <main class="mdl-layout__content mdl-color--grey-100">
-          <div class = "mdl-grid grid">
-            <div class="demo-card-square mdl-card mdl-shadow--10dp addMember">
-              <div class="mdl-cell mdl-cell--12-col">
-                <div class="mdl-card__title">
-                  <h2 class="mdl-card__title-text">Add A Team Member to Your Project</h2>
-                </div>
-                <br>
-                <div class="mdl-textfield mdl-js-textfield project" >
-                  <select class="mdl-textfield__input" id ="projects_container"></select>
-                </div>
-                <br>
-                <div><h5>Add an existing member:</h5></div>
-                <div class="mdl-textfield mdl-js-textfield project" >
-                  <select class="mdl-textfield__input" id =existingUsers></select>
-                </div>
-                <br>
-                <br>
-                <div class="mdl-card__actions">
-                  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored addButton" id="addButton">
-                    Add
-                  </button>
-                </div>
-                <br>
-                <br>
-              </div>
-            </div>
-
-            <div class="mdl-layout-spacer"></div>
-
             <div>
-              <div class="demo-card-square mdl-card mdl-shadow--1dp gridDispTeam">
-                <div class="mdl-cell mdl-cell--12-col">
-                  <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Current Project Team Members</h2>
-                  </div>
-                    <div id=memberList><center>("Please select a project)")</center></div>
-
-                  <br>
-                  <div id=rmvBtn></div>
-                  <br>
-                  <br>
-                </div>
-              </div>
+              <script>
+                (function() {
+                  var cx = "004726754625737498317:_ety-7lvpzy";
+                  var gcse = document.createElement('script');
+                  gcse.type = 'text/javascript';
+                  gcse.async = true;
+                  gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                  var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(gcse, s);
+                })();
+              </script>
+              <gcse:searchresults-only></gcse:searchresults-only>
             </div>
-          </div>
       </main>
 
-    <script defer src="../js/admin.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+      <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
+          authDomain: "metcs673-acac6.firebaseapp.com",
+          databaseURL: "https://metcs673-acac6.firebaseio.com",
+          projectId: "metcs673-acac6",
+          storageBucket: "metcs673-acac6.appspot.com",
+          messagingSenderId: "967664299479"
+        };
+        firebase.initializeApp(config);
+      </script>
 
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
-        authDomain: "metcs673-acac6.firebaseapp.com",
-        databaseURL: "https://metcs673-acac6.firebaseio.com",
-        projectId: "metcs673-acac6",
-        storageBucket: "metcs673-acac6.appspot.com",
-        messagingSenderId: "967664299479"
-      };
-      firebase.initializeApp(config);
-    </script>
-
-    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <!--<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyAaEihh7sON8YXuNd7P2xN0lioT5iWRBW0",
-        authDomain: "testprojectm-da148.firebaseapp.com",
-        databaseURL: "https://testprojectm-da148.firebaseio.com",
-        projectId: "testprojectm-da148",
-        storageBucket: "testprojectm-da148.appspot.com",
-        messagingSenderId: "535984017067"
-      };
-      firebase.initializeApp(config);
-    </script>-->
-    <script>var database = firebase.database();</script>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+      <!--<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+      <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAaEihh7sON8YXuNd7P2xN0lioT5iWRBW0",
+          authDomain: "testprojectm-da148.firebaseapp.com",
+          databaseURL: "https://testprojectm-da148.firebaseio.com",
+          projectId: "testprojectm-da148",
+          storageBucket: "testprojectm-da148.appspot.com",
+          messagingSenderId: "535984017067"
+        };
+        firebase.initializeApp(config);
+      </script>-->
+      <script>var database = firebase.database();</script>
   </body>
 </html>
