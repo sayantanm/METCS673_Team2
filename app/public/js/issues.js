@@ -1,3 +1,7 @@
+/* 
+ * Author : Sayantan Mukherjee 
+ * Description: The javascript to handle all the interations of the issue tracker. 
+ */ 
 
 function userHandler () 
 {
@@ -23,7 +27,6 @@ function userHandler ()
 // A function to display the first issue within a project 
 function firstIssueDisplay ( issues_ref ) 
 {
-	console.log ( issues_ref.key ) ; 
 	/* Get the first issue of the project */
 	issues_ref.orderByKey().limitToFirst(1).once('value').then( function ( first_issue )
 	{
@@ -32,15 +35,37 @@ function firstIssueDisplay ( issues_ref )
 		var issueObj = first_issue.val() ;
 		$.each(issueObj,function( key , val )
 		{
-
             $('#current_issue').val( key ); 
 			var issue = val ;
-			console.log ( issue ) ;
             issueDisplay ( issue ) ; 
 		} ) ;
 	} ) ;
 }
 
+
+function issueTree ( issues_ref ) 
+{
+	  issues_ref.once ( 'value').then( function(snapshot) {
+
+		var tree = $('<ul></ul>' ) ;
+		var treeRoot = $('<li>Project Issues</li>');
+		var issueTree = $('<ul></ul>') ;
+			treeRoot.append ( issueTree ) ;
+			tree.append ( treeRoot ) ;
+		$('#issue_list').append ( tree ) ;
+		snapshot.forEach(function(childSnapshot) {
+			var childKey = childSnapshot.key;
+			var childData = childSnapshot.val();
+			issueTree.append (  '<li id="' + childKey +'" >Issue ' + childData.issue_num + '</li>' ) ;
+		 } ) ;
+	} ).then ( function ( )
+	{
+		 $('#issue_list').jstree().on('ready.jstree', function() 
+			{  
+				$("#issue_list").jstree("open_all");  
+			} ) ;
+	} ) ;
+}
 
 /* 
  * Generic function to display issues 
@@ -141,57 +166,37 @@ $(document).ready ( function()
             // Populate the list of issues. 
             $('#issue_list').find('div.demo-card-square').remove() ; 
             $('#issue_list').show() ; 
+            $.jstree.destroy() ; 
             var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ; 
                 
 				firstIssueDisplay ( issues_ref ) ; 
-
-                // Poplate the list of issues buttons 
-                issues_ref.once ( 'value').then( function(snapshot) {
-                    snapshot.forEach(function(childSnapshot) {
-                        var childKey = childSnapshot.key;
-                        var childData = childSnapshot.val();
-                        $('#issue_list').append (  '<div style="min-height:30px;width:120px;" class="demo-card-square mdl-card mdl-shadow--2dp">' 
-                                                    + '<a id="' + childKey + '" class="issue-buttons mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">' 
-                                                    + 'Issue ' + childData.issue_num 
-                                                    + '</a>' 
-                                                    + '</div>' ) ; 
-                     } ) ; 
-                } ) ; 
+			    issueTree( issues_ref ) ; 
 
                 // When a project is selected from the list... 
                 $('#project_list').on('change',function() 
                 {
-                    $('#issue_list').find('div.demo-card-square').remove() ;
+                    $('#issue_list').empty() ;
+					$.jstree.destroy() ; 
                     var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
 						firstIssueDisplay ( issues_ref ) ; 
-                        issues_ref.once ( 'value').then( function(snapshot) {
-                            snapshot.forEach(function(childSnapshot) {
-                                var childKey = childSnapshot.key;
-                                var childData = childSnapshot.val();
-                                $('#issue_list').append (  '<div style="min-height:30px;width:120px;" class="demo-card-square mdl-card mdl-shadow--2dp">'
-                                                            + '<a id="' + childKey + '" class="issue-buttons mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">'
-                                                            + 'Issue ' + childData.issue_num
-                                                            + '</a>'
-                                                            + '</div>' ) ;
-                             } ) ;
-                        } ) ;
+						issueTree( issues_ref ) ; 
                 } ) ;
             } ) ; 
 
-        
-         /* Trigger on issue list population and wait on an issue button to be clicked */ 
 
          $('#issue_list').on ( 'DOMSubtreeModified' , function () { 
-            $('.issue-buttons').on('click',function(){ 
-                $('#current_issue').val( $(this).attr('id') ); 
-                /// console.log ( $('#project_list').val() + ' of ' + $('#current_issue').val() ) ; 
-                var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ; 
-                    ref.once ( 'value' ).then( function(snapshot)
-                    {
-                        var issue = snapshot.val() ; 
-                        issueDisplay ( issue ) ; 
-                    } ) ; 
-                } ) ; 
+         
+			/* Trigger on issue list population and wait on an issue button to be clicked */ 
+			 $('#issue_list').on('select_node.jstree', function ( e , data ) 
+			 { 
+				var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + data.node.id ) ;
+					ref.once ( 'value' ).then( function(snapshot)
+					{
+						var issue = snapshot.val() ;
+						issueDisplay ( issue ) ;
+					} ) ;
+
+			 } ) ; 
 
             $('.update-desc-button').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
