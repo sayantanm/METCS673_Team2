@@ -42,10 +42,9 @@ function firstIssueDisplay ( issues_ref )
 	} ) ;
 }
 
-function projectName ( projectID ) 
-{
-}
-
+/* 
+ * Create a tree of issues, using Open Source jstree 
+ */ 
 function issueTree ( issues_ref , projectID ) 
 {
     var pRef = firebase.database().ref ( 'app/projects/' + projectID ) ; 
@@ -197,6 +196,7 @@ $(document).ready ( function()
 			/* Trigger on issue list population and wait on an issue button to be clicked */ 
 			 $('#issue_list').on('select_node.jstree', function ( e , data ) 
 			 { 
+                $('#current_issue').val( data.node.id ) ; 
 				var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + data.node.id ) ;
 					ref.once ( 'value' ).then( function(snapshot)
 					{
@@ -222,23 +222,15 @@ $(document).ready ( function()
 
              $('.update-comments-button').on ( 'click' , function () { 
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'comments' : $('#comments').val() } ) ; 
+                    ref.update ( { 'comments' : $('#comments').val() } ); 
                 } ) ; 
 
-             $('#issue_start_progress').on('click',function() { 
-                var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'status' : 'In Progress' } ) ; 
-               } ) ; 
 
              $('#issue_resolve').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
                     ref.update ( { 'status' : 'Resolved' } ) ; 
                } ) ; 
 
-             $('#issue_on_hold').on('click',function(){
-                var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'status' : 'On Hold' } ) ; 
-               } ) ; 
 
          } ) ; 
       
