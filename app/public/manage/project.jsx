@@ -18,8 +18,6 @@ class ReactApp extends React.Component {
     // bind callback so that 'this' works when called from different object
     this.addProjectHandler= this.addProjectHandler.bind(this);
     this.updateProjectHandler= this.updateProjectHandler.bind(this);
-
-    this.db = this.props.firebase.database();
   }
 
   addProjectHandler(project) {
@@ -56,39 +54,10 @@ class ReactApp extends React.Component {
   }
 
   componentWillMount() {
-    // Based on this SO answer, I dediced to sign in anonymously:
-    this.props.firebase.auth().signInAnonymously().catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
 
-    this.firebaseProjects = this.db.ref('app/projects');
-
-    this.loadProjects();
-  }
-
-
-  loadProjects(){
-    this.firebaseProjects.on('value', function(dataSnapshot) {
-      var items = [];
-      dataSnapshot.forEach(function(childSnapshot) {
-        var item = childSnapshot.val();
-        item['firebase_key'] = childSnapshot.key;
-        items.push(item);
-      });
-
-      this.setState({
-        projects: items,
-        project_idx: null
-      });
-     }.bind(this));
-  }
-
-  componentDidMount(){
     var self = this;
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    this.props.firebase.auth().onAuthStateChanged(function(user) {
       if (user != null) {
         console.log("user ", user);
 
@@ -101,13 +70,53 @@ class ReactApp extends React.Component {
 
           self.setState({
             user_email: profile.email, uid: user.uid
-          })
+          });
+        
         });
+
+        self.db = self.props.firebase.database();
+        self.firebaseProjects = self.db.ref('app/projects');
+        self.loadProjects();
+
       }else{
         console.log('no user :(');
       }
     });
+  }
 
+
+  loadProjects(){
+    var self = this;
+    this.firebaseProjects.on('value', function(dataSnapshot) {
+      var items = [];
+      console.log("user id from load projects(): ", this.state.uid);
+      dataSnapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item['firebase_key'] = childSnapshot.key;
+
+        //for each project, check if the current user is in the list of members 
+        if (item.members) {
+        //   console.log(item['members']['0']);
+          var members = Object.values(item['members']);
+          console.log("members: :", members);
+
+          if (members.indexOf(self.state.uid) > -1) {
+            items.push(item);
+          }
+         
+        }
+      
+      });
+
+      this.setState({
+        projects: items,
+        project_idx: null
+      });
+     }.bind(this));
+  }
+
+ /* componentDidMount(){
+   
 
     // After material design initializes, we save the reference
     //self.p1.addEventListener('mdl-componentupgraded', function() {
@@ -115,7 +124,7 @@ class ReactApp extends React.Component {
         //self.p1_material_object.setProgress(self.state.progress);
     //});
 
-  }
+  }*/
 
 
   componentDidUpdate(prevProps, prevState){
