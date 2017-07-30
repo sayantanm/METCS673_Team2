@@ -849,8 +849,6 @@ var UserStories = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (UserStories.__proto__ || Object.getPrototypeOf(UserStories)).call(this, props));
 
-    console.log(props);
-
     _this.state = {
       add_story: false,
       story_idx: null,
@@ -893,7 +891,7 @@ var UserStories = function (_React$Component) {
     key: 'loadStories',
     value: function loadStories() {
       var self = this;
-      console.log(self.props.project.firebase_key);
+
       this.firebaseStories.orderByChild('project_key').equalTo(self.props.project.firebase_key).on('value', function (dataSnapshot) {
         var items = [];
         dataSnapshot.forEach(function (childSnapshot) {
@@ -912,8 +910,6 @@ var UserStories = function (_React$Component) {
     value: function render() {
 
       var self = this;
-
-      console.log(this.props);
 
       if (this.state.stories.length > 0) {
         var body = this.state.stories.map(function (item, index) {
@@ -991,7 +987,6 @@ var UserStories = function (_React$Component) {
         'div',
         null,
         heading,
-        console.log("length", self.state.stories.length),
         this.state.add_story ? React.createElement(AddStoryForm, {
           addStoryHandler: self.addStoryHandler,
           hideForm: function hideForm() {
