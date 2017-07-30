@@ -112,6 +112,7 @@ $(document).ready ( function()
         var showDialogButton = document.querySelector('#issue_assign');
         showDialogButton.addEventListener('click', function() {
           dialog.showModal();
+          $(dialog).css ( { 'width' : '350px' } ) ; 
         });
 
 
@@ -131,6 +132,7 @@ $(document).ready ( function()
             {
                 $('#change_status .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
                 chsDialog.showModal () ; 
+                $(chsDialog).css ( { 'width' : '350px' } ) ; 
             }); 
         }); 
         chsDialog.querySelector('.close').addEventListener('click', function() { chsDialog.close(); } ); 
@@ -151,6 +153,7 @@ $(document).ready ( function()
             {
                 $('#change_priority .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
                 chPriDialog.showModal() ; 
+                $(chPriDialog).css ( { 'width' : '350px' } ) ; 
             }); 
         }); 
         chPriDialog.querySelector('.close').addEventListener('click', function() { chPriDialog.close(); } );
@@ -171,6 +174,7 @@ $(document).ready ( function()
             {
                 $('#change_severity .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ; 
                 chSevDialog.showModal() ; 
+                $(chSevDialog).css ( { 'width' : '350px' } ) ; 
             }); 
         }); 
         chSevDialog.querySelector('.close').addEventListener('click', function() { chSevDialog.close(); } );
@@ -202,12 +206,19 @@ $(document).ready ( function()
                 } 
                 $(this).val('') ; 
               }) ; 
-              ic_dialog.showModal();
+              ic_dialog.show();
+              $(ic_dialog).css ( { 'margin-left' :'3%' , 'margin-top' : '-50%' , 'width' : '350px' } ) ; 
+              $('.date_picker_due_date').datepicker( { onClose : function() { $('label[for=due_input]').html('') ; } } ) ; 
+              $(ic_dialog).draggable(); 
         });
           ic_dialog.querySelector('.close').addEventListener('click', function() {
           ic_dialog.close();
         });
+        
+        /* jQuery UI Datepicker is behaving differently so this workaround is needed */ 
 
+        
+        
         // Load project ACLs as defined by admin of the project
         $('#project_acls').on ( 'DOMSubtreeModified' , function () 
         {
