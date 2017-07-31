@@ -52,8 +52,8 @@ function issueTree ( issues_ref , projectID )
         {
             issues_ref.once ( 'value').then( function(snapshot) {
                 var tree = $('<ul></ul>' ) ;
-                var treeRoot = $('<li>' + prSnapShot.val().name + '</li>');
-                var issueTree = $('<ul></ul>') ;
+                var treeRoot = $('<li id=project_1>' + prSnapShot.val().name + '</li>');
+                var issueTree = $('<ul id=childTree></ul>') ;
                     treeRoot.append ( issueTree ) ;
                     tree.append ( treeRoot ) ;
                 $('#issue_list').append ( tree ) ;
@@ -68,6 +68,7 @@ function issueTree ( issues_ref , projectID )
                     {  
                         $("#issue_list").jstree("open_all");  
                     } ) ;
+                    $.jstree.defaults.core.check_callback = true ;
             } ) ;
        } ) ; 
 }
@@ -93,7 +94,6 @@ function issueDisplay ( issue )
     $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + issue.assigned_to + '</h4>' ) ;
 }
 
-
 $(document).ready ( function() 
 {
     var fbAuth = firebase.auth() ; 
@@ -101,18 +101,88 @@ $(document).ready ( function()
     {
         common.userProjectMap() ; 
         $('.editor').jqte() ; 
+        
+        /* Open issue assign dialog */ 
         var dialog = document.querySelector('#first_dialog');
-        var showDialogButton = document.querySelector('#issue_assign');
         if (! dialog.showModal) {
           dialogPolyfill.registerDialog(dialog);
         }
-        showDialogButton.addEventListener('click', function() {
-          dialog.showModal();
-        });
         dialog.querySelector('.close').addEventListener('click', function() {
           dialog.close();
         });
+        var showDialogButton = document.querySelector('#issue_assign');
+        showDialogButton.addEventListener('click', function() {
+          dialog.showModal();
+          $(dialog).css ( { 'width' : '350px' } ) ; 
+        });
 
+
+        /* 
+         * Open change issue status dialog 
+         */ 
+        var chsDialog = document.querySelector('#change_status') ; 
+        if ( ! chsDialog.showModal ) 
+        {
+            dialogPolyfill.registerDialog ( chsDialog ) ; 
+        }
+        var chsBtnOpen = document.querySelector('#issue_chstatus') ; 
+        chsBtnOpen.addEventListener ( 'click' , function() 
+        {
+            var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+            ref.once ( 'value' ).then ( function ( issueSnapshot )
+            {
+                $('#change_status .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
+                chsDialog.showModal () ; 
+                $(chsDialog).css ( { 'width' : '350px' } ) ; 
+            }); 
+        }); 
+        chsDialog.querySelector('.close').addEventListener('click', function() { chsDialog.close(); } ); 
+
+        /* 
+         * Open change priority dialog 
+         */ 
+        var chPriDialog = document.querySelector ( '#change_priority' ) ; 
+        if ( ! chPriDialog.showModal ) 
+        {
+            dialogPolyfill.registerDialog ( chPriDialog ) ; 
+        }
+        var chPriBtn = document.querySelector('#issue_reprioritize') ; 
+        chPriBtn.addEventListener ( 'click' , function() 
+        {   
+            var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+            ref.once ( 'value' ).then ( function ( issueSnapshot )
+            {
+                $('#change_priority .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
+                chPriDialog.showModal() ; 
+                $(chPriDialog).css ( { 'width' : '350px' } ) ; 
+            }); 
+        }); 
+        chPriDialog.querySelector('.close').addEventListener('click', function() { chPriDialog.close(); } );
+        
+        /* 
+         * Open change serverity dialog 
+         */ 
+        var chSevDialog = document.querySelector ( '#change_severity' ) ; 
+        if ( ! chSevDialog.showModal ) 
+        {
+            dialogPolyfill.registerDialog ( chSevDialog ) ; 
+        }
+        var chSevBtn = document.querySelector('#issue_chg_sev') ; 
+        chSevBtn.addEventListener ( 'click' , function() 
+        {   
+            var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+            ref.once('value').then ( function ( issueSnapshot ) 
+            {
+                $('#change_severity .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ; 
+                chSevDialog.showModal() ; 
+                $(chSevDialog).css ( { 'width' : '350px' } ) ; 
+            }); 
+        }); 
+        chSevDialog.querySelector('.close').addEventListener('click', function() { chSevDialog.close(); } );
+        
+
+
+        /* Open the create issue dialog */ 
         var ic_dialog = document.querySelector('#issue_create_dialog');
         var ic_b = document.querySelector('#issue_create');
         if (! ic_dialog.showModal) {
@@ -137,12 +207,19 @@ $(document).ready ( function()
                 } 
                 $(this).val('') ; 
               }) ; 
-              ic_dialog.showModal();
+              ic_dialog.show();
+              $(ic_dialog).css ( { 'margin-left' :'3%' , 'margin-top' : '-50%' , 'width' : '350px' } ) ; 
+              $('.date_picker_due_date').datepicker( { onClose : function() { $('label[for=due_input]').html('') ; } } ) ; 
+              $(ic_dialog).draggable(); 
         });
           ic_dialog.querySelector('.close').addEventListener('click', function() {
           ic_dialog.close();
         });
+        
+        /* jQuery UI Datepicker is behaving differently so this workaround is needed */ 
 
+        
+        
         // Load project ACLs as defined by admin of the project
         $('#project_acls').on ( 'DOMSubtreeModified' , function () 
         {
@@ -280,6 +357,13 @@ $(document).ready ( function()
                         'severity'    : sev , 
                         'priority'    : priority , 
                         'comments'    : '' 
+                    } ).then ( function ( ) { 
+                        iref.once ( 'value' ).then ( function ( irefData ) 
+                            {
+                                $('#issue_list').jstree().create_node('project_1',{ id : irefData.key , text: 'Issue ' + irefData.val().issue_num } , 'last' , false , false ) ; 
+                                $('#issue_list').jstree(true).select_node( irefData.key ) ; 
+                                $('#current_issue').val ( irefData.key ) ; 
+                            } ); 
                     } ) ;  
                 } ) ; 
             ic_dialog.close() ; 

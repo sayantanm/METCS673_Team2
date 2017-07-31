@@ -1,9 +1,16 @@
 
 <!doctype html>
 <!--
-    Using Google's Material Design Lite template, Copyright Google. 
+    Description: Issue Management Tool is a project for METCS 673 and written by Sayantan Mukherjee 
+                 The issue tracker is able to create new issues, assign issues to users (who're members of the project)
+                 change status, priority, severity and take inputs on resolution and summary. 
 
-    Issue Management Tool is a project for METCS 673 and written by Sayantan Mukherjee 
+                 We've leveraged Open Source templates on this project, released under Apache-2 license
+                 The source of the template for this page is here: https://getmdl.io/templates/index.html 
+                 Material Design is copyright of Google.
+
+    Author:      Sayantan Mukherjee 
+
 -->
 <html lang="en">
   <head>
@@ -48,7 +55,7 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <link rel="stylesheet" href="/css/styles.css">
     <style>
@@ -67,6 +74,8 @@
 	  src="https://code.jquery.com/jquery-3.2.1.min.js"
 	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	  crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
      <script defer src="/js/jquery-te-1.4.0.min.js"></script>
 	 <link rel="stylesheet" href="/css/jquery-te-1.4.0.css"> 
 	 <link rel="stylesheet" href="/css/dialog-polyfill.css"> 
@@ -179,20 +188,28 @@
 			<div style="margin-top:1%;" class="page-content">
 			<div style="margin-top:1%;margin-right:auto;margin-left:4%;margin-bottom:1%;" >
 				<button id="issue_create" style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
-					Create 
+                    Create 
 				</button>
                 <button id="issue_assign" style="margin-left:1%;width:200px;" class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
-					Assign
-				</button>
-				<button id="issue_resolve" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
-					Resolve 
-				</button>
-				</button>
+                    Assign
+                </button>
+                <button id="issue_chstatus" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+                    Change Status 
+                </button>
+                <button id="issue_reprioritize" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+                    Change Priority
+                </button>
+                <button id="issue_chg_sev" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+                    Change Severity
+                </button>
+                <button id="issue_resolve" style="margin-left:1%;width:200px;"class="mdl-button mdl-js-button mdl-color-text--grey-600 mdl-button--raised mdl-js-ripple-effect">
+                    Resolve
+                </button>
 			</div>
 				<!-- <div style="float:left;display:none;border-radius:5px;box-shadow:0 0 5px #ccc;margin-left:1%;width:auto;background:white;" id=issue_list> --> 
 				<div style="float:left;display:none;margin-left:6%;margin-top:2%;width:auto;background:white;" id=issue_list>
 				</div>
-			<div style="border-radius:5px;box-shadow:0 0 5px #ccc;margin-left:5%;margin-right:5%;background:white;" >  
+			<div style="border-radius:5px;box-shadow:0 0 5px #ccc;margin-left:5%;margin-right:17%;background:white;" >  
 				<div style="padding-left:5%;display:none;margin-left:15%;" id='issue_body'>
                      <div style="width:998px;" >  
                         <div class="mdl-card__title mdl-card--border">
@@ -242,7 +259,7 @@
 					<div style="width:998px;" >
                         <div class="mdl-card__title mdl-card--border">
                             <h2 class="mdl-card__title-text mdl-color-text--blue-grey-700" id=issue_summary 
-                                style="font-size:36px;font-weight:600;font-style:italic;">Resolution</h2>
+                                style="font-size:30px;font-weight:600;font-style:italic;">Resolution</h2>
                         </div>
                         <div class="mdl-card__supporting-text mdl-color-text--grey mdl-card--expand">
 							<textarea class=editor id=comments >comments...</textarea>
@@ -252,13 +269,68 @@
                                 Submit Resolution
                              </a>
                         </div>
-                    </div>
+                    </div> <!-- Resolution Box --> 
+				</div> <!-- Issue body --> 
 
-				</div>
-			  </div>
-			</div>
+			  </div> <!-- container --> 
+			</div> <!-- page content --> 
 	       
-		
+
+
+             <!-- Change status of a issue dialog --> 
+             <dialog id='change_status' class='mdl-dialog'>
+                <h4 class='mdl-dialog__title chs_issue_h4'>Change <span class='chs_issue_id'></span> status.</h4>
+                <div class='mdl-dialog__content'>
+                    <select class="mdl-textfield__input" id=dialog_istatus_input>
+                            <option>New</option>
+                            <option>On Hold</option>
+                            <option>In Progress</option>
+                            <option>Open</option>
+                            <option>Resolved</option>
+                            <option>Closed</option>
+                        </select>
+                </div>
+				<div class="mdl-dialog__actions">
+                  <button type="button" id=chsStatusSubmit class="mdl-button">Submit</button>
+                  <button type="button" class="mdl-button close">Cancel</button>
+                </div>
+             </dialog>
+
+			<!-- Change prioriority dialog --> 
+			<dialog id='change_priority' class='mdl-dialog'>
+                <h4 class='mdl-dialog__title chs_issue_h4'>Change <span class='chs_issue_id'></span> priority</h4>
+                <div class='mdl-dialog__content'>
+                        <select class="mdl-textfield__input" id=dialog_priority_input>
+                            <option>Immediate</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                </div>
+                <div class="mdl-dialog__actions">
+                  <button type="button" id=chPriSubmit class="mdl-button">Submit</button>
+                  <button type="button" class="mdl-button close">Cancel</button>
+                </div>
+             </dialog> 
+	
+			 <!-- Open a dialog for changing severity --> 
+			  <dialog id='change_severity' class='mdl-dialog'>
+                <h4 class='mdl-dialog__title chs_issue_h4'>Change <span class='chs_issue_id'></span> severity.</h4>
+                <div class='mdl-dialog__content'>
+                     <select class="mdl-textfield__input" id=dialog_iseverity_input>
+                            <option>Critical</option>
+                            <option>Major</option>
+                            <option>Minor</option>
+                            <option>Trivial</option>
+                        </select>
+                </div>
+                <div class="mdl-dialog__actions">
+                  <button type="button" id=chSevSubmit class="mdl-button">Submit</button>
+                  <button type="button" class="mdl-button close">Cancel</button>
+                </div>
+             </dialog>
+
+              <!-- re-assign user dialog --> 
 			  <dialog id='first_dialog' class="mdl-dialog">
 				<h4 class="mdl-dialog__title">Reassign to another user?</h4>
 				<div class="mdl-dialog__content">
@@ -275,6 +347,8 @@
 				</div>
 			  </dialog>
 
+            
+              <!-- issue create dialog box --> 
               <dialog id='issue_create_dialog' class="mdl-dialog">
                 <h4 class="mdl-dialog__title">Create new Issue</h4>
                 <div class="mdl-dialog__content">
@@ -313,8 +387,8 @@
                         <label class="mdl-textfield__label" for="uname_input">Assigned To</label> 
                     </div>
                     <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input" type=text id=due_input>
-                        <label class="mdl-textfield__label" for="due_input">Due By</label>
+                            <input class="mdl-textfield__input date_picker_due_date" type=text id=due_input>
+                            <label class="mdl-textfield__label" for="due_input">Due By</label> 
                     </div>
 					 <div class="mdl-textfield mdl-js-textfield">
 						<textarea class="mdl-textfield__input" type="text" rows= "3" id="summary_input" ></textarea>
@@ -331,6 +405,12 @@
                   <button type="button" class="mdl-button close">Cancel</button>
                 </div>
               </dialog>
+
+
+              <div id=generic_snackbar class='mdl-js-snackbar mdl-snackbar'> 
+                <div class="mdl-snackbar__text"></div>
+                  <button class="mdl-snackbar__action" type="button"></button>
+              </div>
 
       </main>
     </div>

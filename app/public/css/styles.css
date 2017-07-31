@@ -13,10 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+ /* font-family: 'Roboto', 'Helvetica', sans-serif; */
+  font-family: "Helvetica Neue",Helvetica,"Segoe UI",Tahoma,Arial,sans-serif;
+    font-variant-ligatures: common-ligatures;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
 }
+
+
 .demo-avatar {
   width: 48px;
   height: 48px;
@@ -212,4 +217,16 @@ _:-ms-input-placeholder, :root .demo-graph {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.chs_issue_id {
+    font-size:24px; 
+    font-weight:200; 
+    font-style:italic;
+}
+
+.chs_issue_h4 {
+    font-size:24px; 
+    font-weight:200; 
+    font-style:italic;
 }
