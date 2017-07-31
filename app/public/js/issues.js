@@ -68,6 +68,7 @@ function issueTree ( issues_ref , projectID )
                     {  
                         $("#issue_list").jstree("open_all");  
                     } ) ;
+                    $.jstree.defaults.core.check_callback = true ;
             } ) ;
        } ) ; 
 }
@@ -356,6 +357,13 @@ $(document).ready ( function()
                         'severity'    : sev , 
                         'priority'    : priority , 
                         'comments'    : '' 
+                    } ).then ( function ( ) { 
+                        iref.once ( 'value' ).then ( function ( irefData ) 
+                            {
+                                $('#issue_list').jstree().create_node('project_1',{ id : irefData.key , text: 'Issue ' + irefData.val().issue_num } , 'last' , false , false ) ; 
+                                $('#issue_list').jstree(true).select_node( irefData.key ) ; 
+                                $('#current_issue').val ( irefData.key ) ; 
+                            } ); 
                     } ) ;  
                 } ) ; 
             ic_dialog.close() ; 
