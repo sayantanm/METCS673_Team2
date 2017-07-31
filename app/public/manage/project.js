@@ -527,7 +527,7 @@ var ReactApp = function (_React$Component) {
           { className: 'mdl-layout__content mdl-color--grey-100' },
           React.createElement(
             'div',
-            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
+            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col' },
             React.createElement(
               'div',
               { className: 'mdl-cell mdl-cell--8-col' },
@@ -552,7 +552,7 @@ var ReactApp = function (_React$Component) {
           ),
           React.createElement(
             'div',
-            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col' },
+            { className: 'demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col' },
             this.state.add_project ? React.createElement(ProjectForm, { saveProjectHandler: self.addProjectHandler }) : this.state.edit_project ? React.createElement(ProjectForm, { saveProjectHandler: self.updateProjectHandler, project: project }) : projects_table,
             project && self.state.view_project ? React.createElement(UserStories, { project: project, db: self.db }) : React.createElement(
               'p',

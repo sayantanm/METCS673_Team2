@@ -3,8 +3,6 @@ class UserStories extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
-
     this.state = {
       add_story: false,
       story_idx: null,
@@ -44,7 +42,7 @@ class UserStories extends React.Component {
 
   loadStories(){
     var self = this;
-    console.log(self.props.project.firebase_key);
+
     this.firebaseStories.orderByChild('project_key').equalTo(
       self.props.project.firebase_key
     ).on('value', function(dataSnapshot) {
@@ -64,8 +62,6 @@ class UserStories extends React.Component {
   render() {
 
     var self = this;
-
-    console.log(this.props);
 
     if (this.state.stories.length > 0){
       var body = this.state.stories.map(function(item, index){
@@ -110,8 +106,6 @@ class UserStories extends React.Component {
     return (
       <div>
         {heading}
-        {console.log("length", self.state.stories.length)}
-
         { this.state.add_story ? (
           <AddStoryForm
             addStoryHandler={self.addStoryHandler}
