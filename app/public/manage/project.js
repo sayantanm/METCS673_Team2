@@ -287,7 +287,9 @@ var ReactApp = function (_React$Component) {
     key: 'updateProjectHandler',
     value: function updateProjectHandler(project, firebase_key) {
       //get the project and merge it with the updated form values to update it.
-      var updated_project = Object.assign({}, this.state.projects[this.state.project_idx], project);
+      var updated_project = Object.assign({}, this.state.projects[this.state.project_idx], project
+      //cleanup firebase key since it is redundant
+      );updated_project['firebase_key'] = null;
       console.log("updated project: ", updated_project);
 
       var updates = {};
