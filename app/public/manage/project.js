@@ -279,7 +279,6 @@ var ReactApp = function (_React$Component) {
       project['members'] = [this.state.uid];
 
       var result = this.firebaseProjects.push(project);
-      console.log("result: ", result);
 
       this.setState({ 'add_project': false });
       this.loadProjects();
@@ -287,10 +286,12 @@ var ReactApp = function (_React$Component) {
   }, {
     key: 'updateProjectHandler',
     value: function updateProjectHandler(project, firebase_key) {
-      console.log("Updating: ", project);
+      //get the project and merge it with the updated form values to update it.
+      var updated_project = Object.assign({}, this.state.projects[this.state.project_idx], project);
+      console.log("updated project: ", updated_project);
+
       var updates = {};
-      updates['/app/projects/' + firebase_key] = project;
-      console.log(updates);
+      updates['/app/projects/' + firebase_key] = updated_project;
 
       this.db.ref().update(updates);
       this.setState({ 'edit_project': false });
@@ -515,6 +516,7 @@ var ReactApp = function (_React$Component) {
       var project = null;
       if (self.state.project_idx !== null && self.state.projects.length > 0) {
         project = self.state.projects[self.state.project_idx];
+        console.log("testing project: ", project);
       }
 
       return React.createElement(
