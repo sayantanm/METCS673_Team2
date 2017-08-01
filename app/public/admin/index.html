@@ -87,29 +87,6 @@
             <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
             <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
             <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
-            <div class="mdl-layout-spacer"></div>
-            <div style="margin-left:20px">Search this site: </div>
-            <form onsubmit="return search()" action="#">
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" style="margin-left:20px">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="siteSearch">
-                  <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                  <input class="mdl-textfield__input" type="search" id="siteSearch">
-                  <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
-                </div>
-              </div>
-            </form>
-            <script>
-              function search(){
-                var search = document.getElementById("siteSearch");
-                if (search.value.length > 0){
-                  //console.log(search.value);
-                  window.location = "../search/?q=" + search.value;
-                };
-                return false;
-              }
-            </script>
           </nav>
         </div>
 

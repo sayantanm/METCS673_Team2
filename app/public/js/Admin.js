@@ -398,6 +398,7 @@ $(document).ready(function(){
       }
       else {
           console.log('Not logged in');
+          window.location = "../index.html";
       }
   });
 });
