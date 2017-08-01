@@ -94,6 +94,29 @@ function issueDisplay ( issue )
     $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + issue.assigned_to + '</h4>' ) ;
 }
 
+function membersDropdown ( objID ) 
+{
+	  var usersRef = firebase.database().ref('users') ;
+	  usersRef.once('value').then( function ( userSnapshot )
+	  {
+		  var userHash = {} ;
+		  userSnapshot.forEach( function ( userDetails )
+			{
+				userHash [ userDetails.key ] = userDetails.val().name ;
+			} ) ;
+
+			var pACLsRef = firebase.database().ref('project_acls/pu/' + $('#project_list').val() ) ;
+				pACLsRef.once ( 'value' ).then ( function ( pACLsnapshot )
+				{
+					$( objID ).empty() ;
+					pACLsnapshot.forEach ( function ( ePACL )
+					{
+						$( objID ).append( '<option value="' + ePACL.key + '">' + userHash [ ePACL.key ] + '</option>' ) ;
+					} );
+				} ) ;
+	  } ) ;
+}
+
 $(document).ready ( function() 
 {
     var fbAuth = firebase.auth() ; 
@@ -111,9 +134,11 @@ $(document).ready ( function()
           dialog.close();
         });
         var showDialogButton = document.querySelector('#issue_assign');
-        showDialogButton.addEventListener('click', function() {
-          dialog.showModal();
-          $(dialog).css ( { 'width' : '350px' } ) ; 
+        showDialogButton.addEventListener('click', function() 
+		{
+              membersDropdown ( '#reassign' ) ;  
+              dialog.showModal();
+              $(dialog).css ( { 'width' : '350px' } ) ; 
         });
 
 
@@ -182,7 +207,10 @@ $(document).ready ( function()
         
 
 
-        /* Open the create issue dialog */ 
+        /* 
+         * Issue Creator Dialog Box 
+         * Open the create issue dialog 
+         * */ 
         var ic_dialog = document.querySelector('#issue_create_dialog');
         var ic_b = document.querySelector('#issue_create');
         if (! ic_dialog.showModal) {
@@ -207,6 +235,7 @@ $(document).ready ( function()
                 } 
                 $(this).val('') ; 
               }) ; 
+		      membersDropdown('#uname_input');
               ic_dialog.show();
               $(ic_dialog).css ( { 'margin-left' :'3%' , 'margin-top' : '-50%' , 'width' : '350px' } ) ; 
               $('.date_picker_due_date').datepicker( { onClose : function() { $('label[for=due_input]').html('') ; } } ) ; 
@@ -292,9 +321,10 @@ $(document).ready ( function()
 
              $('#reassign_issue_button').on('click',function(){ 
                  var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                 ref.update ( { 'assigned_to' : $('#reassign').val() } ) ; 
-                 $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + $('#reassign').val() + '</h4>' ) ; 
-                 dialog.close() ; 
+                 ref.update ( { 'assigned_to' : $('#reassign :selected').text() } ) ; 
+				 ref.update ( { 'assigned_uid' : $('#reassign').val() } ) ; 
+				 dialog.close() ; 
+                 $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + $('#reassign :selected').text() + '</h4>' ) ; 
              } ); 
 
              $('.update-comments-button').on ( 'click' , function () { 
@@ -348,7 +378,8 @@ $(document).ready ( function()
                     iref.set ( { 
                         'issue_num'   : Math.round(isNaN(snapshot.numChildren())?0:snapshot.numChildren()+1 ) , 
                         'issue_type'  : issue_type , 
-                        'assigned_to' : assigned_to , 
+                        'assigned_to' : $('#uname_input :selected').text() , 
+                        'assigned_uid': $('#uname_input').val() , 
                         'due_by'      : due_by , 
                         'project_id'  : $('#project_list').val() , 
                         'summary'     : summary,
