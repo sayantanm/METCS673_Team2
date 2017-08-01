@@ -284,6 +284,7 @@ $(document).ready ( function()
                 
 				firstIssueDisplay ( issues_ref , $('#project_list').val() ) ; 
 			    issueTree( issues_ref , $('#project_list').val() ) ; 
+                $.jstree.defaults.core.check_callback = true ;
 
                 // When a project is selected from the list... 
                 $('#project_list').on('change',function() 
@@ -293,6 +294,7 @@ $(document).ready ( function()
                     var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
 						firstIssueDisplay ( issues_ref ) ; 
 						issueTree( issues_ref , $('#project_list').val() ) ; 
+                        $.jstree.defaults.core.check_callback = true ;
                 } ) ;
             } ) ; 
 
@@ -391,6 +393,7 @@ $(document).ready ( function()
                     } ).then ( function ( ) { 
                         iref.once ( 'value' ).then ( function ( irefData ) 
                             {
+                                console.log ( 'What is happenning!' ) ; 
                                 $('#issue_list').jstree().create_node('project_1',{ id : irefData.key , text: 'Issue ' + irefData.val().issue_num } , 'last' , false , false ) ; 
                                 $('#issue_list').jstree(true).select_node( irefData.key ) ; 
                                 $('#current_issue').val ( irefData.key ) ; 
