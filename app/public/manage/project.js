@@ -20,68 +20,31 @@ var TopBar = function (_React$Component) {
   _createClass(TopBar, [{
     key: "render",
     value: function render() {
-      return React.createElement(
-        "header",
-        { className: "demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600" },
+      return (
+        //  <header className="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+        //   <div className="mdl-layout__header-row">
+        //    <span className="mdl-layout-title">Project Management Tool</span>
+        //  <div className="mdl-layout-spacer"></div>
+        //   </div>
+        // </header>
+
         React.createElement(
-          "div",
-          { className: "mdl-layout__header-row" },
-          React.createElement(
-            "span",
-            { className: "mdl-layout-title" },
-            "Project Management Tool"
-          ),
-          React.createElement("div", { className: "mdl-layout-spacer" }),
+          "header",
+          { className: "demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700" },
           React.createElement(
             "div",
-            { className: "mdl-textfield mdl-js-textfield mdl-textfield--expandable" },
+            { className: "mdl-layout__header-row" },
             React.createElement(
-              "label",
-              { className: "mdl-button mdl-js-button mdl-button--icon", htmlFor: "search" },
+              "h3",
+              null,
               React.createElement(
                 "i",
                 { className: "material-icons" },
-                "search"
-              )
+                "filter_none"
+              ),
+              "Project Management Tool"
             ),
-            React.createElement(
-              "div",
-              { className: "mdl-textfield__expandable-holder" },
-              React.createElement("input", { className: "mdl-textfield__input", type: "text", id: "search" }),
-              React.createElement(
-                "label",
-                { className: "mdl-textfield__label", htmlFor: "search" },
-                "Enter your query..."
-              )
-            )
-          ),
-          React.createElement(
-            "button",
-            { className: "mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon", id: "hdrbtn" },
-            React.createElement(
-              "i",
-              { className: "material-icons" },
-              "more_vert"
-            )
-          ),
-          React.createElement(
-            "ul",
-            { className: "mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right", htmlFor: "hdrbtn" },
-            React.createElement(
-              "li",
-              { className: "mdl-menu__item" },
-              "About"
-            ),
-            React.createElement(
-              "li",
-              { className: "mdl-menu__item" },
-              "Contact"
-            ),
-            React.createElement(
-              "li",
-              { className: "mdl-menu__item" },
-              "Legal information"
-            )
+            React.createElement("div", { className: "mdl-layout-spacer" })
           )
         )
       );
