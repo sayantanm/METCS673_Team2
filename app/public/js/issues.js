@@ -1,54 +1,61 @@
-/* 
- * Author : Sayantan Mukherjee 
- * Description: The javascript to handle all the interations of the issue tracker. 
- */ 
+/*
+ * Author : Sayantan Mukherjee
+ * Description: The javascript to handle all the interations of the issue tracker.
+ */
 
-function userHandler () 
+function userHandler ()
 {
-    this.auth = firebase.auth() ; 
-    this.auth.onAuthStateChanged( function ( user ) 
+    this.auth = firebase.auth() ;
+    this.auth.onAuthStateChanged( function ( user )
     {
-        if ( user ) 
+        if ( user )
         {
-            document.getElementById('user-name').textContent = user.displayName ; 
-            document.getElementById('user-name').removeAttribute ( 'hidden' ) ; 
-            document.getElementById('sign-out').removeAttribute  ( 'hidden' ) ; 
+            document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
+            document.getElementById('user-name').textContent = user.displayName ;
+            document.getElementById('user-name').removeAttribute ( 'hidden' ) ;
+            document.getElementById('sign-out').removeAttribute  ( 'hidden' ) ;
         }
-        else 
+        else
         {
             document.getElementById('user-name').setAttribute('hidden', 'true');
             document.getElementById('sign-out').setAttribute('hidden', 'true');
             document.getElementById('sign-in').removeAttribute('hidden');
-            window.location.href = '/index.html' ; 
+            window.location.href = '/index.html' ;
         }
-    } ) ; 
+    } ) ;
 }
 
-// A function to display the first issue within a project 
-function firstIssueDisplay ( issues_ref ) 
+// event listener for the logout option--returns user to landing page
+document.getElementById("li_logout").addEventListener("click", function() {
+    firebase.auth().signOut();
+    window.location = "../index.html";
+});
+
+// A function to display the first issue within a project
+function firstIssueDisplay ( issues_ref )
 {
 	/* Get the first issue of the project */
 	issues_ref.orderByKey().limitToFirst(1).once('value').then( function ( first_issue )
 	{
 		$('#issue_body').show() ;
-		$('#issue_cards').show() ; 
+		$('#issue_cards').show() ;
 		var issueObj = first_issue.val() ;
 		$.each(issueObj,function( key , val )
 		{
-            $('#current_issue').val( key ); 
+            $('#current_issue').val( key );
 			var issue = val ;
-            issueDisplay ( issue ) ; 
+            issueDisplay ( issue ) ;
 		} ) ;
 	} ) ;
 }
 
-/* 
- * Create a tree of issues, using Open Source jstree 
- */ 
-function issueTree ( issues_ref , projectID ) 
+/*
+ * Create a tree of issues, using Open Source jstree
+ */
+function issueTree ( issues_ref , projectID )
 {
-    var pRef = firebase.database().ref ( 'app/projects/' + projectID ) ; 
-        pRef.once ( 'value' ).then ( function ( prSnapShot ) 
+    var pRef = firebase.database().ref ( 'app/projects/' + projectID ) ;
+        pRef.once ( 'value' ).then ( function ( prSnapShot )
         {
             issues_ref.once ( 'value').then( function(snapshot) {
                 var tree = $('<ul></ul>' ) ;
@@ -64,28 +71,28 @@ function issueTree ( issues_ref , projectID )
                  } ) ;
             } ).then ( function ( )
             {
-                 $('#issue_list').jstree().on('ready.jstree', function() 
-                    {  
-                        $("#issue_list").jstree("open_all");  
+                 $('#issue_list').jstree().on('ready.jstree', function()
+                    {
+                        $("#issue_list").jstree("open_all");
                     } ) ;
                     $.jstree.defaults.core.check_callback = true ;
             } ) ;
-       } ) ; 
+       } ) ;
 }
 
-/* 
- * Generic function to display issues 
- */ 
+/*
+ * Generic function to display issues
+ */
 
-function issueDisplay ( issue ) 
+function issueDisplay ( issue )
 {
-    $('#issue_num_display').empty().append( 'ISSUE-' + issue.issue_num  ) ; 
-    $('#issue_assigned_to').empty().append ( issue.assigned_to ) ; 
-    $('#issue_due_display').empty().append ( issue.due_by ) ; 
-    $('#issue_status_display').empty().append( issue.status ) ; 
-    $('#issue_severity_display').empty().append( issue.severity  ) ; 
-    $('#issue_priority_display').empty().append( issue.priority  ) ; 
-    $('#issue_type_display').empty().append( issue.issue_type  ) ; 
+    $('#issue_num_display').empty().append( 'ISSUE-' + issue.issue_num  ) ;
+    $('#issue_assigned_to').empty().append ( issue.assigned_to ) ;
+    $('#issue_due_display').empty().append ( issue.due_by ) ;
+    $('#issue_status_display').empty().append( issue.status ) ;
+    $('#issue_severity_display').empty().append( issue.severity  ) ;
+    $('#issue_priority_display').empty().append( issue.priority  ) ;
+    $('#issue_type_display').empty().append( issue.issue_type  ) ;
 
     $('#issue_content').jqteVal( issue.description ) ;
     $('#comments').jqteVal( issue.comments ) ;
@@ -94,7 +101,7 @@ function issueDisplay ( issue )
     $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + issue.assigned_to + '</h4>' ) ;
 }
 
-function membersDropdown ( objID ) 
+function membersDropdown ( objID )
 {
 	  var usersRef = firebase.database().ref('users') ;
 	  usersRef.once('value').then( function ( userSnapshot )
@@ -117,15 +124,15 @@ function membersDropdown ( objID )
 	  } ) ;
 }
 
-$(document).ready ( function() 
+$(document).ready ( function()
 {
-    var fbAuth = firebase.auth() ; 
-    fbAuth.onAuthStateChanged ( function ( user ) 
+    var fbAuth = firebase.auth() ;
+    fbAuth.onAuthStateChanged ( function ( user )
     {
-        common.userProjectMap() ; 
-        $('.editor').jqte() ; 
-        
-        /* Open issue assign dialog */ 
+        common.userProjectMap() ;
+        $('.editor').jqte() ;
+
+        /* Open issue assign dialog */
         var dialog = document.querySelector('#first_dialog');
         if (! dialog.showModal) {
           dialogPolyfill.registerDialog(dialog);
@@ -134,83 +141,83 @@ $(document).ready ( function()
           dialog.close();
         });
         var showDialogButton = document.querySelector('#issue_assign');
-        showDialogButton.addEventListener('click', function() 
+        showDialogButton.addEventListener('click', function()
 		{
-              membersDropdown ( '#reassign' ) ;  
+              membersDropdown ( '#reassign' ) ;
               dialog.showModal();
-              $(dialog).css ( { 'width' : '350px' } ) ; 
+              $(dialog).css ( { 'width' : '350px' } ) ;
         });
 
 
-        /* 
-         * Open change issue status dialog 
-         */ 
-        var chsDialog = document.querySelector('#change_status') ; 
-        if ( ! chsDialog.showModal ) 
+        /*
+         * Open change issue status dialog
+         */
+        var chsDialog = document.querySelector('#change_status') ;
+        if ( ! chsDialog.showModal )
         {
-            dialogPolyfill.registerDialog ( chsDialog ) ; 
+            dialogPolyfill.registerDialog ( chsDialog ) ;
         }
-        var chsBtnOpen = document.querySelector('#issue_chstatus') ; 
-        chsBtnOpen.addEventListener ( 'click' , function() 
+        var chsBtnOpen = document.querySelector('#issue_chstatus') ;
+        chsBtnOpen.addEventListener ( 'click' , function()
         {
             var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
             ref.once ( 'value' ).then ( function ( issueSnapshot )
             {
                 $('#change_status .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
-                chsDialog.showModal () ; 
-                $(chsDialog).css ( { 'width' : '350px' } ) ; 
-            }); 
-        }); 
-        chsDialog.querySelector('.close').addEventListener('click', function() { chsDialog.close(); } ); 
+                chsDialog.showModal () ;
+                $(chsDialog).css ( { 'width' : '350px' } ) ;
+            });
+        });
+        chsDialog.querySelector('.close').addEventListener('click', function() { chsDialog.close(); } );
 
-        /* 
-         * Open change priority dialog 
-         */ 
-        var chPriDialog = document.querySelector ( '#change_priority' ) ; 
-        if ( ! chPriDialog.showModal ) 
+        /*
+         * Open change priority dialog
+         */
+        var chPriDialog = document.querySelector ( '#change_priority' ) ;
+        if ( ! chPriDialog.showModal )
         {
-            dialogPolyfill.registerDialog ( chPriDialog ) ; 
+            dialogPolyfill.registerDialog ( chPriDialog ) ;
         }
-        var chPriBtn = document.querySelector('#issue_reprioritize') ; 
-        chPriBtn.addEventListener ( 'click' , function() 
-        {   
+        var chPriBtn = document.querySelector('#issue_reprioritize') ;
+        chPriBtn.addEventListener ( 'click' , function()
+        {
             var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
             ref.once ( 'value' ).then ( function ( issueSnapshot )
             {
                 $('#change_priority .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
-                chPriDialog.showModal() ; 
-                $(chPriDialog).css ( { 'width' : '350px' } ) ; 
-            }); 
-        }); 
+                chPriDialog.showModal() ;
+                $(chPriDialog).css ( { 'width' : '350px' } ) ;
+            });
+        });
         chPriDialog.querySelector('.close').addEventListener('click', function() { chPriDialog.close(); } );
-        
-        /* 
-         * Open change serverity dialog 
-         */ 
-        var chSevDialog = document.querySelector ( '#change_severity' ) ; 
-        if ( ! chSevDialog.showModal ) 
+
+        /*
+         * Open change serverity dialog
+         */
+        var chSevDialog = document.querySelector ( '#change_severity' ) ;
+        if ( ! chSevDialog.showModal )
         {
-            dialogPolyfill.registerDialog ( chSevDialog ) ; 
+            dialogPolyfill.registerDialog ( chSevDialog ) ;
         }
-        var chSevBtn = document.querySelector('#issue_chg_sev') ; 
-        chSevBtn.addEventListener ( 'click' , function() 
-        {   
+        var chSevBtn = document.querySelector('#issue_chg_sev') ;
+        chSevBtn.addEventListener ( 'click' , function()
+        {
             var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-            ref.once('value').then ( function ( issueSnapshot ) 
+            ref.once('value').then ( function ( issueSnapshot )
             {
-                $('#change_severity .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ; 
-                chSevDialog.showModal() ; 
-                $(chSevDialog).css ( { 'width' : '350px' } ) ; 
-            }); 
-        }); 
+                $('#change_severity .chs_issue_id').empty().append ( 'ISSUE-' + issueSnapshot.val().issue_num ) ;
+                chSevDialog.showModal() ;
+                $(chSevDialog).css ( { 'width' : '350px' } ) ;
+            });
+        });
         chSevDialog.querySelector('.close').addEventListener('click', function() { chSevDialog.close(); } );
-        
 
 
-        /* 
-         * Issue Creator Dialog Box 
-         * Open the create issue dialog 
-         * */ 
+
+        /*
+         * Issue Creator Dialog Box
+         * Open the create issue dialog
+         * */
         var ic_dialog = document.querySelector('#issue_create_dialog');
         var ic_b = document.querySelector('#issue_create');
         if (! ic_dialog.showModal) {
@@ -219,92 +226,92 @@ $(document).ready ( function()
           ic_b.addEventListener('click', function() {
               $(ic_dialog).find('input.mdl-textfield__input').each(function()
               {
-                if ( $(this).val() != '' ) 
+                if ( $(this).val() != '' )
                 {
-                    $(this).attr('placeholder' , 
-                        $('label[for="' + $(this).attr('id').replace('#','') + '"]' ).html() ) ; 
-                } 
-                $(this).val('') ; 
-              } ); 
+                    $(this).attr('placeholder' ,
+                        $('label[for="' + $(this).attr('id').replace('#','') + '"]' ).html() ) ;
+                }
+                $(this).val('') ;
+              } );
               $(ic_dialog).find('textarea.mdl-textfield__input').each(function()
-              { 
-                if ( $(this).val() != '' ) 
+              {
+                if ( $(this).val() != '' )
                 {
-                    $(this).attr('placeholder' , 
-                        $('label[for="' + $(this).attr('id').replace('#','') + '"]' ).html() ) ; 
-                } 
-                $(this).val('') ; 
-              }) ; 
+                    $(this).attr('placeholder' ,
+                        $('label[for="' + $(this).attr('id').replace('#','') + '"]' ).html() ) ;
+                }
+                $(this).val('') ;
+              }) ;
 		      membersDropdown('#uname_input');
               ic_dialog.show();
-              $(ic_dialog).css ( { 'margin-left' :'3%' , 'margin-top' : '-50%' , 'width' : '350px' } ) ; 
-              $('.date_picker_due_date').datepicker( { onClose : function() { $('label[for=due_input]').html('') ; } } ) ; 
-              $(ic_dialog).draggable(); 
+              $(ic_dialog).css ( { 'margin-left' :'3%' , 'margin-top' : '-50%' , 'width' : '350px' } ) ;
+              $('.date_picker_due_date').datepicker( { onClose : function() { $('label[for=due_input]').html('') ; } } ) ;
+              $(ic_dialog).draggable();
         });
           ic_dialog.querySelector('.close').addEventListener('click', function() {
           ic_dialog.close();
         });
-        
-        /* jQuery UI Datepicker is behaving differently so this workaround is needed */ 
 
-        
-        
+        /* jQuery UI Datepicker is behaving differently so this workaround is needed */
+
+
+
         // Load project ACLs as defined by admin of the project
-        $('#project_acls').on ( 'DOMSubtreeModified' , function () 
+        $('#project_acls').on ( 'DOMSubtreeModified' , function ()
         {
-            var pACLs = JSON.parse ( $('#project_acls').val() ) ; 
-            var user_projects = {} ; 
-            $.each ( pACLs.up[user.uid] , function ( i , v ) { user_projects[v] = 1 } ) ; 
+            var pACLs = JSON.parse ( $('#project_acls').val() ) ;
+            var user_projects = {} ;
+            $.each ( pACLs.up[user.uid] , function ( i , v ) { user_projects[v] = 1 } ) ;
             var projects_display = $('<select class="mdl-textfield__input" id=project_list ></select>') ;
             var projects = firebase.database().ref('app/projects') ;
             projects.once('value', function(snapshot) {
                     snapshot.forEach(function(childSnapshot) {
                         var childKey = childSnapshot.key;
                         var childData = childSnapshot.val();
-                            // Only show projects that the user is a member of. 
-                            if ( user_projects [ childKey ] ) 
+                            // Only show projects that the user is a member of.
+                            if ( user_projects [ childKey ] )
                             {
                                 projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="' + childKey + '" ><b>' + childData.name + '</b></option>' ) ;
                             }
                      });
                 $('#projects_container').append ( projects_display ) ;
             });
-        } ) ; 
-        
-        /* 
-         * When a project list is selected or on a page is first arrived at. 
-         */ 
-        $('#projects_container').on ( 'DOMSubtreeModified' , function () { 
+        } ) ;
 
-            // Populate the list of issues. 
-            $('#issue_list').find('div.demo-card-square').remove() ; 
-            $('#issue_list').show() ; 
-            $.jstree.destroy() ; 
-            var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ; 
-                
-				firstIssueDisplay ( issues_ref , $('#project_list').val() ) ; 
-			    issueTree( issues_ref , $('#project_list').val() ) ; 
+        /*
+         * When a project list is selected or on a page is first arrived at.
+         */
+        $('#projects_container').on ( 'DOMSubtreeModified' , function () {
+
+            // Populate the list of issues.
+            $('#issue_list').find('div.demo-card-square').remove() ;
+            $('#issue_list').show() ;
+            $.jstree.destroy() ;
+            var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
+
+				firstIssueDisplay ( issues_ref , $('#project_list').val() ) ;
+			    issueTree( issues_ref , $('#project_list').val() ) ;
                 $.jstree.defaults.core.check_callback = true ;
 
-                // When a project is selected from the list... 
-                $('#project_list').on('change',function() 
+                // When a project is selected from the list...
+                $('#project_list').on('change',function()
                 {
                     $('#issue_list').empty() ;
-					$.jstree.destroy() ; 
+					$.jstree.destroy() ;
                     var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
-						firstIssueDisplay ( issues_ref ) ; 
-						issueTree( issues_ref , $('#project_list').val() ) ; 
+						firstIssueDisplay ( issues_ref ) ;
+						issueTree( issues_ref , $('#project_list').val() ) ;
                         $.jstree.defaults.core.check_callback = true ;
                 } ) ;
-            } ) ; 
+            } ) ;
 
 
-         $('#issue_list').on ( 'DOMSubtreeModified' , function () { 
-         
-			/* Trigger on issue list population and wait on an issue button to be clicked */ 
-			 $('#issue_list').on('select_node.jstree', function ( e , data ) 
-			 { 
-                $('#current_issue').val( data.node.id ) ; 
+         $('#issue_list').on ( 'DOMSubtreeModified' , function () {
+
+			/* Trigger on issue list population and wait on an issue button to be clicked */
+			 $('#issue_list').on('select_node.jstree', function ( e , data )
+			 {
+                $('#current_issue').val( data.node.id ) ;
 				var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + data.node.id ) ;
 					ref.once ( 'value' ).then( function(snapshot)
 					{
@@ -312,99 +319,99 @@ $(document).ready ( function()
 						issueDisplay ( issue ) ;
 					} ) ;
 
-			 } ) ; 
+			 } ) ;
 
             $('.update-desc-button').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'description' : $('#issue_content').val() } ) ; 
-                    console.log ( 'Update ' + $('#current_issue').val() + ' ' + $('#issue_content').val() ); 
-             } ) ; 
+                    ref.update ( { 'description' : $('#issue_content').val() } ) ;
+                    console.log ( 'Update ' + $('#current_issue').val() + ' ' + $('#issue_content').val() );
+             } ) ;
 
 
-             $('#reassign_issue_button').on('click',function(){ 
+             $('#reassign_issue_button').on('click',function(){
                  var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                 ref.update ( { 'assigned_to' : $('#reassign :selected').text() } ) ; 
-				 ref.update ( { 'assigned_uid' : $('#reassign').val() } ) ; 
-				 dialog.close() ; 
-                 $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + $('#reassign :selected').text() + '</h4>' ) ; 
-             } ); 
+                 ref.update ( { 'assigned_to' : $('#reassign :selected').text() } ) ;
+				 ref.update ( { 'assigned_uid' : $('#reassign').val() } ) ;
+				 dialog.close() ;
+                 $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + $('#reassign :selected').text() + '</h4>' ) ;
+             } );
 
-             $('.update-comments-button').on ( 'click' , function () { 
+             $('.update-comments-button').on ( 'click' , function () {
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'comments' : $('#comments').val() } ); 
-                } ) ; 
+                    ref.update ( { 'comments' : $('#comments').val() } );
+                } ) ;
 
 
              $('#issue_resolve').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'status' : 'Resolved' } ) ; 
-               } ) ; 
+                    ref.update ( { 'status' : 'Resolved' } ) ;
+               } ) ;
 
 
-         } ) ; 
-      
-        $('#issue_create_submit').click( function() 
+         } ) ;
+
+        $('#issue_create_submit').click( function()
         {
-            var issue_status= $('#istatus_input').val() ; 
-            var issue_type  = $('#itype_input').val() ; 
-            var assigned_to = $('#uname_input').val() ; 
-            var due_by      = $('#due_input').val() ; 
-            var summary     = $('#summary_input').val() ; 
-            var descr       = $('#desc_input').val() ; 
-            var sev         = $('#iseverity_input').val() ; 
-            var priority    = $('#ipriority_input').val() ; 
+            var issue_status= $('#istatus_input').val() ;
+            var issue_type  = $('#itype_input').val() ;
+            var assigned_to = $('#uname_input').val() ;
+            var due_by      = $('#due_input').val() ;
+            var summary     = $('#summary_input').val() ;
+            var descr       = $('#desc_input').val() ;
+            var sev         = $('#iseverity_input').val() ;
+            var priority    = $('#ipriority_input').val() ;
 
-            if ( $.trim(due_by) == '' ) 
+            if ( $.trim(due_by) == '' )
             {
-                alert ( 'Needs Due By' ) ; 
-                return ; 
-            } 
+                alert ( 'Needs Due By' ) ;
+                return ;
+            }
 
-            if ( $.trim(summary) == '' ) 
+            if ( $.trim(summary) == '' )
             {
-                alert ( 'Needs Summary' ) ; 
-                return ; 
-            } 
+                alert ( 'Needs Summary' ) ;
+                return ;
+            }
 
-            if ( $.trim(descr) == '' ) 
+            if ( $.trim(descr) == '' )
             {
-                alert ( 'Needs Description' ) ; 
-                return ; 
-            } 
+                alert ( 'Needs Description' ) ;
+                return ;
+            }
 
-            var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ; 
-            var iref = issues_ref.push() ; 
+            var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
+            var iref = issues_ref.push() ;
 
-                issues_ref.once ( 'value' ). then(function(snapshot) 
+                issues_ref.once ( 'value' ). then(function(snapshot)
                 {
-                    iref.set ( { 
-                        'issue_num'   : Math.round(isNaN(snapshot.numChildren())?0:snapshot.numChildren()+1 ) , 
-                        'issue_type'  : issue_type , 
-                        'assigned_to' : $('#uname_input :selected').text() , 
-                        'assigned_uid': $('#uname_input').val() , 
-                        'due_by'      : due_by , 
-                        'project_id'  : $('#project_list').val() , 
+                    iref.set ( {
+                        'issue_num'   : Math.round(isNaN(snapshot.numChildren())?0:snapshot.numChildren()+1 ) ,
+                        'issue_type'  : issue_type ,
+                        'assigned_to' : $('#uname_input :selected').text() ,
+                        'assigned_uid': $('#uname_input').val() ,
+                        'due_by'      : due_by ,
+                        'project_id'  : $('#project_list').val() ,
                         'summary'     : summary,
                         'description' : descr ,
-                        'status'      : issue_status , 
-                        'severity'    : sev , 
-                        'priority'    : priority , 
-                        'comments'    : '' 
-                    } ).then ( function ( ) { 
-                        iref.once ( 'value' ).then ( function ( irefData ) 
+                        'status'      : issue_status ,
+                        'severity'    : sev ,
+                        'priority'    : priority ,
+                        'comments'    : ''
+                    } ).then ( function ( ) {
+                        iref.once ( 'value' ).then ( function ( irefData )
                             {
-                                console.log ( 'What is happenning!' ) ; 
-                                $('#issue_list').jstree().create_node('project_1',{ id : irefData.key , text: 'Issue ' + irefData.val().issue_num } , 'last' , false , false ) ; 
-                                $('#issue_list').jstree(true).select_node( irefData.key ) ; 
-                                $('#current_issue').val ( irefData.key ) ; 
-                            } ); 
-                    } ) ;  
-                } ) ; 
-            ic_dialog.close() ; 
-        } ) ; 
-    } ) ; 
+                                console.log ( 'What is happenning!' ) ;
+                                $('#issue_list').jstree().create_node('project_1',{ id : irefData.key , text: 'Issue ' + irefData.val().issue_num } , 'last' , false , false ) ;
+                                $('#issue_list').jstree(true).select_node( irefData.key ) ;
+                                $('#current_issue').val ( irefData.key ) ;
+                            } );
+                    } ) ;
+                } ) ;
+            ic_dialog.close() ;
+        } ) ;
+    } ) ;
 }) ;
 
-$(window).on('load',function() { 
-   userHandler() ; 
-}) ; 
+$(window).on('load',function() {
+   userHandler() ;
+}) ;
