@@ -83,22 +83,19 @@
 
   <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
         <header class="demo-drawer-header">
+          <img src="../images/user.jpg" class="demo-avatar">
 	      <div class="demo-avatar-dropdown">
-			  <div id="user-container" style="position:relative;">
-				<div style='display:none;' hidden id="user-pic"></div>  
-                <br>
-				<div hidden id="user-name" style="line-height:15px;font-size:21px;"></div>
-                <br>
-				<button style='margin-left:20%;margin-top:-12%;position:absolute;' hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-				  Sign-out
-				</button>
-				<button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-				  <i class="material-icons">account_circle</i>Sign-in with Google
-				</button>
-			  </div>
+          <span id="span_email"></span>
+          <div class="mdl-layout-spacer"></div>
+          <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">arrow_drop_down</i>
+          </button>
+          <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+            <li id="li_logout" class="mdl-menu__item">Logout</li>
+          </ul>
 		  </div>
         </header>
-	
+
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
           <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
           <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
@@ -166,8 +163,8 @@
         $('#project_acls').on ( 'DOMSubtreeModified' , function ()
         {
             var pACLs = JSON.parse ( $('#project_acls').val() ) ;
-            var user_projects = {} ; 
-            $.each ( pACLs.up[user.uid] , function ( i , v ) { user_projects[v] = 1 } ) ; 
+            var user_projects = {} ;
+            $.each ( pACLs.up[user.uid] , function ( i , v ) { user_projects[v] = 1 } ) ;
 
 			var projects_display = $('<select class="mdl-textfield__input" id=project_list ></select>') ;
 				projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="-first" ><b>General Lounge</b></option>' ) ;
@@ -176,18 +173,27 @@
 						snapshot.forEach(function(childSnapshot) {
 							var childKey = childSnapshot.key;
 							var childData = childSnapshot.val();
-								if ( user_projects [ childKey ] ) 
+								if ( user_projects [ childKey ] )
 								{
 									projects_display.append ('<option class="mdl-color-text--white mdl-color--blue-grey-700" value="' + childKey + '" ><b>' + childData.name + '</b></option>' ) ;
 								}
 						 });
 					$('#projects_container').append ( projects_display ) ;
 				});
-		} ); 
-	} ) ; 
+		} );
+	} ) ;
+  //Event listener that determines if the user is logged in properly:
+  firebase.auth().onAuthStateChanged(function(user){
+      if (user) {
+          document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
+      }
+      else {
+          console.log('Not logged in');
+          window.location = "../index.html";
+      }
+  });
 </script>
 <script src="scripts/main.js"></script>
 
 </body>
 </html>
-
