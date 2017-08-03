@@ -10,6 +10,7 @@ class UserStories extends React.Component {
     };
 
     this.addStoryHandler= this.addStoryHandler.bind(this);
+    this.updateStoryHandler= this.updateStoryHandler.bind(this);
     this.showFormHandler = this.showFormHandler.bind(this);
   }
 
@@ -17,13 +18,6 @@ class UserStories extends React.Component {
     this.setState({ add_story: true });
   }
 
-  addStoryHandler(story) {
-    console.log("Add new ", story);
-    story['project_key'] = this.props.project.firebase_key;
-    var result = this.firebaseStories.push(story);
-    this.setState({add_story: false});
-    this.loadStories();
-  }
 
   componentWillMount() {
     this.firebaseStories = this.props.db.ref('app/stories');
@@ -59,16 +53,54 @@ class UserStories extends React.Component {
      }.bind(this));
   }
 
+  addStoryHandler(story) {
+    console.log("Add new ", story);
+    story['project_key'] = this.props.project.firebase_key;
+    var result = this.firebaseStories.push(story);
+    this.setState({add_story: false});
+    this.loadStories();
+  }
+
+  updateStoryHandler(story, firebase_key) {
+    //get the project and merge it with the updated form values to update it.
+    var updated_story = Object.assign({}, this.state.stories[this.state.story_idx], story)
+    //cleanup firebase key since it is redundant
+    //updated_project['firebase_key'] = null;
+    console.log("updated story: ", updated_story)
+
+    var updates = {};
+    updates['/app/stories/' + firebase_key] = updated_story;
+
+    this.props.db.ref().update(updates);
+    this.setState({'edit_story': false});
+    this.loadStories();
+  }
+
+
   render() {
 
     var self = this;
 
+
     if (this.state.stories.length > 0){
       var body = this.state.stories.map(function(item, index){
+        var editStoryHandler = function(){
+          self.setState({ edit_story: true , story_idx: index});
+        }
+
         return (
-          <tr key={index}>
-            <td className="mdl-data-table__cell--non-numeric">{item.name}</td>
+          <tr key={item.firebase_key}>
+            <td className="mdl-data-table__cell--non-numeric">
+              {item.name} {(self.state.story_idx === index) ? "<--" : null}
+            </td>
             <td>{item.status}</td>
+            <td>       
+              <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                onClick={editStoryHandler}
+                >
+                Edit
+              </button> 
+            </td>
           </tr>
         );
       });
@@ -103,19 +135,32 @@ class UserStories extends React.Component {
 
     var heading = <h3> { self.props.project['name'] } </h3>;
 
+    var story = null;
+      if((self.state.story_idx !== null) && self.state.stories.length > 0 ){
+         story = self.state.stories[self.state.story_idx];
+    }
+
     return (
       <div>
         {heading}
         { this.state.add_story ? (
           <AddStoryForm
-            addStoryHandler={self.addStoryHandler}
+            saveStoryHandler={self.addStoryHandler}
             hideForm={
               function() {
                 self.setState({add_story: false});
               }
             }
           />
-        ): stories_table }
+        ): (this.state.edit_story ? (
+          <AddStoryForm saveStoryHandler={self.updateStoryHandler}
+           story={story}
+           hideForm={
+             function() {
+               self.setState({ edit_story: false });
+             }
+           } />): stories_table )
+        }
 
         {add_story_button}
     
@@ -131,8 +176,11 @@ class AddStoryForm extends React.Component {
     this.state = {
       errors: {},
       values: {},
+      firebase_key: null
     };
 
+    this.state.values = props.story ? props.story: null;
+    this.state.firebase_key = props.story ? props.story.firebase_key : null;
     // This is to allow it to work as callback from other context
     this.changeHandler = this.changeHandler.bind(this);
   }
@@ -174,10 +222,8 @@ class AddStoryForm extends React.Component {
     var submitHandler = function(e){
       e.preventDefault();
       if (Object.keys(self.state.errors) == 0){
+        self.props.saveStoryHandler(self.state.values, self.state.firebase_key);
 
-        self.props.addStoryHandler(self.state.values);
-
-        
       }else{
         var text = Object.values(self.state.errors).join(" ");
         alert('form still has errors: ' + text);
@@ -187,12 +233,13 @@ class AddStoryForm extends React.Component {
   return (
       <form  
         onSubmit={submitHandler}
-        onChange={self.changeHandler}
         ref={(ref)=>this.formRef = ref}
         >
 
         <div className="mdl-textfield mdl-js-textfield">
-          <input className="mdl-textfield__input" type="text" id="name" name="name" />
+          <input className="mdl-textfield__input" type="text" id="name" name="name" 
+          value={this.state.values ? this.state.values.name : "" }
+          onChange={self.changeHandler}/>
           <label className="mdl-textfield__label" htmlFor="name">User Story Name</label>
           {this.state.errors.name ? (
             <span className="mdl-textfield__error">{this.state.errors.name}</span>
@@ -201,7 +248,9 @@ class AddStoryForm extends React.Component {
 
         <div className="mdl-selectfield mdl-js-selectfield">
           <label className="mdl-selectfield__label" htmlFor="status">Status</label>
-          <select className="mdl-selectfield__select" id="status" name="status">
+          <select className="mdl-selectfield__select" id="status" name="status" 
+          value={this.state.values ? this.state.values.status : "" }
+          onChange={self.changeHandler}>
             <option value=""></option>
             <option value="Not Started">Not Started</option>
             <option value="In Progress">In Progress</option>

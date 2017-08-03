@@ -99,9 +99,7 @@ class ReactApp extends React.Component {
 
         //for each project, check if the current user is in the list of members 
         if (item.members) {
-        //   console.log(item['members']['0']);
           var members = Object.values(item['members']);
-          console.log("members: :", members);
 
           if (members.indexOf(self.state.uid) > -1) {
             items.push(item);
@@ -210,7 +208,6 @@ class ReactApp extends React.Component {
     var project = null;
     if((self.state.project_idx !== null) && self.state.projects.length > 0 ){
       project = self.state.projects[self.state.project_idx];
-      console.log("testing project: ", project);
     }
 
     return (

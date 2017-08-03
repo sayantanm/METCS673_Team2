@@ -14,7 +14,7 @@ class TopBar extends React.Component {
         <div className="mdl-layout__header-row">
           <h3>
           <i className="material-icons">filter_none</i>
-          Project Management Tool
+          METCS 673 Project Management Tool
           </h3>
           <div className="mdl-layout-spacer"></div>
         </div>

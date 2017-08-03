@@ -42,7 +42,7 @@ var TopBar = function (_React$Component) {
                 { className: "material-icons" },
                 "filter_none"
               ),
-              "Project Management Tool"
+              "METCS 673 Project Management Tool"
             ),
             React.createElement("div", { className: "mdl-layout-spacer" })
           )
@@ -316,9 +316,7 @@ var ReactApp = function (_React$Component) {
 
           //for each project, check if the current user is in the list of members 
           if (item.members) {
-            //   console.log(item['members']['0']);
             var members = Object.values(item['members']);
-            console.log("members: :", members);
 
             if (members.indexOf(self.state.uid) > -1) {
               items.push(item);
@@ -481,7 +479,6 @@ var ReactApp = function (_React$Component) {
       var project = null;
       if (self.state.project_idx !== null && self.state.projects.length > 0) {
         project = self.state.projects[self.state.project_idx];
-        console.log("testing project: ", project);
       }
 
       return React.createElement(
@@ -823,6 +820,7 @@ var UserStories = function (_React$Component) {
     };
 
     _this.addStoryHandler = _this.addStoryHandler.bind(_this);
+    _this.updateStoryHandler = _this.updateStoryHandler.bind(_this);
     _this.showFormHandler = _this.showFormHandler.bind(_this);
     return _this;
   }
@@ -831,15 +829,6 @@ var UserStories = function (_React$Component) {
     key: 'showFormHandler',
     value: function showFormHandler(e) {
       this.setState({ add_story: true });
-    }
-  }, {
-    key: 'addStoryHandler',
-    value: function addStoryHandler(story) {
-      console.log("Add new ", story);
-      story['project_key'] = this.props.project.firebase_key;
-      var result = this.firebaseStories.push(story);
-      this.setState({ add_story: false });
-      this.loadStories();
     }
   }, {
     key: 'componentWillMount',
@@ -873,6 +862,31 @@ var UserStories = function (_React$Component) {
       }.bind(this));
     }
   }, {
+    key: 'addStoryHandler',
+    value: function addStoryHandler(story) {
+      console.log("Add new ", story);
+      story['project_key'] = this.props.project.firebase_key;
+      var result = this.firebaseStories.push(story);
+      this.setState({ add_story: false });
+      this.loadStories();
+    }
+  }, {
+    key: 'updateStoryHandler',
+    value: function updateStoryHandler(story, firebase_key) {
+      //get the project and merge it with the updated form values to update it.
+      var updated_story = Object.assign({}, this.state.stories[this.state.story_idx], story
+      //cleanup firebase key since it is redundant
+      //updated_project['firebase_key'] = null;
+      );console.log("updated story: ", updated_story);
+
+      var updates = {};
+      updates['/app/stories/' + firebase_key] = updated_story;
+
+      this.props.db.ref().update(updates);
+      this.setState({ 'edit_story': false });
+      this.loadStories();
+    }
+  }, {
     key: 'render',
     value: function render() {
 
@@ -880,18 +894,35 @@ var UserStories = function (_React$Component) {
 
       if (this.state.stories.length > 0) {
         var body = this.state.stories.map(function (item, index) {
+          var editStoryHandler = function editStoryHandler() {
+            self.setState({ edit_story: true, story_idx: index });
+          };
+
           return React.createElement(
             'tr',
-            { key: index },
+            { key: item.firebase_key },
             React.createElement(
               'td',
               { className: 'mdl-data-table__cell--non-numeric' },
-              item.name
+              item.name,
+              ' ',
+              self.state.story_idx === index ? "<--" : null
             ),
             React.createElement(
               'td',
               null,
               item.status
+            ),
+            React.createElement(
+              'td',
+              null,
+              React.createElement(
+                'button',
+                { className: 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect',
+                  onClick: editStoryHandler
+                },
+                'Edit'
+              )
             )
           );
         });
@@ -950,16 +981,25 @@ var UserStories = function (_React$Component) {
         ' '
       );
 
+      var story = null;
+      if (self.state.story_idx !== null && self.state.stories.length > 0) {
+        story = self.state.stories[self.state.story_idx];
+      }
+
       return React.createElement(
         'div',
         null,
         heading,
         this.state.add_story ? React.createElement(AddStoryForm, {
-          addStoryHandler: self.addStoryHandler,
+          saveStoryHandler: self.addStoryHandler,
           hideForm: function hideForm() {
             self.setState({ add_story: false });
           }
-        }) : stories_table,
+        }) : this.state.edit_story ? React.createElement(AddStoryForm, { saveStoryHandler: self.updateStoryHandler,
+          story: story,
+          hideForm: function hideForm() {
+            self.setState({ edit_story: false });
+          } }) : stories_table,
         add_story_button
       );
     }
@@ -978,9 +1018,12 @@ var AddStoryForm = function (_React$Component2) {
 
     _this2.state = {
       errors: {},
-      values: {}
+      values: {},
+      firebase_key: null
     };
 
+    _this2.state.values = props.story ? props.story : null;
+    _this2.state.firebase_key = props.story ? props.story.firebase_key : null;
     // This is to allow it to work as callback from other context
     _this2.changeHandler = _this2.changeHandler.bind(_this2);
     return _this2;
@@ -1030,8 +1073,7 @@ var AddStoryForm = function (_React$Component2) {
       var submitHandler = function submitHandler(e) {
         e.preventDefault();
         if (Object.keys(self.state.errors) == 0) {
-
-          self.props.addStoryHandler(self.state.values);
+          self.props.saveStoryHandler(self.state.values, self.state.firebase_key);
         } else {
           var text = Object.values(self.state.errors).join(" ");
           alert('form still has errors: ' + text);
@@ -1042,7 +1084,6 @@ var AddStoryForm = function (_React$Component2) {
         'form',
         {
           onSubmit: submitHandler,
-          onChange: self.changeHandler,
           ref: function ref(_ref) {
             return _this3.formRef = _ref;
           }
@@ -1050,7 +1091,9 @@ var AddStoryForm = function (_React$Component2) {
         React.createElement(
           'div',
           { className: 'mdl-textfield mdl-js-textfield' },
-          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'name', name: 'name' }),
+          React.createElement('input', { className: 'mdl-textfield__input', type: 'text', id: 'name', name: 'name',
+            value: this.state.values ? this.state.values.name : "",
+            onChange: self.changeHandler }),
           React.createElement(
             'label',
             { className: 'mdl-textfield__label', htmlFor: 'name' },
@@ -1072,7 +1115,9 @@ var AddStoryForm = function (_React$Component2) {
           ),
           React.createElement(
             'select',
-            { className: 'mdl-selectfield__select', id: 'status', name: 'status' },
+            { className: 'mdl-selectfield__select', id: 'status', name: 'status',
+              value: this.state.values ? this.state.values.status : "",
+              onChange: self.changeHandler },
             React.createElement('option', { value: '' }),
             React.createElement(
               'option',
