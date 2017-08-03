@@ -2,12 +2,12 @@ window.onload = function() {
 // Initialize Firebase if it isn't already (for local dev only) 
     if (!firebase.apps.length) {
         var config = {               
-            apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
-            authDomain: "metcs673-acac6.firebaseapp.com",
-            databaseURL: "https://metcs673-acac6.firebaseio.com",
-            projectId: "metcs673-acac6",
-            storageBucket: "metcs673-acac6.appspot.com",
-            messagingSenderId: "967664299479"
+    apiKey: "AIzaSyCuDASMhIQI5n8B70CLYajlViOBbaDei9c",
+    authDomain: "team2-dev.firebaseapp.com",
+    databaseURL: "https://team2-dev.firebaseio.com",
+    projectId: "team2-dev",
+    storageBucket: "team2-dev.appspot.com",
+    messagingSenderId: "1025264149124"
         };
         firebase.initializeApp(config);
     }
@@ -145,68 +145,78 @@ window.onload = function() {
                 issuesnapshot.forEach(function(childIssueSnapshot) {
                     var projectIssues = childIssueSnapshot.val();
                     var loggedInUser = firebase.auth().currentUser.uid
+                    var isMyIssue = 0;
                     // get a count of issues
                     if (projectIssues['assigned_uid'] == loggedInUser) {
                         issueCount++;
+                        isMyIssue = 1;
                     }
 
-                    // get the count for issue type
-                    if (projectIssues['issue_type'] == 'Bug' && projectIssues['assigned_uid'] == loggedInUser) {
+                    // get issue status count (open issues)
+                    var isIssueOpen = 0;
+                    if (projectIssues['status'] == 'New' && isMyIssue) {
+                        issueStatusNew++;
+                        isIssueOpen = 1
+                    }
+                    else if (projectIssues['status'] == 'Open' && isMyIssue) {
+                        issueStatusOpen++;
+                        isIssueOpen = 1;
+                    }
+                    else if (projectIssues['status'] == 'On Hold' && isMyIssue) {
+                        issueStatusOnHold++;
+                        isIssueOpen = 1;
+                    }
+                    else if (projectIssues['status'] == 'In Progress' && isMyIssue) {
+                        issueStatusInProgress++;
+                        isIssueOpen = 1
+                    }
+
+                    // get the count for issue severity
+                    if (projectIssues['severity'] == 'Critical' && isMyIssue && isIssueOpen) {
+                        issueSeverityCritical++;
+                    }
+                    else if (projectIssues['severity'] == 'Major' && isMyIssue && isIssueOpen) {
+                        issueSeverityMajor++;
+                    }
+                    else if (projectIssues['severity'] == 'Minor' && isMyIssue && isIssueOpen) {
+                        issueSeverityMinor++;
+                    }
+                    else if (projectIssues['severity'] == 'Trivial' && isMyIssue && isIssueOpen) {
+                        issueSeverityTrivial++;
+                    }
+
+                    // get the count for issue priority
+                    if (projectIssues['priority'] == 'Immediate' && isMyIssue && isIssueOpen) {
+                        issuePriorityImmediate++;
+                    }
+                    else if (projectIssues['priority'] == 'High' && isMyIssue && isIssueOpen) {
+                        issuePriorityHigh++;
+                    }
+                    else if (projectIssues['priority'] == 'Medium' && isMyIssue && isIssueOpen) {
+                        issuePriorityMedium++;
+                    }
+                    else if (projectIssues['priority'] == 'Low' && isMyIssue && isIssueOpen) {
+                        issuePriorityLow++;
+                    }
+
+                     // get the count for issue type
+                    if (projectIssues['issue_type'] == 'Bug' && isMyIssue && isIssueOpen) {
                         issueBugCount++;
 
                         // this is used for the stacked bar chart which shows the number of issues for a project
                         projectBugs[projectIssues['project_id']]++;
                     }
-                    else if (projectIssues['issue_type'] == 'Task' && projectIssues['assigned_uid'] == loggedInUser) {
+                    else if (projectIssues['issue_type'] == 'Task' && isMyIssue && isIssueOpen) {
                         issueTaskCount++;
 
                         // this is used for the stacked bar chart which shows the number of issues for a project
                         projectTasks[projectIssues['project_id']]++;
                     }
 
-                    // get the count for issue severity
-                    if (projectIssues['severity'] == 'Critical') {
-                        issueSeverityCritical++;
+                    if (isMyIssue) {
+                        var tempIssueArray = [projectIssues['issue_num'],projectIssues['status'],projectIssues['severity'],projectIssues['issue_type'],projectIssues['summary']];
+                        issueTableArray.push(tempIssueArray);
                     }
-                    else if (projectIssues['severity'] == 'Major') {
-                        issueSeverityMajor++;
-                    }
-                    else if (projectIssues['severity'] == 'Minor') {
-                        issueSeverityMinor++;
-                    }
-                    else if (projectIssues['severity'] == 'Trivial') {
-                        issueSeverityTrivial++;
-                    }
-
-                    // get the count for issue priority
-                    if (projectIssues['priority'] == 'Immediate') {
-                        issuePriorityImmediate++;
-                    }
-                    else if (projectIssues['priority'] == 'High') {
-                        issuePriorityHigh++;
-                    }
-                    else if (projectIssues['priority'] == 'Medium') {
-                        issuePriorityMedium++;
-                    }
-                    else if (projectIssues['priority'] == 'Low') {
-                        issuePriorityLow++;
-                    }
-
-                    // get the cout for issue status
-                    if (projectIssues['status'] == 'New') {
-                        issueStatusNew++;
-                    }
-                    else if (projectIssues['status'] == 'Open') {
-                        issueStatusOpen++;
-                    }
-                    else if (projectIssues['status'] == 'On Hold') {
-                        issueStatusOnHold++;
-                    }
-                    else if (projectIssues['status'] == 'In Progress') {
-                        issueStatusInProgress++;
-                    }
-                    var tempIssueArray = [projectIssues['issue_num'],projectIssues['status'],projectIssues['severity'],projectIssues['issue_type'],projectIssues['summary']];
-                    issueTableArray.push(tempIssueArray);
                 });
             }));
         }
