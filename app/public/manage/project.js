@@ -948,6 +948,11 @@ var UserStories = function (_React$Component) {
                   'th',
                   null,
                   'Status'
+                ),
+                React.createElement(
+                  'th',
+                  null,
+                  'Action'
                 )
               )
             ),

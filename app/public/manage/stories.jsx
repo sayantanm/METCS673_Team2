@@ -112,6 +112,7 @@ class UserStories extends React.Component {
               <tr>
               <th className="mdl-data-table__cell--non-numeric">Name</th>
               <th>Status</th>
+              <th>Action</th>
               </tr>
             </thead>
             <tbody>
