@@ -401,7 +401,7 @@ window.onload = function() {
                     legend: { position: 'bottom', maxLines: 1 },
                     bar: { groupWidth: '75%' },
                     colors:['#80cbc4','#26a69a'],
-                    chartArea: {left:17, width: "95%"},
+                    chartArea: {left:17, width: "93%"},
                     isStacked: 'percent',
                     hAxis: {
                     minValue: 0,
