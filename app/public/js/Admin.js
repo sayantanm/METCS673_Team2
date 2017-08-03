@@ -393,7 +393,9 @@ $(document).ready(function(){
 
   //Event listener that determines if the user is logged in properly:
   firebase.auth().onAuthStateChanged(function(user){
-      if (user) {
+    var isVerified = firebase.auth().currentUser.emailVerified;
+      if (user && isVerified) {
+          // display the users email address in the menu pane once they're authenticated
           document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
       }
       else {

@@ -15,7 +15,7 @@
  */
 
 html, body {
- /* font-family: 'Roboto', 'Helvetica', sans-serif; */ 
+ /* font-family: 'Roboto', 'Helvetica', sans-serif; */
   font-family: "Helvetica Neue",Helvetica,"Segoe UI",Tahoma,Arial,sans-serif;
     font-variant-ligatures: common-ligatures;
     -moz-osx-font-smoothing: grayscale;
@@ -40,11 +40,7 @@ main, #messages-card {
   max-width: 1024px;
   margin: auto;
 }
-.material-icons {
-  font-size: 36px;
-  top: 8px;
-  position: relative;
-}
+
 .mdl-layout__header-row {
   padding: 0;
   margin: 0 auto;
@@ -78,13 +74,13 @@ main, #messages-card {
   opacity: 1;
 }
 .message-container .pic {
-  background-image: url('/images/profile_placeholder.png');  
+
   background-repeat: no-repeat;
   width: 30px;
   height: 30px;
   background-size: 30px;
   border-radius: 20px;
-  display:none ; 
+  display:none ;
 }
 .message-container .spacing {
   display: table-cell;
@@ -92,10 +88,10 @@ main, #messages-card {
 }
 .message-container .message {
   display: table-cell;
-  font-size: 17px ; 
+  font-size: 17px ;
   width: 100%;
-  padding-left: 41px ; 
-  /* padding: 5px 0 5px 10px; */ 
+  padding-left: 41px ;
+  /* padding: 5px 0 5px 10px; */
 }
 .message-container .name {
   display: inline-block;
@@ -103,7 +99,7 @@ main, #messages-card {
   padding-left: 41px;
   width: calc(100% - 40px);
   font-style: italic;
-  font-weight: bold ; 
+  font-weight: bold ;
   font-size: 12px;
   box-sizing: border-box;
 }
@@ -142,7 +138,7 @@ main, #messages-card {
   background: linear-gradient(white, #f9f9f9);
   justify-content: space-between;
 }
-/* 
+/*
 #user-container {
   position: absolute;
   display: flex;
@@ -171,7 +167,7 @@ main, #messages-card {
   padding-right: 10px;
   padding-left: 20px;
 }
-*/ 
+*/
 #image-form #submitImage {
   width: auto;
   padding: 0 6px 0 1px;
@@ -211,8 +207,4 @@ main, #messages-card {
 }
 .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
   color: #0288D1;
-}
-.mdl-button .material-icons {
-  top: -1px;
-  margin-right: 5px;
 }

@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="en">
-
+  <!--
+    Copyright 2015 Google Inc. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+        https://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License
+  -->
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,93 +61,92 @@
     <script
   	  src="https://code.jquery.com/jquery-3.2.1.min.js"
   	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  	  crossorigin="anonymous"></script>
-       <script defer src="/js/jquery-te-1.4.0.min.js"></script>
-  	 <link rel="stylesheet" href="/css/jquery-te-1.4.0.css">
+  	  crossorigin="anonymous">
+    </script>
+    <script defer src="/js/jquery-te-1.4.0.min.js"></script>
+  	<link rel="stylesheet" href="/css/jquery-te-1.4.0.css">
   </head>
 
   <body>
+    <!--Top Header-->
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
         <div class="mdl-layout__header-row">
-          <h3>
-
-          <i class="material-icons">filter_none</i>Admin Page</h3></span>
+          <h3><i class="material-icons">filter_none</i> METCS 673 Admin Page</h3></span>
           <div class="mdl-layout-spacer"></div>
         </div>
       </header>
-
-        <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
-          <header class="demo-drawer-header">
-            <img src="../images/user.jpg" class="demo-avatar">
-            <div class="demo-avatar-dropdown">
-              <span id="span_email"></span>
-              <div class="mdl-layout-spacer"></div>
-              <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                <i class="material-icons" role="presentation">arrow_drop_down</i>
-                <span class="visuallyhidden">Accounts</span>
-              </button>
-              <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
-                <li id="li_logout" class="mdl-menu__item">Logout</li>
-              </ul>
+      <!--sidebar content-->
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+        <header class="demo-drawer-header">
+          <img src="../images/user.jpg" class="demo-avatar">
+          <div class="demo-avatar-dropdown">
+            <span id="span_email"></span>
+            <div class="mdl-layout-spacer"></div>
+            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_drop_down</i>
+              <span class="visuallyhidden">Accounts</span>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+              <li id="li_logout" class="mdl-menu__item">Logout</li>
+            </ul>
+          </div>
+        </header>
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+          <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+          <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
+          <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
+          <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
+          <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
+        </nav>
+      </div>
+        <!--Main page content-->
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div class = "mdl-grid grid">
+          <div class="demo-card-square mdl-card mdl-shadow--10dp addMember">
+            <div class="mdl-cell mdl-cell--12-col">
+              <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">Add A Team Member to Your Project</h2>
+              </div>
+              <br>
+              <div class="mdl-textfield mdl-js-textfield project" >
+                <select class="mdl-textfield__input" id ="projects_container"></select>
+              </div>
+              <br>
+              <div><h5>Add an existing member:</h5></div>
+              <div class="mdl-textfield mdl-js-textfield project" >
+                <select class="mdl-textfield__input" id =existingUsers></select>
+              </div>
+              <br>
+              <br>
+              <div class="mdl-card__actions">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored addButton" id="addButton">
+                  Add
+                </button>
+              </div>
+              <br>
+              <br>
             </div>
-          </header>
-          <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-            <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-            <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
-            <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
-            <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
-            <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
-          </nav>
-        </div>
+          </div>
 
-        <main class="mdl-layout__content mdl-color--grey-100">
-          <div class = "mdl-grid grid">
-            <div class="demo-card-square mdl-card mdl-shadow--10dp addMember">
+          <div class="mdl-layout-spacer"></div>
+
+          <div>
+            <div class="demo-card-square mdl-card mdl-shadow--1dp gridDispTeam">
               <div class="mdl-cell mdl-cell--12-col">
                 <div class="mdl-card__title">
-                  <h2 class="mdl-card__title-text">Add A Team Member to Your Project</h2>
+                  <h2 class="mdl-card__title-text">Current Project Team Members</h2>
                 </div>
+                <div id=memberList><center>("Please select a project)")</center></div>
                 <br>
-                <div class="mdl-textfield mdl-js-textfield project" >
-                  <select class="mdl-textfield__input" id ="projects_container"></select>
-                </div>
-                <br>
-                <div><h5>Add an existing member:</h5></div>
-                <div class="mdl-textfield mdl-js-textfield project" >
-                  <select class="mdl-textfield__input" id =existingUsers></select>
-                </div>
+                <div id=rmvBtn></div>
                 <br>
                 <br>
-                <div class="mdl-card__actions">
-                  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored addButton" id="addButton">
-                    Add
-                  </button>
-                </div>
-                <br>
-                <br>
-              </div>
-            </div>
-
-            <div class="mdl-layout-spacer"></div>
-
-            <div>
-              <div class="demo-card-square mdl-card mdl-shadow--1dp gridDispTeam">
-                <div class="mdl-cell mdl-cell--12-col">
-                  <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Current Project Team Members</h2>
-                  </div>
-                    <div id=memberList><center>("Please select a project)")</center></div>
-
-                  <br>
-                  <div id=rmvBtn></div>
-                  <br>
-                  <br>
-                </div>
               </div>
             </div>
           </div>
-      </main>
+        </div>
+    </main>
 
     <script defer src="../js/admin.js"></script>
 
