@@ -270,7 +270,7 @@ window.onload = function() {
 
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'Issue Type');
-                data.addColumn('number', 'Number of Issues');
+                data.addColumn('number', 'Number of Members');
 
                 data.addRows(projectMembersCountTable);
 
