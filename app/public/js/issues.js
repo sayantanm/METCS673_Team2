@@ -11,9 +11,9 @@ function userHandler ()
         if ( user )
         {
             document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
-            document.getElementById('user-name').textContent = user.displayName ;
-            document.getElementById('user-name').removeAttribute ( 'hidden' ) ;
-            document.getElementById('sign-out').removeAttribute  ( 'hidden' ) ;
+            // document.getElementById('user-name').textContent = user.displayName ;
+            // document.getElementById('user-name').removeAttribute ( 'hidden' ) ;
+           //  document.getElementById('sign-out').removeAttribute  ( 'hidden' ) ;
         }
         else
         {
@@ -81,6 +81,21 @@ function issueTree ( issues_ref , projectID )
 }
 
 /*
+ * Refresh issue display
+ */ 
+
+function refreshIssueDisplay() 
+{
+	var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+		ref.once ( 'value' ).then( function(snapshot)
+		{
+			var issue = snapshot.val() ;
+			issueDisplay ( issue ) ;
+		} ) ;
+}
+
+
+/*
  * Generic function to display issues
  */
 
@@ -112,16 +127,16 @@ function membersDropdown ( objID )
 				userHash [ userDetails.key ] = userDetails.val().name ;
 			} ) ;
 
-			var pACLsRef = firebase.database().ref('project_acls/pu/' + $('#project_list').val() ) ;
-				pACLsRef.once ( 'value' ).then ( function ( pACLsnapshot )
-				{
-					$( objID ).empty() ;
-					pACLsnapshot.forEach ( function ( ePACL )
-					{
-						$( objID ).append( '<option value="' + ePACL.key + '">' + userHash [ ePACL.key ] + '</option>' ) ;
-					} );
-				} ) ;
-	  } ) ;
+          var pACLsRef = firebase.database().ref('project_acls/pu/' + $('#project_list').val() ) ;
+            pACLsRef.once ( 'value' ).then ( function ( pACLsnapshot )
+            {
+                $( objID ).empty() ;
+                pACLsnapshot.forEach ( function ( ePACL )
+                {
+                    $( objID ).append( '<option value="' + ePACL.key + '">' + userHash [ ePACL.key ] + '</option>' ) ;
+                } );
+            } ) ;
+      } ) ;
 }
 
 $(document).ready ( function()
@@ -252,8 +267,6 @@ $(document).ready ( function()
           ic_dialog.close();
         });
 
-        /* jQuery UI Datepicker is behaving differently so this workaround is needed */
-
 
 
         // Load project ACLs as defined by admin of the project
@@ -283,27 +296,42 @@ $(document).ready ( function()
          */
         $('#projects_container').on ( 'DOMSubtreeModified' , function () {
 
-            // Populate the list of issues.
-            $('#issue_list').find('div.demo-card-square').remove() ;
-            $('#issue_list').show() ;
-            $.jstree.destroy() ;
-            var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
+            if ( $('#project_list').val() != null ) 
+            {
+                // Populate the list of issues.
+                $('#issue_list').find('div.demo-card-square').remove() ;
+                $('#issue_list').show() ;
+                $.jstree.destroy() ;
+                var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
 
-				firstIssueDisplay ( issues_ref , $('#project_list').val() ) ;
-			    issueTree( issues_ref , $('#project_list').val() ) ;
+                firstIssueDisplay ( issues_ref , $('#project_list').val() ) ;
+                issueTree( issues_ref , $('#project_list').val() ) ;
                 $.jstree.defaults.core.check_callback = true ;
 
                 // When a project is selected from the list...
                 $('#project_list').on('change',function()
                 {
                     $('#issue_list').empty() ;
-					$.jstree.destroy() ;
+                    $.jstree.destroy() ;
                     var issues_ref = firebase.database().ref('issues' + $('#project_list').val() ) ;
-						firstIssueDisplay ( issues_ref ) ;
-						issueTree( issues_ref , $('#project_list').val() ) ;
+                        firstIssueDisplay ( issues_ref ) ;
+                        issueTree( issues_ref , $('#project_list').val() ) ;
                         $.jstree.defaults.core.check_callback = true ;
                 } ) ;
-            } ) ;
+            } 
+            else // This is because the user is new and does not have any access to the issue tracker.  
+            {
+                $.jstree.destroy() ; 
+                $('#issue_create').hide() ; 
+                $('#issue_assign').hide() ; 
+                $('#issue_chstatus').hide() ; 
+                $('#issue_reprioritize').hide() ; 
+                $('#issue_chg_sev').hide() ; 
+                $('#issue_resolve').hide() ;
+                $('#issue_body').empty().append("<h4 class='mdl-card__title-text mdl-color-text--blue-grey-700'  style='font-size:24px;font-weight:400;font-style:italic;white-space:nowrap;'>" 
+                                                 + "You're currently not member of any project, therefore you do not have access to this area</h4>").show();
+            }
+        } ) ;
 
 
          $('#issue_list').on ( 'DOMSubtreeModified' , function () {
@@ -318,33 +346,66 @@ $(document).ready ( function()
 						var issue = snapshot.val() ;
 						issueDisplay ( issue ) ;
 					} ) ;
-
 			 } ) ;
 
             $('.update-desc-button').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'description' : $('#issue_content').val() } ) ;
-                    console.log ( 'Update ' + $('#current_issue').val() + ' ' + $('#issue_content').val() );
+                    ref.update ( { 'description' : $('#issue_content').val() } ) ; 
              } ) ;
 
 
              $('#reassign_issue_button').on('click',function(){
                  var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
                  ref.update ( { 'assigned_to' : $('#reassign :selected').text() } ) ;
-				 ref.update ( { 'assigned_uid' : $('#reassign').val() } ) ;
-				 dialog.close() ;
-                 $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + $('#reassign :selected').text() + '</h4>' ) ;
+				 ref.update ( { 'assigned_uid' : $('#reassign').val() } ).then ( function () {
+					refreshIssueDisplay(); 
+					var d = document.querySelector('#first_dialog'); 
+						d.close() ; 
+				 } ) ;
              } );
+
+             $('#chsStatusSubmit').on ( 'click' , function () 
+             {
+                var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+                    ref.update ( { 'status' : $('#dialog_istatus_input').val() } ).then ( function () {  
+                        refreshIssueDisplay() ;  
+						var d = document.querySelector ( '#change_status') ; 
+ 							d.close() ; 
+                    } ) ; 
+
+             } ) ; 
+
+             $('#chPriSubmit').on ( 'click' , function () 
+             {
+                var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+                ref.update ( { 'priority' : $('#dialog_priority_input' ).val() } ).then ( function () {
+					refreshIssueDisplay() ; 
+					var d = document.querySelector ('#change_priority') ;
+						d.close() ;  
+				} ) ;   
+             } ) ; 
+
+             $( '#chSevSubmit' ).on ( 'click' , function () 
+             {
+                var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
+                ref.update ( { 'severity' : $('#dialog_iseverity_input').val() } ).then ( function () {
+					refreshIssueDisplay() ; 
+					var d = document.querySelector ( '#change_severity' ) ; 
+						d.close() ; 
+				} ) ; 
+             } ) ; 
 
              $('.update-comments-button').on ( 'click' , function () {
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'comments' : $('#comments').val() } );
+                    ref.update ( { 'comments' : $('#comments').val() } ) 
                 } ) ;
 
 
              $('#issue_resolve').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
-                    ref.update ( { 'status' : 'Resolved' } ) ;
+                    ref.update ( { 'status' : 'Resolved' } ).then ( function () {
+						refreshIssueDisplay() ; 
+				    }) ;
                } ) ;
 
 
@@ -400,7 +461,6 @@ $(document).ready ( function()
                     } ).then ( function ( ) {
                         iref.once ( 'value' ).then ( function ( irefData )
                             {
-                                console.log ( 'What is happenning!' ) ;
                                 $('#issue_list').jstree().create_node('project_1',{ id : irefData.key , text: 'Issue ' + irefData.val().issue_num } , 'last' , false , false ) ;
                                 $('#issue_list').jstree(true).select_node( irefData.key ) ;
                                 $('#current_issue').val ( irefData.key ) ;
@@ -413,5 +473,5 @@ $(document).ready ( function()
 }) ;
 
 $(window).on('load',function() {
-   userHandler() ;
+    userHandler() ;
 }) ;
