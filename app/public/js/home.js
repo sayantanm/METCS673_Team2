@@ -1,7 +1,6 @@
 window.onload = function() {
-
+// Initialize Firebase if it isn't already (for local dev only) 
     if (!firebase.apps.length) {
-        // Initialize Firebase if it isn't already 
         var config = {               
             apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
             authDomain: "metcs673-acac6.firebaseapp.com",
@@ -121,6 +120,10 @@ window.onload = function() {
         var issueTaskCount = 0;
         var issueBugCount = 0;
         var issuePastDueCount = 0;
+        var issueStatusNew = 0;
+        var issueStatusOnHold = 0;
+        var issueStatusOpen = 0;
+        var issueStatusInProgress = 0;
         var issueSeverityCritical = 0;
         var issueSeverityMajor = 0;
         var issueSeverityMinor = 0
@@ -141,19 +144,20 @@ window.onload = function() {
             promises.push(firebase.database().ref('issues' + projectIDsArray[i] + '/').once('value').then(function(issuesnapshot) {
                 issuesnapshot.forEach(function(childIssueSnapshot) {
                     var projectIssues = childIssueSnapshot.val();
+                    var loggedInUser = firebase.auth().currentUser.uid
                     // get a count of issues
-                    if (projectIssues['assigned_uid'] == firebase.auth().currentUser.uid) {
+                    if (projectIssues['assigned_uid'] == loggedInUser) {
                         issueCount++;
                     }
 
                     // get the count for issue type
-                    if (projectIssues['issue_type'] == 'Bug') {
+                    if (projectIssues['issue_type'] == 'Bug' && projectIssues['assigned_uid'] == loggedInUser) {
                         issueBugCount++;
 
                         // this is used for the stacked bar chart which shows the number of issues for a project
                         projectBugs[projectIssues['project_id']]++;
                     }
-                    else if (projectIssues['issue_type'] == 'Task') {
+                    else if (projectIssues['issue_type'] == 'Task' && projectIssues['assigned_uid'] == loggedInUser) {
                         issueTaskCount++;
 
                         // this is used for the stacked bar chart which shows the number of issues for a project
@@ -187,6 +191,20 @@ window.onload = function() {
                     else if (projectIssues['priority'] == 'Low') {
                         issuePriorityLow++;
                     }
+
+                    // get the cout for issue status
+                    if (projectIssues['status'] == 'New') {
+                        issueStatusNew++;
+                    }
+                    else if (projectIssues['status'] == 'Open') {
+                        issueStatusOpen++;
+                    }
+                    else if (projectIssues['status'] == 'On Hold') {
+                        issueStatusOnHold++;
+                    }
+                    else if (projectIssues['status'] == 'In Progress') {
+                        issueStatusInProgress++;
+                    }
                     var tempIssueArray = [projectIssues['issue_num'],projectIssues['status'],projectIssues['severity'],projectIssues['issue_type'],projectIssues['summary']];
                     issueTableArray.push(tempIssueArray);
                 });
@@ -207,13 +225,14 @@ window.onload = function() {
                 data.addColumn('number', 'Number of Issues');
 
                 data.addRows([
-                    ['Task',issueTaskCount],
-                    ['Bug',issueBugCount],
-                    ['Past Due',issuePastDueCount],
+                    ['New',issueStatusNew],
+                    ['Open',issueStatusOpen],
+                    ['In Progress',issueStatusInProgress],
+                    ['On Hold',issueStatusOnHold],
                 ]);
 
                 var options = {
-                    title: 'Issue Distribution',
+                    title: 'Issue Status Distribution',
                     vAxis: {
                         title: 'Number of Issues'
                     },
@@ -450,13 +469,13 @@ window.onload = function() {
     });
 
     firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
+        var isVerified = firebase.auth().currentUser.emailVerified;
+        if (user && isVerified) {
+            // display the users email address in the menu pane once they're authenticated
             document.getElementById('span_email').innerHTML = firebase.auth().currentUser.email;
         }
         else {
-            console.log('Not logged in');
+            window.location = "../index.html";
         }
     });
-
-
 }

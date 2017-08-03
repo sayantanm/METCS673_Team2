@@ -84,6 +84,14 @@ window.onload = function() {
 
     // join - even handler
     document.getElementById("button_join").addEventListener("click", function() {
+        // remove the require field indicators
+        if (document.getElementById("input_join_first_name").classList.contains('input_required')) {
+            document.getElementById("input_join_first_name").classList.remove('input_required');
+        }
+        if (document.getElementById("input_join_last_name").classList.contains('input_required')) {
+            document.getElementById("input_join_last_name").classList.remove('input_required');
+        }
+
         document.getElementById('div_login_error').innerHTML = '';
         var fname = document.getElementById("input_join_first_name").value;
         var lname = document.getElementById("input_join_last_name").value;
@@ -91,6 +99,20 @@ window.onload = function() {
         var password = document.getElementById("input_join_password").value;
         var confirmpassword = document.getElementById("input_join_confirm_password").value;
 
+        // add required field indicators
+        if (fname.length == 0 || lname.length == 0) {
+            if (fname.length == 0) {
+                if (!document.getElementById("input_join_first_name").classList.contains('input_required')) {
+                    document.getElementById("input_join_first_name").classList.add('input_required');
+                }
+            }
+            if (lname.length == 0) {
+                if (!document.getElementById("input_join_last_name").classList.contains('input_required')) {
+                    document.getElementById("input_join_last_name").classList.add('input_required');
+                }
+            }
+            return;
+        }
         if (password < 7) {
             alert("Your password must be greater than 6 characters long");
             return;
@@ -104,7 +126,7 @@ window.onload = function() {
 
         promises.push(firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
             addUser(fname + ' ' + lname,email);
-            resetJoinText;
+            resetJoinText();
             promises.push(firebase.auth().currentUser.sendEmailVerification().then(function() {
                 document.getElementById('div_login_error').innerHTML = 'Check your email, verification is needed.  <a id="resend_verification" href="#">Resend</a> link.';
             }));
@@ -140,7 +162,7 @@ window.onload = function() {
     }
     // reset button
     document.getElementById("button_join_reset").addEventListener("click", function() {
-        resetJoinText;
+        resetJoinText();
     });
 
     // when a user signs-in, send them to the dashboard/homepage
