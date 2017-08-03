@@ -2,12 +2,12 @@ window.onload = function() {
 // Initialize Firebase if it isn't already (for local dev only) 
     if (!firebase.apps.length) {
         var config = {               
-    apiKey: "AIzaSyCuDASMhIQI5n8B70CLYajlViOBbaDei9c",
-    authDomain: "team2-dev.firebaseapp.com",
-    databaseURL: "https://team2-dev.firebaseio.com",
-    projectId: "team2-dev",
-    storageBucket: "team2-dev.appspot.com",
-    messagingSenderId: "1025264149124"
+            apiKey: "AIzaSyBPj1-RVUplL_9hJniAIEXpw92vI7L2k44",
+            authDomain: "metcs673-acac6.firebaseapp.com",
+            databaseURL: "https://metcs673-acac6.firebaseio.com",
+            projectId: "metcs673-acac6",
+            storageBucket: "metcs673-acac6.appspot.com",
+            messagingSenderId: "967664299479"
         };
         firebase.initializeApp(config);
     }
