@@ -1,8 +1,19 @@
 /*
  * Author : Sayantan Mukherjee
- * Description: The javascript to handle all the interations of the issue tracker.
+ * Description: This is a project for MET CS 673, and is used for handling all the interations of the issue tracker.
+ *              External libraries such as jQuery, jQuery UI, jQuery Tree (jstree) have been used and citations for 
+ *              each library is noted on the design document. 
+ *
+ *              We've leveraged Google Material Design Lite template for our visual consistency and also been cited 
+ *              in our design document. 
  */
 
+
+
+// 
+// Responsible to getting Auth State from Firebase 
+// On successful auth state, enable user details. 
+//
 function userHandler ()
 {
     this.auth = firebase.auth() ;
@@ -116,6 +127,18 @@ function issueDisplay ( issue )
     $('#issue-assigned-to').empty().append('<h4>Issue Assigned To:<br>' + issue.assigned_to + '</h4>' ) ;
 }
 
+
+/* 
+ * This function injects an HTML <select> box with objID 
+ * The purpose of the <select> box is to populate the list of members within a project. 
+ * An efficient hash structure exists (created by common.js after parsing project data) 
+ * the basic idea is represented in this datastructure :
+ *          
+ *              project_acls[pu][firebase-project-key] 
+ *
+ *              provides the list of unique user keys. 
+ */ 
+
 function membersDropdown ( objID )
 {
 	  var usersRef = firebase.database().ref('users') ;
@@ -139,8 +162,17 @@ function membersDropdown ( objID )
       } ) ;
 }
 
+
+/* 
+ * Wait on the document to be ready by listening on the event. 
+ */
+
 $(document).ready ( function()
 {
+
+    /* 
+     * listen for auth state change event from firebase to obtain user details. 
+     */
     var fbAuth = firebase.auth() ;
     fbAuth.onAuthStateChanged ( function ( user )
     {
@@ -348,11 +380,18 @@ $(document).ready ( function()
 					} ) ;
 			 } ) ;
 
+
+            /* 
+             * listen on click event for update description button 
+             */ 
             $('.update-desc-button').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
                     ref.update ( { 'description' : $('#issue_content').val() } ) ; 
              } ) ;
 
+            
+             /* When an user is re-assigned to an issue
+              */ 
 
              $('#reassign_issue_button').on('click',function(){
                  var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
@@ -364,6 +403,9 @@ $(document).ready ( function()
 				 } ) ;
              } );
 
+            /* 
+             * When issue status change is submitted, listenning on the issue. 
+             */ 
              $('#chsStatusSubmit').on ( 'click' , function () 
              {
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
@@ -375,6 +417,9 @@ $(document).ready ( function()
 
              } ) ; 
 
+            /* 
+             * Listening on Priority Submit event -- change issue priority 
+             */
              $('#chPriSubmit').on ( 'click' , function () 
              {
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
@@ -384,6 +429,12 @@ $(document).ready ( function()
 						d.close() ;  
 				} ) ;   
              } ) ; 
+
+            
+            /* 
+             * listen on change severity submit button click, 
+             *  when event trapped, change severity. 
+             */ 
 
              $( '#chSevSubmit' ).on ( 'click' , function () 
              {
@@ -395,11 +446,19 @@ $(document).ready ( function()
 				} ) ; 
              } ) ; 
 
+            
+            /* 
+             * After UI Refresh "comments" section was renamed as a resolution section. 
+             * The following lines listens on update button click to trigger a firebase write 
+             */ 
              $('.update-comments-button').on ( 'click' , function () {
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
                     ref.update ( { 'comments' : $('#comments').val() } ) 
                 } ) ;
 
+            /* 
+             * Listening on resolve button click and when that happens, write to firebase db. 
+             */ 
 
              $('#issue_resolve').on('click',function(){
                 var ref = firebase.database().ref('issues' + $('#project_list').val() + '/' + $('#current_issue').val() ) ;
@@ -411,6 +470,11 @@ $(document).ready ( function()
 
          } ) ;
 
+        /* 
+         * Listening on issue submit button's click event, 
+         * when triggered, we write to the firebase db with a new JSON object (document) 
+         * containing an issue. 
+         */ 
         $('#issue_create_submit').click( function()
         {
             var issue_status= $('#istatus_input').val() ;
@@ -472,6 +536,10 @@ $(document).ready ( function()
     } ) ;
 }) ;
 
+
+/* 
+ * Listening on window load to trigger auth state monitoring by Firebase. 
+ */ 
 $(window).on('load',function() {
     userHandler() ;
 }) ;
