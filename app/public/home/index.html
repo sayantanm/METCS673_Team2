@@ -1,0 +1,150 @@
+<!doctype html>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Learn how to use the Firebase platform on the Web">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Friendly Chat">
+    <meta name="theme-color" content="#303F9F">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Friendly Chat">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+
+    <!-- Tile icon for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta name="msapplication-navbutton-color" content="#303F9F">
+
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+    <!-- App Styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+      <!-- these JS and CSS files are needed by the dashboard - Rishee -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dashboard.css" type="text/css">
+    <script src="../js/home.js"></script>
+  </head>
+  <body>
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <!-- Horizontal Header  -->
+      <header class="demo-header mdl-layout__header mdl-color-text--white mdl-color--blue-grey-700">
+        <div class="mdl-layout__header-row">
+              <div id="div-header" class="flex-wrapper">
+                      <div class="header-projects mdl-shadow--2dp flex-six">
+                        <div>Projects: Completed</div>
+                        <div id="div-header-projects-completed" class="header-font"></div>
+                      </div>
+                      <div class="header-projects mdl-shadow--2dp flex-six">
+                        <div>Projects: In Progress</div>
+                        <div id="div-header-projects-inprogress" class="header-font"></div>
+                      </div>
+                      <div class="header-projects mdl-shadow--2dp flex-six">
+                        <div>Projects: Not Started</div>
+                        <div id="div-header-projects-notstarted" class="header-font"></div>
+                      </div>
+                      <div class="header-issues mdl-shadow--2dp flex-six">
+                        <div>Issues: Tasks</div>
+                        <div id="div-header-issues-tasks" class="header-font"></div>
+                      </div>
+                      <div class="header-issues mdl-shadow--2dp flex-six">
+                        <div>Issues: Bugs</div>
+                        <div id="div-header-issues-bugs" class="header-font"></div>
+                      </div>
+                      <div class="header-issues mdl-shadow--2dp flex-six">
+                        <div>Issues: Past Due</div>
+                        <div id="div-header-issues-pastdue" class="header-font"></div>
+                      </div>
+                 
+              </div>
+        </div>
+      </header>
+
+      <!-- Left Menu -->
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+        <header class="demo-drawer-header">
+          <img src="/images/user.jpg" class="demo-avatar">
+          <div class="demo-avatar-dropdown">
+            <span id="span_email"></span>
+            <div class="mdl-layout-spacer"></div>
+            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_drop_down</i>
+              <span class="visuallyhidden">Accounts</span>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+              <li id="li_logout" class="mdl-menu__item">Logout</li>
+            </ul>
+          </div>
+        </header>
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+          <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+          <a class="mdl-navigation__link" href="/manage"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Projects</a>
+          <a class="mdl-navigation__link" href="/chat"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">chat</i>Chat</a>
+          <a class="mdl-navigation__link" href="/issues"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Issues</a>
+          <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Admin</a>
+          <div class="mdl-layout-spacer"></div>
+        </nav>
+      </div>
+      <!-- Main Content -->
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
+          <main class="mdl-layout__content mdl-color--grey-100">
+            <div id="container">
+              <div class="flex-wrapper">
+                <div id="div-bar-projects" class="mdl-shadow--2dp flex-two flex-chart"></div>
+                <div id="div-bar-issues" class="mdl-shadow--2dp flex-two flex-chart"></div>
+              </div>
+              <div id="div-donut" class="flex-wrapper">
+                    <div id="div-bar-project-members" class="mdl-shadow--2dp flex-four"></div>
+                    <div id="div-donut-project-status" class="mdl-shadow--2dp flex-four"></div>
+                    <div id="div-chart-issues-severity" class="mdl-shadow--2dp flex-four"></div>
+                    <div id="div-chart-issues-priority" class="mdl-shadow--2dp flex-four"></div>
+              </div>
+              <div id="div-content" class="flex-wrapper">
+                  <div id="div-content-projects" class="mdl-shadow--2dp flex-two flex-body"></div>
+                  <div id="div-content-issues" class="mdl-shadow--2dp flex-two flex-body"></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

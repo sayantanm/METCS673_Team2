@@ -1,0 +1,64 @@
+{
+  "projects" : {
+    "Web App" : {
+      "name" : "Web App",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "John Smith" : "PM",
+        "Chris Henson" : "QA"
+      }
+    },
+    "Another Project" : {
+      "name" : "Another Project",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "Chris Henson" : "PM"
+      }
+    },
+    "Some Other App" : {
+      "name" : "Some Other App",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "John Smith" : "PM",
+        "Chris Henson" : "DEVOPS"
+      }
+    },
+    "Something Else" : {
+      "name" : "Something Else",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "John Smith" : "PM",
+        "Chris Henson" : "QA"
+      }
+    },
+     "Side Project" : {
+      "name" : "Side Project",
+      "admins" :
+        "Chris Henson"
+      ,
+      "members" : {
+        "Chris Henson" : "NA"
+      }
+  }
+},
+  "users" : {
+    "John Smith" : {
+      "email" : "jsmith68@fake.com",
+      "name" : "John Smith",
+      "userIcon" : "NULL"
+    },
+    "Chris Henson" : {
+      "email" : "hensonc@bu.edu",
+      "name" : "Chris Henson",
+      "userIcon" : "NULL"
+    }
+  }
+}
